@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { HelpCircle, Calendar, Utensils, MessageSquare, Sparkles } from 'lucide-react';
-import { STEPS_DATA } from '../data';
+import { STEPS_DATA } from '@/data';
 
 const STEP_ICONS = [Calendar, Utensils, MessageSquare, Sparkles];
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingCart, Plus, Minus, Search, Sparkles, Utensils, Check } from 'lucide-react';
-import { Product } from '../types';
-import { PRODUCTS_DATA, formatPrice } from '../data';
+import { Product } from '@/types';
+import { PRODUCTS_DATA, formatPrice } from '@/data';
+import { trackWhatsAppConversion } from '@/lib/tracking';
 
 interface MenuSectionProps {
   basket: Record<number, number>;
@@ -67,23 +68,26 @@ export default function MenuSection({
         {/* Search & Category Filter Controls */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 bg-brand-secondary/40 p-4 rounded-2xl border border-brand-border/40">
           
-          {/* Categories Horizontal Tabs with LayoutId */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none max-w-full">
-            {CATEGORIES.map((tab) => {
+          {/* Categories 2-Column Wrapping Grid on Mobile, Flex on Desktop */}
+          <div className="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:items-center md:gap-1.5 md:max-w-full">
+            {CATEGORIES.map((tab, idx) => {
               const isActive = activeTab === tab.id;
+              const isLastOdd = idx === CATEGORIES.length - 1 && CATEGORIES.length % 2 !== 0;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-4 py-2 text-sm font-bold rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary whitespace-nowrap ${
+                  className={`relative px-2 py-2 text-[11px] sm:text-xs md:text-sm md:px-4 md:py-2 font-bold rounded-xl md:rounded-full transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary whitespace-normal md:whitespace-nowrap text-center flex items-center justify-center min-h-[36px] md:min-h-0 ${
+                    isLastOdd ? 'col-span-2 md:col-span-1' : ''
+                  } ${
                     isActive ? 'text-brand-surface' : 'text-brand-text hover:text-brand-dark'
                   }`}
                 >
-                  <span className="relative z-10">{tab.label}</span>
+                  <span className="relative z-10 leading-tight">{tab.label}</span>
                   {isActive && (
                     <motion.div
                       layoutId="activeMenuTab"
-                      className="absolute inset-0 bg-brand-primary rounded-full z-0"
+                      className="absolute inset-0 bg-brand-primary rounded-xl md:rounded-full z-0"
                       transition={{ type: 'spring', stiffness: 380, damping: 28 }}
                     />
                   )}
@@ -125,8 +129,8 @@ export default function MenuSection({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts.map((product, index) => {
               const qtyInBasket = basket[product.id] || 0;
-              // Make first item a Large Featured Card in Magazine Grid
-              const isLargeFeatured = index === 0 && activeTab === 'all' && !searchQuery;
+              // Make all items uniform (disable large featured first card)
+              const isLargeFeatured = false;
 
               return (
                 <motion.div
@@ -206,10 +210,10 @@ export default function MenuSection({
                       {/* Booking cart system */}
                       <div className="w-full sm:w-auto">
                         {qtyInBasket > 0 ? (
-                          <div className="flex items-center justify-between bg-brand-primary text-brand-secondary p-1 rounded-full w-full sm:w-fit gap-3">
+                          <div className="flex items-center justify-between bg-brand-primary text-brand-dark p-1 rounded-full w-full sm:w-fit gap-3">
                             <button
                               onClick={() => onRemoveFromBasket(product.id)}
-                              className="p-1.5 hover:bg-brand-dark rounded-full transition-colors focus-visible:outline-none"
+                              className="p-1.5 hover:bg-brand-dark hover:text-white rounded-full transition-colors focus-visible:outline-none cursor-pointer"
                               aria-label="Kurangi jumlah pre-order"
                             >
                               <Minus className="w-4 h-4" />
@@ -221,7 +225,7 @@ export default function MenuSection({
                             
                             <button
                               onClick={() => onAddToBasket(product)}
-                              className="p-1.5 hover:bg-brand-dark rounded-full transition-colors focus-visible:outline-none"
+                              className="p-1.5 hover:bg-brand-dark hover:text-white rounded-full transition-colors focus-visible:outline-none cursor-pointer"
                               aria-label="Tambah jumlah pre-order"
                             >
                               <Plus className="w-4 h-4" />
@@ -230,7 +234,7 @@ export default function MenuSection({
                         ) : (
                           <button
                             onClick={() => onAddToBasket(product)}
-                            className="w-full sm:w-auto bg-brand-primary/10 hover:bg-brand-primary text-brand-primary hover:text-brand-secondary font-bold text-xs py-2.5 px-4 rounded-full transition-all duration-300 flex items-center justify-center gap-1.5"
+                            className="w-full sm:w-auto bg-brand-primary/10 hover:bg-brand-primary text-brand-dark font-bold text-xs py-2.5 px-4 rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 cursor-pointer"
                           >
                             <Plus className="w-3.5 h-3.5" />
                             Pre-Order Porsi
@@ -243,7 +247,8 @@ export default function MenuSection({
                         href={`https://wa.me/6281388497651?text=${encodeURIComponent(product.waMessage)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto text-center border-2 border-brand-primary/20 hover:border-brand-primary text-brand-dark font-bold text-xs py-2.5 px-4 rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 hover:bg-brand-primary/5"
+                        onClick={(e) => trackWhatsAppConversion(e as any, `Menu Instant Order: ${product.name}`)}
+                        className="w-full sm:w-auto text-center border-2 border-brand-primary/20 hover:border-brand-primary text-brand-dark font-bold text-xs py-2.5 px-4 rounded-full transition-all duration-300 flex items-center justify-center gap-1.5 hover:bg-brand-primary/5 cursor-pointer"
                       >
                         <ShoppingCart className="w-3.5 h-3.5 text-brand-accent" />
                         Pesan Instan via WA
@@ -270,7 +275,7 @@ export default function MenuSection({
                 <ShoppingCart className="w-4 h-4 text-brand-accent" />
                 Keranjang Pre-Order Anda
               </span>
-              <span className="bg-brand-primary text-brand-secondary text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-brand-primary text-brand-dark text-xs font-bold px-2.5 py-0.5 rounded-full">
                 {Object.values(basket).reduce((a, b) => a + b, 0)} Item
               </span>
             </div>

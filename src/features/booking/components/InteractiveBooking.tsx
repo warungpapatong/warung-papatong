@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Calendar, Users, Clock, Map, Phone, AlertCircle, Sparkles, Check, Trash2, MessageSquare } from 'lucide-react';
-import { Product, PreOrderBasketItem } from '../types';
-import { PRODUCTS_DATA, formatPrice, BUSINESS_INFO, buildWALink } from '../data';
+import { Product, PreOrderBasketItem } from '@/types';
+import { PRODUCTS_DATA, formatPrice, BUSINESS_INFO, buildWALink } from '@/data';
+import { trackWhatsAppConversion } from '@/lib/tracking';
 
 interface InteractiveBookingProps {
   isOpen: boolean;
@@ -66,6 +67,8 @@ export default function InteractiveBooking({
   const [selectedSeat, setSelectedSeat] = useState('lesehan-apung');
   const [specialNote, setSpecialNote] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [generatedMessage, setGeneratedMessage] = useState('');
 
   // Set default date to today or tomorrow
   useEffect(() => {
@@ -93,10 +96,20 @@ export default function InteractiveBooking({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone || !date) {
-      alert('Tolong lengkapi nama, kontak WA, dan tanggal rencana berkunjung.');
+    if (!name.trim()) {
+      setErrorMessage('Tolong masukkan Nama Pemesan terlebih dahulu.');
       return;
     }
+    if (!phone.trim()) {
+      setErrorMessage('Tolong masukkan nomor WhatsApp aktif Anda.');
+      return;
+    }
+    if (!date) {
+      setErrorMessage('Tolong pilih tanggal rencana kedatangan Anda.');
+      return;
+    }
+
+    setErrorMessage(null);
 
     // Get seat label
     const seatObj = SEAT_TYPES.find(s => s.id === selectedSeat);
@@ -128,9 +141,16 @@ export default function InteractiveBooking({
       message += `⚠️ _Rombongan kami belum menyertakan pre-order hidangan (Kami mengerti antrean penyajian mungkin berjalan normal)._\n`;
     }
 
-    // Direct redirection to WhatsApp
+    setGeneratedMessage(message);
     const waURL = buildWALink(BUSINESS_INFO.wa, message);
-    window.open(waURL, '_blank');
+    trackWhatsAppConversion(e as any, `Reservation Form Submit: ${name}`);
+    
+    try {
+      window.open(waURL, '_blank');
+    } catch (err) {
+      console.warn("Popup blocked or direct redirect disabled, fallback to manual success button screen", err);
+    }
+    
     setIsSubmitted(true);
   };
 
@@ -162,10 +182,10 @@ export default function InteractiveBooking({
         >
           
           {/* Header */}
-          <div className="bg-brand-primary p-6 md:p-8 text-brand-secondary relative">
+          <div className="bg-brand-primary p-6 md:p-8 text-brand-dark relative">
             <button
               onClick={onClose}
-              className="absolute top-6 right-6 text-brand-secondary/80 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors focus-visible:outline-none"
+              className="absolute top-6 right-6 text-brand-dark/80 hover:text-black bg-brand-dark/10 hover:bg-brand-dark/20 p-2 rounded-full transition-colors focus-visible:outline-none"
               aria-label="Tutup Panel"
             >
               ✕
@@ -177,16 +197,100 @@ export default function InteractiveBooking({
             <h2 className="font-display font-black text-2xl md:text-3xl tracking-tight leading-none">
               Sistem Reservasi Meja & Pre-Order Hidangan
             </h2>
-            <p className="text-brand-secondary/80 text-xs md:text-sm mt-2 leading-relaxed">
+            <p className="text-brand-dark/85 text-xs md:text-sm mt-3 leading-relaxed">
               Membantu rombongan Anda mengunci tempat makan terapung ternyaman & memotong antrean penyajian dapur Warung Papatong Cibinong.
             </p>
           </div>
 
-          <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              
-              {/* Left Column - 7 Columns for Form Details */}
-              <div className="lg:col-span-7 space-y-6">
+          <div className="p-6 md:p-8 max-h-[70vh] overflow-y-auto w-full">
+            {isSubmitted ? (
+              <div className="flex flex-col items-center text-center py-8 px-4">
+                {/* Green concentric animation rings */}
+                <div className="relative mb-6">
+                  <div className="absolute inset-0 bg-emerald-500/20 rounded-full animate-ping" />
+                  <div className="relative w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center text-white">
+                    <Check className="w-8 h-8 stroke-[3]" />
+                  </div>
+                </div>
+
+                <h3 className="font-display font-black text-2xl text-brand-dark mb-2">
+                  Formulir Reservasi Siap Dikirim!
+                </h3>
+                
+                <p className="text-brand-text/85 text-xs md:text-sm max-w-lg mb-6 leading-relaxed">
+                  Detail reservasi atas nama <strong className="text-brand-primary">{name}</strong> untuk (<strong className="font-mono text-xs">{guestCount} Orang</strong>) pada <strong>{date} pukul {arrivalTime} WIB</strong> telah tersimpan di sistem.
+                </p>
+
+                {/* Summary Structure */}
+                <div className="w-full max-w-md bg-brand-primary/5 binder border-brand-border/60 rounded-2xl p-4 mb-6 text-left space-y-2.5 shadow-sm">
+                  <div className="text-[10px] uppercase font-bold tracking-widest text-brand-text/50 border-b border-brand-border/45 pb-1.5 flex justify-between">
+                    <span>STRUK PRE-ORDER & MEJA</span>
+                    <span className="text-emerald-600 font-extrabold flex items-center gap-1 font-mono">● READY TO SEND</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-y-1.5 text-xs text-brand-dark font-semibold">
+                    <div>Pilihan Spot:</div>
+                    <div className="text-right font-extrabold text-brand-primary">{SEAT_TYPES.find(s => s.id === selectedSeat)?.name || selectedSeat}</div>
+                    
+                    <div>Kontak WhatsApp:</div>
+                    <div className="text-right font-mono">{phone}</div>
+
+                    <div>Item Pre-Order:</div>
+                    <div className="text-right font-mono text-brand-accent font-extrabold">{basketItems.length} menu</div>
+
+                    {basketItems.length > 0 && (
+                      <>
+                        <div className="pt-1.5 border-t border-brand-border/30">Total Estimasi Kuliner:</div>
+                        <div className="text-right font-display font-black text-sm text-brand-accent pt-1.5 border-t border-brand-border/30">{formatPrice(subtotal)}</div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="w-full max-w-md space-y-3">
+                  <a
+                    href={buildWALink(BUSINESS_INFO.wa, generatedMessage)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => trackWhatsAppConversion(e as any, `Success Screen Open WA: ${name}`)}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-[#FFF] font-extrabold text-sm py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-emerald-600/20"
+                  >
+                    <MessageSquare className="w-4 h-4 text-[#FFF]" />
+                    Kirim Pesan Ke WhatsApp Admin
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClearBasket();
+                      setIsSubmitted(false);
+                      setErrorMessage(null);
+                      setName('');
+                      setPhone('');
+                      setSpecialNote('');
+                      onClose();
+                    }}
+                    className="w-full bg-brand-dark hover:bg-black text-[#FFF] font-semibold text-xs py-3 px-4 rounded-xl transition-all cursor-pointer"
+                  >
+                    Selesai & Bersihkan Keranjang
+                  </button>
+
+                  <p className="text-[10px] text-zinc-500 leading-relaxed max-w-xs mx-auto">
+                    *Membuka aplikasi WhatsApp resmi di browser / telepon secara aman untuk mengirimkan detail pemesanan ke admin Warung Papatong.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                {/* Left Column - 7 Columns for Form Details */}
+                <div className="lg:col-span-7 space-y-6 font-medium">
+                  
+                  {errorMessage && (
+                    <div className="bg-red-50 text-red-700 text-xs font-bold p-3.5 rounded-xl border border-red-200 flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
                 
                 {/* Section 1: Customer Bio */}
                 <div className="space-y-4">
@@ -489,6 +593,7 @@ export default function InteractiveBooking({
               </div>
 
             </form>
+          )}
           </div>
 
         </motion.div>

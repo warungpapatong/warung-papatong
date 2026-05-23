@@ -23,13 +23,13 @@ export interface NavItem {
 export interface Product {
   id: number;
   name: string;
-  category: 'seafood' | 'sunda' | 'sayur' | 'minuman';
+  category: string;
   categoryLabel: string;
   description: string;
   price: number;         // Numeric to allow preorder sum calculation
   priceFormatted: string; // e.g. "Rp 120.000"
   image: string;
-  badge?: 'Terlaris' | 'Baru' | 'Rekomendasi' | 'Promo';
+  badge?: string;
   waMessage: string;
   isAvailable: boolean; // Simulating kitchen stock availability
 }
@@ -75,3 +75,41 @@ export interface PreOrderBasketItem {
   product: Product;
   quantity: number;
 }
+
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  photo: string;
+  bio: string;
+  specialty?: string;
+}
+
+export interface HeroData {
+  headlineText: string;
+  pillBadge: string;
+  description: string;
+  ctaBookingText: string;
+  ctaMenuText: string;
+  imageUrl: string;
+  imageAlt: string;
+  featuredTodayLabel: string;
+  featuredTodayName: string;
+  featuredTodayPrice: string;
+  kitchenStatusLabel: string;
+  kitchenStatusDesc: string;
+}
+
+export interface AmbienceTeaserItem {
+  url: string;
+  caption: string;
+  desc: string;
+}
+
+export interface InstagramFeedItem {
+  id: number;
+  img: string;
+  likes: string;
+  comments: string;
+}
+

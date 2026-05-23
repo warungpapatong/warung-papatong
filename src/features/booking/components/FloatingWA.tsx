@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BUSINESS_INFO, buildWALink } from '../data';
+import { BUSINESS_INFO, buildWALink } from '@/data';
+import { trackWhatsAppConversion } from '@/lib/tracking';
 
 export default function FloatingWA() {
   const [isVisible, setIsVisible] = useState(false);
@@ -83,6 +84,7 @@ export default function FloatingWA() {
               aria-label="Chat dengan Admin Warung Papatong via WhatsApp"
               onMouseEnter={() => setShowTooltip(true)}
               onMouseLeave={() => setShowTooltip(false)}
+              onClick={(e) => trackWhatsAppConversion(e as any, 'Floating WhatsApp button bottom-right')}
               className="flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full shadow-2xl transition-transform duration-300 transform hover:scale-115 active:scale-95"
             >
               {/* WhatsApp Premium Inline SVG Icon */}

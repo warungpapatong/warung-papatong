@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapPin, Clock, Phone, MessageCircle, Mail, Navigation2, Compass } from 'lucide-react';
-import { BUSINESS_INFO, buildWALink } from '../data';
+import { BUSINESS_INFO, buildWALink } from '@/data';
+import { trackWhatsAppConversion } from '@/lib/tracking';
 
 export default function LocationContact() {
   
@@ -84,9 +85,10 @@ export default function LocationContact() {
                 href={buildWALink(BUSINESS_INFO.wa, "Halo Admin Resto Warung Papatong, rombongan kami ingin datang dalam waktu dekat. Bisa dibantu infokan meja lesehan kosong?")}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-brand-primary hover:bg-brand-dark text-white font-bold text-sm py-4 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition-colors duration-300"
+                onClick={(e) => trackWhatsAppConversion(e as any, 'Location Section WhatsApp Chat')}
+                className="bg-brand-primary hover:bg-brand-dark text-brand-dark hover:text-white font-bold text-sm py-4 px-6 rounded-xl shadow-md flex items-center justify-center gap-2 transition-colors duration-300"
               >
-                <MessageCircle className="w-4.5 h-4.5" />
+                <MessageCircle className="w-5 h-5 text-brand-dark hover:text-white" />
                 Chat WhatsApp Sekarang
               </a>
 
@@ -94,9 +96,9 @@ export default function LocationContact() {
                 href={BUSINESS_INFO.mapsLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-brand-surface hover:bg-brand-primary text-brand-dark hover:text-brand-secondary border border-brand-primary/45 font-bold text-sm py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
+                className="bg-brand-surface hover:bg-brand-primary text-brand-dark border border-brand-primary/45 font-bold text-sm py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
               >
-                <Navigation2 className="w-4.5 h-4.5 text-brand-accent" />
+                <Navigation2 className="w-5 h-5 text-brand-accent" />
                 Rute di Google Maps
               </a>
             </div>

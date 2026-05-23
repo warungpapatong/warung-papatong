@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { ShieldCheck, Heart, Coffee, Leaf, Music, Sparkles } from 'lucide-react';
-import { BUSINESS_INFO } from '../data';
+import { BUSINESS_INFO } from '@/data';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 35 },

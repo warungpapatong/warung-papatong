@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUp, Phone, MapPin, Mail, Compass } from 'lucide-react';
-import { BUSINESS_INFO } from '../data';
+import { BUSINESS_INFO } from '@/data';
 import Logo from './Logo';
 
 export default function Footer() {

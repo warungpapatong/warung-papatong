@@ -1,75 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, Phone, UtensilsCrossed, Sparkles } from 'lucide-react';
-import { NavItem } from '../types';
-import { BUSINESS_INFO } from '../data';
+import { Menu, X, Phone, UtensilsCrossed, Sparkles, MapPin, Info } from 'lucide-react';
+import { NavItem } from '@/types';
+import { BUSINESS_INFO } from '@/data';
 import Logo from './Logo';
+import { trackWhatsAppConversion } from '@/lib/tracking';
 
 interface NavbarProps {
   onOpenBooking: () => void;
+  currentPage: 'beranda' | 'menu' | 'venue' | 'tentang';
+  onPageChange: (page: 'beranda' | 'menu' | 'venue' | 'tentang') => void;
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: "Beranda", href: "#beranda" },
-  { label: "Tentang", href: "#tentang" },
-  { label: "E-Menu", href: "#menu" },
-  { label: "Keunggulan", href: "#keunggulan" },
-  { label: "Cara Reservasi", href: "#proses" },
-  { label: "Ulasan", href: "#ulasan" },
-  { label: "Lokasi", href: "#lokasi" }
-];
+const NAV_ITEMS = [
+  { id: 'beranda', label: 'Beranda' },
+  { id: 'menu', label: 'E-Menu' },
+  { id: 'venue', label: 'Galeri & Suasana' },
+  { id: 'tentang', label: 'Tentang Kami' },
+] as const;
 
-export default function Navbar({ onOpenBooking }: NavbarProps) {
+export default function Navbar({ onOpenBooking, currentPage, onPageChange }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState('#beranda');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 60);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // IntersectionObserver for Scroll Spy
-  useEffect(() => {
-    const sections = NAV_ITEMS.map(item => document.querySelector(item.href));
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -60% 0px',
-      threshold: 0
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = `#${entry.target.id}`;
-          setActiveSection(id);
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach(sec => {
-      if (sec) observer.observe(sec);
-    });
-
-    return () => {
-      sections.forEach(sec => {
-        if (sec) observer.unobserve(sec);
-      });
-    };
-  }, []);
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(href);
-      setIsMobileMenuOpen(false);
-    }
+  const handleNavClick = (pageId: 'beranda' | 'menu' | 'venue' | 'tentang') => {
+    onPageChange(pageId);
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -78,32 +44,30 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
         id="app-header"
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'glass-panel border-b border-brand-border/40 py-3 shadow-sm shadow-brand-dark/5'
+            ? 'glass-panel border-b border-brand-border/40 py-3 shadow-sm shadow-brand-dark/5 bg-brand-secondary/95 backdrop-blur-md'
             : 'bg-transparent py-5'
         }`}
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
           {/* Logo Left */}
-          <a
-            href="#beranda"
-            onClick={(e) => handleNavClick(e, '#beranda')}
-            className="group focus-visible:ring-2 focus-visible:ring-brand-primary rounded-lg p-1"
+          <button
+            onClick={() => handleNavClick('beranda')}
+            className="group focus-visible:ring-2 focus-visible:ring-brand-primary rounded-lg p-1 text-left"
             aria-label="Kembali ke Beranda"
           >
             <Logo size="sm" />
-          </a>
+          </button>
 
           {/* Nav Links Center (Desktop) */}
           <nav className="hidden lg:flex items-center gap-1">
             {NAV_ITEMS.map((item) => {
-              const isActive = activeSection === item.href;
+              const isActive = currentPage === item.id;
               return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-4 py-2 font-medium text-sm transition-colors duration-300 rounded-full focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:outline-none ${
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`relative px-4 py-2 font-medium text-sm transition-colors duration-300 rounded-full focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:outline-none cursor-pointer ${
                     isActive ? 'text-brand-primary font-bold' : 'text-brand-text/80 hover:text-brand-dark'
                   }`}
                 >
@@ -115,7 +79,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </a>
+                </button>
               );
             })}
           </nav>
@@ -126,14 +90,15 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
               href={`https://wa.me/${BUSINESS_INFO.wa}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-dark hover:text-brand-accent p-2 rounded-full transition-colors duration-300 hover:bg-brand-primary/5 focus-visible:ring-2 focus-visible:ring-brand-primary"
+              onClick={(e) => trackWhatsAppConversion(e as any, 'Header Phone Icon')}
+              className="text-brand-dark hover:text-brand-accent p-2 rounded-full transition-colors duration-300 hover:bg-brand-primary/10 focus-visible:ring-2 focus-visible:ring-brand-primary"
               aria-label="Hubungi via WhatsApp"
             >
               <Phone className="w-5 h-5" />
             </a>
             <button
               onClick={onOpenBooking}
-              className="relative overflow-hidden bg-brand-primary hover:bg-brand-dark text-brand-secondary font-bold text-sm px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:outline-none"
+              className="relative overflow-hidden bg-brand-primary hover:bg-brand-dark text-brand-dark hover:text-white font-bold text-sm px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 group focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:outline-none cursor-pointer"
             >
               <span className="relative z-10 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 animate-pulse" />
@@ -146,13 +111,13 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           <div className="lg:hidden flex items-center gap-2">
             <button
               onClick={onOpenBooking}
-              className="sm:hidden bg-brand-primary text-brand-secondary text-xs font-bold px-3 py-2 rounded-full shadow-md"
+              className="sm:hidden bg-brand-primary text-brand-dark hover:bg-brand-dark hover:text-white text-xs font-bold px-3 py-2 rounded-full shadow-md cursor-pointer"
             >
               Booking
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-brand-dark hover:bg-brand-primary/5 rounded-xl transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand-primary"
+              className="p-2 text-brand-dark hover:bg-brand-primary/10 rounded-xl transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-brand-primary cursor-pointer"
               aria-label="Tampilkan menu navigasi"
               aria-expanded={isMobileMenuOpen}
             >
@@ -175,20 +140,19 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           >
             <div className="flex flex-col gap-1 max-h-[60vh] overflow-y-auto">
               {NAV_ITEMS.map((item) => {
-                const isActive = activeSection === item.href;
+                const isActive = currentPage === item.id;
                 return (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    className={`block px-4 py-3 rounded-xl font-display font-medium text-lg border transition-colors ${
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`block w-full text-left px-4 py-3 rounded-xl font-display font-medium text-lg border transition-colors cursor-pointer ${
                       isActive
-                        ? 'bg-brand-primary text-brand-secondary border-transparent shadow-md'
-                        : 'text-brand-text hover:bg-brand-primary/5 border-transparent'
+                        ? 'bg-brand-primary text-brand-dark border-transparent shadow-md font-bold'
+                        : 'text-brand-text hover:bg-brand-primary/10 border-transparent'
                     }`}
                   >
                     {item.label}
-                  </a>
+                  </button>
                 );
               })}
             </div>
@@ -199,7 +163,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                   setIsMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full bg-brand-primary text-brand-secondary font-bold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2"
+                className="w-full bg-brand-primary text-brand-dark hover:bg-brand-dark hover:text-white font-bold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Sparkles className="w-4 h-4" />
                 Booking & Pre-Order Online
@@ -209,7 +173,8 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                 href={`https://wa.me/${BUSINESS_INFO.wa}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-brand-surface hover:bg-brand-primary text-brand-dark hover:text-brand-secondary border border-brand-primary/40 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
+                onClick={(e) => trackWhatsAppConversion(e as any, 'Mobile Menu WhatsApp Button')}
+                className="w-full bg-brand-surface hover:bg-brand-primary text-brand-dark border border-brand-primary/40 font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300"
               >
                 <Phone className="w-4 h-4" />
                 Hubungi Admin WhatsApp

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Sparkles, ArrowRight, MessageSquareCode, Clock, MapPin, Star } from 'lucide-react';
-import { BUSINESS_INFO } from '../data';
+import { Sparkles, ArrowRight, MessageSquareCode, Clock, MapPin, Star, Instagram } from 'lucide-react';
+import { BUSINESS_INFO, HERO_DATA } from '@/data';
 
 interface HeroProps {
   onOpenBooking: () => void;
@@ -35,7 +35,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
     document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const headlineText = "Lezatnya Seafood Segar Berpadu Wanginya Nasi Timbel Sunda Autentik";
+  const headlineText = HERO_DATA.headlineText;
 
   return (
     <section
@@ -71,7 +71,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-primary/10 border border-brand-primary/20 text-brand-primary rounded-full text-xs font-bold tracking-wider uppercase mb-5"
             >
               <Sparkles className="w-3.5 h-3.5 text-brand-accent animate-spin" style={{ animationDuration: '3s' }} />
-              <span>✦ Kuliner Sunda & Seafood No. 1 Cibinong</span>
+              <span>{HERO_DATA.pillBadge}</span>
             </motion.div>
 
             {/* Word-by-Word Title Reveal */}
@@ -94,21 +94,19 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               variants={itemVariants}
               className="text-brand-text/90 text-lg md:text-xl leading-relaxed mb-8 max-w-xl"
             >
-              Ucapkan selamat tinggal pada mengantre lama & kuota kehabisan makan malam! 
-              <span className="font-bold text-brand-dark"> Warung Papatong </span> 
-              hadir dengan sistem booking lesehan teratur dan pre-order digital instan untuk rombongan makan Anda.
+              {HERO_DATA.description}
             </motion.p>
 
             {/* Dual CTAs Triggers */}
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-10"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-6"
             >
               <button
                 onClick={onOpenBooking}
                 className="group relative bg-brand-accent hover:bg-brand-primary text-white font-bold text-base px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl hover:shadow-brand-accent/20 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                Booking Tempat Sekarang
+                {HERO_DATA.ctaBookingText}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-300" />
               </button>
 
@@ -117,8 +115,35 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                 className="group bg-brand-surface hover:bg-brand-primary/5 text-brand-primary border-2 border-brand-primary/30 hover:border-brand-primary font-bold text-base px-8 py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <MessageSquareCode className="w-5 h-5 text-brand-primary" />
-                Lihat Daftar E-Menu
+                {HERO_DATA.ctaMenuText}
               </button>
+            </motion.div>
+
+            {/* Quick Access links requested by Business Owner: Google Maps Route & Instagram Social */}
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-wrap items-center gap-3 w-full mb-10"
+            >
+              <span className="text-xs font-bold text-brand-text/50 mr-1 uppercase tracking-wider block sm:inline">Akses Cepat:</span>
+              <a
+                href={BUSINESS_INFO.mapsLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-[#4285F4]/10 hover:bg-[#4285F4]/20 text-[#3b78e7] border border-[#4285F4]/25 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <MapPin className="w-4 h-4 text-[#4285F4]" />
+                Rute Peta G-Maps ↗
+              </a>
+
+              <a
+                href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 bg-[#E1306C]/10 hover:bg-[#E1306C]/20 text-[#cb2158] border border-[#E1306C]/25 px-4 py-2 rounded-full text-xs font-extrabold transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+              >
+                <Instagram className="w-4 h-4 text-[#E1306C]" />
+                Instagram Resmi @{BUSINESS_INFO.instagram} ↗
+              </a>
             </motion.div>
 
             {/* Structured Trust Signal Row (3 Items with SVG Icons) */}
@@ -168,8 +193,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               }}
             >
               <motion.img
-                src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=900&h=1100&fit=crop&q=85"
-                alt="Seafood Saus Padang Istimewa Warung Papatong"
+                src={HERO_DATA.imageUrl}
+                alt={HERO_DATA.imageAlt}
                 loading="eager"
                 fetchPriority="high"
                 style={{ y: imageY }}
@@ -183,11 +208,11 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               <div className="absolute bottom-6 left-6 right-6 glass-panel p-4 rounded-2xl shadow-lg border border-white/40">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">Spesial Hari Ini</p>
-                    <h3 className="font-display font-bold text-lg text-brand-dark mt-0.5">Kepiting Saus Padang Jumbo</h3>
+                    <p className="text-[10px] font-bold text-brand-accent uppercase tracking-wider">{HERO_DATA.featuredTodayLabel}</p>
+                    <h3 className="font-display font-bold text-lg text-brand-dark mt-0.5">{HERO_DATA.featuredTodayName}</h3>
                   </div>
                   <div className="bg-brand-primary text-brand-secondary text-xs font-bold px-3 py-1.5 rounded-full">
-                    Rp 135k
+                    {HERO_DATA.featuredTodayPrice}
                   </div>
                 </div>
               </div>
@@ -205,8 +230,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
               </span>
               <div>
-                <p className="text-[10px] font-bold text-brand-secondary/70 uppercase tracking-widest leading-none">Dapur Aktif</p>
-                <p className="font-sans text-xs font-bold text-brand-secondary mt-1">Semua Menu Seafood Lengkap Terjaga</p>
+                <p className="text-[10px] font-bold text-brand-secondary/70 uppercase tracking-widest leading-none">{HERO_DATA.kitchenStatusLabel}</p>
+                <p className="font-sans text-xs font-bold text-brand-secondary mt-1">{HERO_DATA.kitchenStatusDesc}</p>
               </div>
             </motion.div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'motion/react';
 import { Award, Heart, MessageSquare, Compass, ExternalLink } from 'lucide-react';
-import { STATS_DATA, BUSINESS_INFO } from '../data';
+import { STATS_DATA, BUSINESS_INFO } from '@/data';
 
 export default function StatsSection() {
   const containerRef = useRef(null);
