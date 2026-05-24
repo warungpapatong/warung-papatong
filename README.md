@@ -1,95 +1,214 @@
-# Resto Warung Papatong Website - Next.js Enterprise Migration Portal
-========================================================================
+# 🍽️ Warung Papatong — Design System & Architecture
 
-Designed as a high-performance Next.js workspace structure optimized for regional SEO indexation, page performance speed, and active Google Ads conversion tracking.
+> **Tailwind CSS v3** · Next.js 15 · React 19 · TypeScript 5.8
 
 ---
 
-### 1. Exhaustive Project Directory Tree
-Below is the directory tree mapping both the current React/Vite preview shell and the Next.js migration layouts:
+## Perbedaan dari Versi Sebelumnya (v2.1)
 
-```text
-├── /                         # Project Root Workspace
-│   ├── .env.example          # Environment variables template
-│   ├── PRD.md                # Product Requirement Document
-│   ├── README.md             # This comprehensive handover guide
-│   ├── CHANGELOG.md          # Version history log registry
-│   ├── package.json          # Dependency and compilation configs
-│   ├── tsconfig.json         # TypeScript compiler arguments
-│   └── /src                  # Base Application Directory
-│       ├── App.tsx           # React Multi-page switcher (Local Preview platform)
-│       ├── main.tsx          # React Client Loader
-│       ├── index.css         # Global tailwind imports & typography styles
-│       ├── types.ts          # Strictly typed Shared Data Models
-│       ├── data.ts           # Curated 25-asset image assets & food catalogues
-│       ├── /lib
-│       │   ├── tracking.ts   # React runtime tracking script
-│       │   └── config.ts     # Rigid Client Environment variables & GSC SEO config
-│       └── /app              # NEXT.JS ENTERPRISE MIGRATION FILES (Target Export Bundle)
-│           ├── layout.tsx    # Root Next.js Layout (Scripts injector & HTML Structure)
-│           ├── page.tsx      # Halaman Beranda (Home screen view)
-│           ├── /menu
-│           │   └── page.tsx  # Halaman Menu (Interactive categories & Filter tabs)
-│           ├── /venue
-│           │   └── page.tsx  # Halaman Venue (Legacy Gallery path with Lightbox grid)
-│           └── /about
-│               └── page.tsx  # Halaman Tentang Kami (Core history & Owner transparent trust)
+| Aspek | v2.0 (lama) | v2.1 (sekarang) |
+|---|---|---|
+| Tailwind | v4 (`@theme`) | **v3** (`tailwind.config.js`) |
+| PostCSS plugin | `@tailwindcss/postcss` | `tailwindcss` + `autoprefixer` |
+| CSS directives | `@theme { --color-... }` | `@tailwind base/components/utilities` |
+| Class merging | Manual | **`clsx` + `tailwind-merge` via `cn()`** |
+| Font | Space Grotesk | **Plus Jakarta Sans** (lebih cocok brand Sunda modern) |
+
+---
+
+## Mengapa Turun ke Tailwind v3?
+
+Tailwind v4 masih dalam fase stabilisasi. `@theme` custom property API-nya tidak se-mature v3 untuk:
+- Plugin `addComponents` / `addUtilities` yang dipakai untuk button & badge tokens
+- Ekosistem tooling (IntelliSense, Jest, Storybook) yang belum support penuh
+- `tailwind-merge` belum fully compatible dengan v4 class naming
+
+---
+
+## Design Token Reference
+
+Semua token didefinisikan di `tailwind.config.js` → `theme.extend`.
+
+### Warna Brand
+
+```
+bg-brand-primary        #FFCC00  Kuning capung Papatong — CTA utama
+bg-brand-primary-hover  #F5C200  State hover tombol primary
+bg-brand-primary-light  #FFF3B0  Background subtle/tinted
+bg-brand-primary-dark   #CC9900  Text on light bg, label aktif
+
+bg-brand-red            #E60000  Cabai merah — badge promo, hot label
+bg-brand-red-hover      #CC0000  State hover red
+bg-brand-red-light      #FFE5E5  Background red subtle
+
+bg-brand-dark           #202124  Rich Black — navbar, heading, footer
+text-brand-text         #3D3D3D  Body text
+text-brand-muted        #6B7280  Secondary text, label
+text-brand-subtle       #9CA3AF  Disabled, placeholder
+
+bg-brand-bg             #F8F9FA  Page background
+bg-brand-surface        #FFFFFF  Card, modal
+bg-brand-surface-2      #F3F4F6  Nested card
+
+border-brand-border         #E5E7EB  Divider
+border-brand-border-strong  #D1D5DB  Input, card border kuat
+
+bg-wa                   #25D366  WhatsApp — jangan diubah
+```
+
+### Tipografi
+
+```
+font-sans     Inter (body, navigasi, deskripsi)
+font-display  Plus Jakarta Sans (heading, hero, display)
+font-mono     JetBrains Mono (harga, koordinat, jam)
+```
+
+### Utility Classes Tambahan (dari plugin)
+
+```
+.skeleton           Loading shimmer animation
+.text-gradient-brand  Gradient teks kuning → merah
+.glass              Glassmorphism putih
+.glass-dark         Glassmorphism gelap
+.focus-brand        Focus ring kuning untuk a11y
+```
+
+### Component Classes (addComponents)
+
+```
+Badge:
+  .badge .badge-primary .badge-red .badge-dark .badge-outline .badge-success
+
+Button:
+  .btn .btn-sm .btn-md .btn-lg .btn-xl
+  .btn-primary .btn-dark .btn-outline .btn-wa
+
+Card:
+  .card .card-hover
+
+Layout:
+  .section .section-inner
+  .section-label .section-title .section-subtitle
+
+Form:
+  .input
+
+Misc:
+  .divider
 ```
 
 ---
 
-### 2. Live Platform Build & Compile Instructions
-This repository supports both local Vite preview builds and Next.js target compiles:
+## Import Pattern
 
-#### A. Local Development Node Sandbox
-1. Populate dependencies cleanly:
-   ```bash
-   npm install
-   ```
-2. Initiate the high-performance local dev server on `http://localhost:3000`:
-   ```bash
-   npm run dev
-   ```
-3. Verify type correctness & run the linter validation:
-   ```bash
-   npm run lint
-   ```
+```tsx
+// Utility merging (wajib untuk conditional classes)
+import { cn } from '@/lib/cn'
 
-#### B. Next.js Independent Build Optimization
-The files within `/src/app/` represent a clean, enterprise-grade static export bundle. If you are copying these folders into a Next.js App Router template, run:
-```bash
-npx next build
+// Data konten
+import { BUSINESS_INFO, PRODUCTS_DATA, HERO_DATA } from '@/data'
+
+// Config & tracking
+import { trackWhatsAppConversion, APP_CONFIG } from '@/lib/tracking'
+
+// Types
+import type { Product, Testimonial } from '@/types'
+
+// Navigation config
+import { NAV_ITEMS } from '@/config/navigation'
 ```
 
 ---
 
-### 3. Setup Configuration Matrix (.env.example)
-Create a `.env` file at the root of the workspace to override variables at deploy-time:
-```env
-# Google Ads Campaign Trackings
-NEXT_PUBLIC_GOOGLE_ADS_ID=AW-1649827361
-NEXT_PUBLIC_GOOGLE_ADS_LABEL=WA_Click_Conversion_Label_XYZ
+## WhatsApp Tracking (wajib di semua tombol WA)
 
-# Google Search Console Meta Token
-NEXT_PUBLIC_GSC_VERIFICATION_TAG=google-site-verification=p1t9_gqXU_someRealLookingVerificationKey2026
+```tsx
+import { trackWhatsAppConversion } from '@/lib/tracking'
+import { buildWALink } from '@/data'
+import { BUSINESS_INFO } from '@/data'
 
-# Operational Configurations
-NEXT_PUBLIC_WHATSAPP_NUMBER=6281388497651
+<a
+  href={buildWALink(BUSINESS_INFO.wa, product.waMessage)}
+  onClick={() => trackWhatsAppConversion('Hero CTA Primary Button')}
+  className="btn btn-wa btn-lg"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Pesan via WhatsApp
+</a>
 ```
 
 ---
 
-### 4. Step-by-Step Handover Protocol
-Follow these guidelines to safely transfer the system to owner-agent Kak Steven Moe using the master email project address **warungpapatong.project@gmail.com**:
+## Struktur Project
 
-#### Step 1: Claim Search Console Access
-1. Visit the [Google Search Console Dashboard](https://search.google.com/search-console).
-2. Log in using `warungpapatong.project@gmail.com`.
-3. Select "Add Property" -> Choose "Domain" and insert `warungpapatong.com`.
-4. Grab the TXT verification DNS record and inject it under the nameserver registration portal of choice, or use the HTML `<meta>` tag provided within `/src/lib/config.ts`'s parameters.
-5. In the users settings panel, type the owner's primary email address and promote them to **Owner** permissions.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── globals.css         # @tailwind directives + base styles
+│   ├── layout.tsx          # Root layout, metadata, fonts, JSON-LD
+│   ├── page.tsx            # Beranda (/)
+│   ├── menu/page.tsx       # E-Menu (/menu)
+│   ├── venue/page.tsx      # Galeri (/venue)
+│   └── about/page.tsx      # Tentang (/about)
+│
+├── components/             # Shared, reusable lintas halaman
+│   ├── layout/
+│   │   ├── LayoutShell.tsx # Client wrapper: modal + basket state
+│   │   ├── Navbar.tsx      # Fixed nav (usePathname, scroll)
+│   │   └── Footer.tsx      # Footer statis
+│   ├── common/
+│   │   ├── FloatingWA.tsx  # Tombol WA floating (scroll trigger)
+│   │   └── LocationContact.tsx
+│   └── ui/                 # ← BARU: Atomic UI components
+│       ├── Button.tsx      # Wrapper .btn classes dengan variants
+│       ├── Badge.tsx       # Wrapper .badge classes
+│       ├── Card.tsx        # Wrapper .card + optional hover
+│       └── SectionHeader.tsx
+│
+├── features/               # Page-specific Client Components
+│   ├── home/components/    Hero, BestSellers, AmbienceTeaser, dll
+│   ├── menu/components/    MenuSection
+│   ├── gallery/components/ GallerySection
+│   └── about/components/   AboutUs, TeamSection
+│
+├── config/
+│   └── navigation.ts       # NAV_ITEMS
+│
+├── lib/
+│   ├── cn.ts               # ← BARU: clsx + tailwind-merge
+│   ├── config.ts           # APP_CONFIG, trackWhatsAppConversion, JSON-LD
+│   └── tracking.ts         # Re-export barrel
+│
+├── types/
+│   └── global.d.ts         # Window augmentations, CSS Modules
+│
+├── data.ts                 # ⚠️ Single source of truth konten
+└── types.ts                # ⚠️ TypeScript interfaces
+```
 
-#### Step 2: Google Ads Conversion Linking
-1. Under [Google Ads](https://ads.google.com/), construct a new conversion action for "WhatsApp Click Tracker".
-2. Record the campaign identification tag (e.g. `AW-1649827361`) and conversion label (e.g. `WA_Click_Conversion_Label_XYZ`).
-3. Replace these values inside `src/lib/config.ts` under the variables of the static block. All live page interactions will automatically report back to the campaign dashboard.
+---
+
+## Refactor yang Dilakukan
+
+1. **`src/components/ui/`** — Ditambahkan folder baru untuk atomic UI components (Button, Badge, Card, SectionHeader). Ini menghindari duplikasi class `.btn btn-primary btn-lg` yang tersebar di setiap feature component.
+
+2. **`src/lib/cn.ts`** — Helper `cn()` dari `clsx` + `tailwind-merge`. Wajib dipakai untuk semua conditional className di komponen.
+
+3. **`calculateBasketTotal()`** — Ditambahkan ke `data.ts` sebagai utility murni, menghindari logika duplikat di `InteractiveBooking.tsx`.
+
+4. **Font diubah** dari Space Grotesk ke **Plus Jakarta Sans** — lebih cocok untuk brand F&B Indonesia modern, lebih hangat tapi tetap clean.
+
+5. **`postcss.config.js`** (bukan `.mjs`) — Kompatibilitas lebih luas dengan tooling lama.
+
+---
+
+## Routes (JANGAN DIUBAH — Google Ads Aktif)
+
+| Route | Halaman |
+|---|---|
+| `/` | Beranda |
+| `/menu` | E-Menu Digital |
+| `/venue` | Galeri & Suasana |
+| `/about` | Tentang Kami |
