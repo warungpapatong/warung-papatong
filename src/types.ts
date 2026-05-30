@@ -55,20 +55,33 @@ export interface NavItem {
 // ─── Products ─────────────────────────────────────────────────────────────
 
 // Kategori produk — tambahkan di sini jika ada kategori baru
-export type ProductCategory = 'seafood' | 'sunda' | 'sayur' | 'minuman';
+export type ProductCategory = 'seafood' | 'ikan-air-tawar' | 'ayam-dan-daging' | 'sunda' | 'sayuran' | 'minuman';
 
 export interface Product {
-  id:             number;
-  name:           string;
-  category:       ProductCategory;
-  categoryLabel:  string;
-  description:    string;
-  price:          number;         // Numerik untuk kalkulasi pre-order
-  priceFormatted: string;         // Misal: "Rp 120.000"
-  image:          string;
-  badge?:         string;
-  waMessage:      string;
-  isAvailable:    boolean;        // Simulasi stok dapur
+  id:            number;
+  name:          string;
+  category:      ProductCategory;
+  categoryLabel: string;
+  description:   string;
+
+  // ── Harga ────────────────────────────────────────────────────────────────
+  // `price` adalah SINGLE SOURCE OF TRUTH untuk semua kalkulasi & tampilan.
+  // `priceUnit` adalah suffix satuan opsional, hanya untuk produk yang dijual
+  //   per ons / per porsi (contoh: '/ ons', '/ porsi').
+  //
+  // ⚠️  `priceFormatted` DIHAPUS — gunakan formatProductPrice(product) dari
+  //      src/data.ts untuk mendapatkan string tampilan yang konsisten.
+  //      Dengan cara ini UI, WA message, dan checkout selalu sinkron.
+  price:         number;        // Numerik canonical — Rp (tanpa pajak)
+  priceUnit?:    string;        // Satuan opsional: '/ ons' | '/ porsi' | undefined
+
+  image:         string;
+  badge?:        string;
+
+  // ⚠️  waMessage DIHAPUS — pesan WA dibangun otomatis oleh helper
+  //     di src/lib/whatsapp.ts.
+  //     Lihat: buildMenuWAMessage(), buildMenuWAMessageWithQty()
+  isAvailable:   boolean;       // Simulasi stok dapur
 }
 
 // ─── Testimonials ─────────────────────────────────────────────────────────
@@ -110,7 +123,7 @@ export interface FAQItem {
 
 // ─── Gallery ──────────────────────────────────────────────────────────────
 
-export type GalleryCategory = 'makanan' | 'tempat' | 'live-music';
+export type GalleryCategory = 'semua' | 'tempat' | 'aktivitas';
 export type GallerySize     = 'large' | 'medium' | 'small';
 
 export interface GalleryItem {
@@ -152,17 +165,17 @@ export interface HeroData {
   kitchenStatusDesc:  string;   // Deskripsi pill status dapur
   // Stats bar (3 kolom di bawah CTA)
   stats: {
-    rating:      string;   // "4.8"
-    ratingLabel: string;   // "4K+ Ulasan"
-    hours:       string;   // "11–22"
-    hoursLabel:  string;   // "Setiap Hari"
-    location:    string;   // "Cibinong"
-    locationLabel: string; // "Sentul Area"
+    rating:        string;   // "4.8"
+    ratingLabel:   string;   // "4K+ Ulasan"
+    hours:         string;   // "11–22"
+    hoursLabel:    string;   // "Setiap Hari"
+    location:      string;   // "Cibinong"
+    locationLabel: string;   // "Sentul Area"
   };
   // Quick links (Maps & Instagram)
   quickLinks: {
     mapsLabel:      string;   // "Google Maps"
-    instagramLabel: string;   // "@restowarungpapatong" — akan di-prefix "@" dari BUSINESS_INFO
+    instagramLabel: string;   // akan di-prefix "@" dari BUSINESS_INFO
   };
   // WhatsApp message pre-filled dari Hero
   waMessage: string;
@@ -176,133 +189,109 @@ export interface AmbienceTeaserItem {
   desc:    string;
 }
 
-// Konten statis seksi AmbienceTeaser (teks, badge, CTA)
 export interface AmbienceTeaserData {
-  badge:       string;   // Label badge atas ("SUASANA & LINGKUNGAN")
-  title:       string;   // Judul section
-  description: string;   // Deskripsi section
-  ctaText:     string;   // Teks tombol CTA
-  ctaHref:     string;   // URL tujuan CTA
-  brandLabel:  string;   // Label micro di atas caption card ("WARUNG PAPATONG")
+  badge:       string;
+  title:       string;
+  description: string;
+  ctaText:     string;
+  ctaHref:     string;
+  brandLabel:  string;
 }
 
 // ─── Best Sellers (Beranda) ───────────────────────────────────────────────
 
-// Konten statis seksi BestSellers
 export interface BestSellersData {
-  badge:           string;   // Label badge atas ("MENU PRIMADONA TERLARIS")
-  title:           string;   // Judul section
-  description:     string;   // Deskripsi section
-  ctaText:         string;   // Teks tombol "Lihat Semua Menu"
-  ctaHref:         string;   // URL tujuan CTA
-  detailCtaText:   string;   // Teks link kecil per card ("Detail & Pesan")
-  freshBadgeLabel: string;   // Label kecil di footer card ("Bahan Segar Pilihan")
-  intervalMs:      number;   // Interval rotasi kartu (ms), default 30_000
+  badge:           string;
+  title:           string;
+  description:     string;
+  ctaText:         string;
+  ctaHref:         string;
+  detailCtaText:   string;
+  freshBadgeLabel: string;
+  intervalMs:      number;
 }
 
 // ─── Testimonials (Beranda) ───────────────────────────────────────────────
 
-// Konten statis seksi Testimonials
 export interface TestimonialsData {
-  sectionLabel:  string;   // Sub-label kecil di atas judul ("SUARA KONSUMEN AUTENTIK")
-  title:         string;   // Judul section
-  description:   string;   // Deskripsi section
-  autoPlayMs:    number;   // Interval auto-advance carousel (ms), default 5_500
-  ariaLabelPrev: string;   // Aria label tombol prev ("Ulasan Sebelumnya")
-  ariaLabelNext: string;   // Aria label tombol next ("Ulasan Selanjutnya")
+  sectionLabel:  string;
+  title:         string;
+  description:   string;
+  autoPlayMs:    number;
+  ariaLabelPrev: string;
+  ariaLabelNext: string;
 }
 
 // ─── Location Section (Beranda) ───────────────────────────────────────────
 
-// Konten statis seksi LocationSection
 export interface LocationData {
-  badge:          string;   // Label badge ("DENGAN AKSES STRATEGIS")
-  title:          string;   // Judul section
-  description:    string;   // Deskripsi section
-  // Label info card
-  labelAddress:   string;   // "Alamat Lengkap"
-  labelHours:     string;   // "Jam Operasional"
-  labelPhone:     string;   // "Kontak Seluler Resmi"
-  // Tombol CTA
-  ctaWaText:      string;   // "Chat WhatsApp Sekarang"
-  ctaMapsText:    string;   // "Rute di Google Maps"
-  // Pre-filled WhatsApp message
+  badge:          string;
+  title:          string;
+  description:    string;
+  labelAddress:   string;
+  labelHours:     string;
+  labelPhone:     string;
+  ctaWaText:      string;
+  ctaMapsText:    string;
   waMessage:      string;
-  // Google Maps embed iframe src
   mapsIframeSrc:  string;
 }
 
 // ─── FAQ Section (Beranda & FAQ page) ────────────────────────────────────
 
-// Konten statis seksi FAQ (selain array FAQS_DATA)
 export interface FaqSectionData {
-  sectionLabel:      string;   // Sub-label kecil ("PERTANYAAN UMUM (FAQ)")
-  title:             string;   // Judul section
-  description:       string;   // Deskripsi section
-  // CTA callout di bawah accordion
-  calloutTitle:      string;   // Judul callout ("Jawaban Belum Menjawab?")
-  calloutDesc:       string;   // Deskripsi callout
-  calloutCtaText:    string;   // Teks tombol callout ("Chat Langsung Sekarang")
-  // Pre-filled WhatsApp message
-  waMessage:         string;
+  sectionLabel:   string;
+  title:          string;
+  description:    string;
+  calloutTitle:   string;
+  calloutDesc:    string;
+  calloutCtaText: string;
+  waMessage:      string;
 }
 
 // ─── Gallery Page (src/features/gallery) ─────────────────────────────────
 
-// Filter tab untuk halaman galeri
 export interface GalleryFilterTab {
-  id:    'semua' | 'suasana' | 'aktivitas';
+  id:    'semua' | 'tempat' | 'aktivitas';
   label: string;
 }
 
-// Konten statis halaman GallerySection
 export interface GalleryPageData {
-  badge:             string;   // Label badge atas ("Lanskap Saung Pasundan")
-  title:             string;   // Judul halaman ("Galeri & Suasana")
-  titleAccent:       string;   // Baris accent judul ("Warung Papatong")
-  description:       string;   // Sub-deskripsi halaman
-  filterTabs:        GalleryFilterTab[];
-  // Teks tombol per card
-  expandBtnText:     string;   // "Perbesar"
-  // Lightbox
-  lightboxTitle:     string;   // "Detail Galeri Foto"
-  lightboxBackText:  string;   // "Kembali ke Koleksi"
-  // Instagram feed section
-  instagramBadge:    string;   // "Live Instagram Feed"
-  instagramTitle:    string;   // Judul section Instagram (gunakan {instagram} sebagai placeholder)
-  instagramDesc:     string;   // Deskripsi section Instagram
-  instagramCtaText:  string;   // "Kunjungi Instagram Resmi"
-  // Elfsight widget app ID
-  elfsightAppId:     string;   // "elfsight-app-f0efd7c9-1075-4d19-aa42-d8afd8399e02"
+  badge:            string;
+  title:            string;
+  titleAccent:      string;
+  description:      string;
+  filterTabs:       GalleryFilterTab[];
+  expandBtnText:    string;
+  lightboxTitle:    string;
+  lightboxBackText: string;
+  instagramBadge:   string;
+  instagramTitle:   string;
+  instagramDesc:    string;
+  instagramCtaText: string;
+  elfsightAppId:    string;
 }
 
 // ─── Navbar ──────────────────────────────────────────────────────────────
 
-// Konten statis Navbar
 export interface NavbarData {
-  ctaDesktopText: string;   // "Pesan Sekarang"
-  ctaMobileText:  string;   // "Pesan Via WA"
-  ctaDrawerText:  string;   // "Pesan via WhatsApp"
-  // Pre-filled WhatsApp message saat klik tombol WA di navbar
+  ctaDesktopText: string;
+  ctaMobileText:  string;
+  ctaDrawerText:  string;
   waMessage:      string;
 }
 
 // ─── Footer ──────────────────────────────────────────────────────────────
 
-// Konten statis Footer
 export interface FooterData {
-  brandTagline:     string;   // Tagline singkat di bawah logo
-  // Label kolom
-  colNavLabel:      string;   // "Navigasi"
-  colContactLabel:  string;   // "Hubungi Kami"
-  // Label info kontak
-  labelAddress:     string;   // "Alamat"
-  labelPhone:       string;   // "Telepon"
-  labelEmail:       string;   // "Email"
-  // Pre-filled WhatsApp message dari footer
-  waMessage:        string;
-  // Teks copyright (tahun di-inject dinamis)
-  copyrightSuffix:  string;   // "· All Rights Reserved."
+  brandTagline:    string;
+  colNavLabel:     string;
+  colContactLabel: string;
+  labelAddress:    string;
+  labelPhone:      string;
+  labelEmail:      string;
+  waMessage:       string;
+  copyrightSuffix: string;
 }
 
 // ─── Instagram Feed ───────────────────────────────────────────────────────

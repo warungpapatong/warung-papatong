@@ -81,7 +81,7 @@ export default function Navbar() {
               width={140}
               height={40}
               priority
-              className="h-10 w-auto rounded-full object-contain"
+              className="h-12 w-auto rounded-full object-contain"
             />
             <span className="font-display font-black text-base text-brand-dark tracking-tight leading-none">
               Warung<br />

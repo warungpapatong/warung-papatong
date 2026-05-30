@@ -51,8 +51,8 @@ export default function GallerySection() {
 
   const filteredItems = GALLERY_DATA.filter(item => {
     if (activeTab === 'semua')     return true
-    if (activeTab === 'suasana')   return item.category === 'tempat'
-    if (activeTab === 'aktivitas') return item.category === 'makanan' || item.category === 'live-music'
+    if (activeTab === 'tempat')   return item.category === 'tempat'
+    if (activeTab === 'aktivitas') return item.category === 'aktivitas'
     return true
   })
 

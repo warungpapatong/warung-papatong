@@ -3,7 +3,7 @@
 
 import type { Metadata } from 'next'
 import AboutStory  from '@/features/about/components/AboutStory'
-import AboutTeam   from '@/features/about/components/AboutTeam'
+// import AboutTeam   from '@/features/about/components/AboutTeam'
 import AboutCTA    from '@/features/about/components/AboutCTA'
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <>
       <AboutStory  />
-      <AboutTeam   />
+      {/* <AboutTeam   /> */}
       <AboutCTA    />
     </>
   )

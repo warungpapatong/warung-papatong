@@ -2,6 +2,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Modal checkout keranjang belanja — tampilkan item, hitung total,
 // kirim order langsung ke WhatsApp admin.
+//
+// REFACTOR (harga):
+//   - `product.priceFormatted` DIHAPUS dari Product interface
+//   - Tampilan harga satuan per item menggunakan formatProductPrice(product)
+//   - Total & subtotal tetap menggunakan formatPrice() (angka kalkulasi)
+//   - Pesan WA menggunakan buildCartWAMessage() dari src/lib/whatsapp.ts
 // ─────────────────────────────────────────────────────────────────────────────
 
 'use client'
@@ -9,7 +15,11 @@
 import { motion } from 'motion/react'
 import { ShoppingCart, Trash2, MessageSquare, X } from 'lucide-react'
 import type { Product, PreOrderBasketItem } from '@/types'
-import { PRODUCTS_DATA, formatPrice, BUSINESS_INFO, buildWALink } from '@/data'
+import {
+  PRODUCTS_DATA, formatPrice, formatProductPrice,
+  BUSINESS_INFO, buildWALink,
+} from '@/data'
+import { buildCartWAMessage } from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -50,22 +60,15 @@ export default function CheckoutModal({
 
   const totalQty = basketItems.reduce((a, b) => a + b.quantity, 0)
 
-  // ── Build WA message ───────────────────────────────────────────────────────
-  const buildOrderMessage = () => {
-    let msg = `*ORDER WARUNG PAPATONG*\n`
-    msg += `──────────────────\n`
-    basketItems.forEach((item, i) => {
-      msg += `${i + 1}. ${item.product.name} × ${item.quantity} porsi → ${formatPrice(item.product.price * item.quantity)}\n`
-    })
-    msg += `──────────────────\n`
-    msg += `*Total: ${formatPrice(subtotal)}*\n`
-    msg += `_(${totalQty} porsi)_`
-    return msg
-  }
-
+  // ── Checkout handler ───────────────────────────────────────────────────────
   const handleCheckout = () => {
+    const message = buildCartWAMessage(
+      BUSINESS_INFO.name,
+      basketItems.map(item => ({ product: item.product, qty: item.quantity })),
+      subtotal,
+    )
     trackWhatsAppConversion('Checkout — Order via WA')
-    window.open(buildWALink(BUSINESS_INFO.wa, buildOrderMessage()), '_blank')
+    window.open(buildWALink(BUSINESS_INFO.wa, message), '_blank')
     onClearBasket()
     onClose()
   }
@@ -140,8 +143,9 @@ export default function CheckoutModal({
                     <p className="font-bold text-sm text-brand-dark line-clamp-1">
                       {item.product.name}
                     </p>
+                    {/* ↓ Single source: formatProductPrice() — sama persis dengan kartu menu */}
                     <p className="text-xs text-brand-muted mt-0.5">
-                      {formatPrice(item.product.price)} / porsi
+                      {formatProductPrice(item.product)}
                     </p>
                   </div>
 
@@ -166,7 +170,7 @@ export default function CheckoutModal({
                     </button>
                   </div>
 
-                  {/* Line total */}
+                  {/* Line total — kalkulasi dari price canonical */}
                   <span className="text-xs font-black text-brand-primary-dark shrink-0 w-20 text-right">
                     {formatPrice(item.product.price * item.quantity)}
                   </span>

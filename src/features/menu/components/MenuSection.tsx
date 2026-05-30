@@ -1,38 +1,44 @@
 // src/features/menu/components/MenuSection.tsx
 // ─────────────────────────────────────────────────────────────────────────────
-// Client Component — self-contained menu page feature.
-//
-// IMPROVEMENTS (polish pass):
-// ✅ Hero & catalog section digabung jadi satu — background konsisten (bg-brand-bg)
-// ✅ Hero style mengikuti pola GallerySection (badge → h1 → subtitle → content)
-// ✅ Dekorasi background accent & watermark teks konsisten dengan GallerySection
-// ✅ Filter bar dirapikan — layout & spacing lebih konsisten
-// ✅ Product card: info "Dapur Ready" diberi border subtle, lebih clean
-// ✅ Floating basket bar: z-index & posisi dirapikan
-// ✅ Semua state & logic basket tidak berubah
+// UI TWEAK:
+//   - Category filter tab: setiap tab kini punya border + background sendiri
+//     sehingga jelas terlihat sebagai button tersendiri, bukan satu strip menyatu.
+//   - Active state: border-brand-primary + bg-brand-primary + text-brand-dark
+//   - Inactive state: border-brand-border + bg-brand-surface + text-brand-text
+//     dengan hover: border-brand-primary/40 + bg-brand-primary/8 + text-brand-dark
 // ─────────────────────────────────────────────────────────────────────────────
 
 'use client'
 
 import { useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'motion/react' // AnimatePresence masih dipakai untuk floating basket bar
+import { motion, AnimatePresence } from 'motion/react'
 import {
   ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
-import { PRODUCTS_DATA, BUSINESS_INFO, buildWALink, formatPrice } from '@/data'
+import {
+  PRODUCTS_DATA, BUSINESS_INFO,
+  buildWALink, formatPrice, formatProductPrice,
+} from '@/data'
+import {
+  buildMenuWAMessage,
+  buildMenuWAMessageWithQty,
+  buildCateringWAMessage,
+} from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
 import CheckoutModal from '@/features/menu/components/CheckoutModal'
 
 // ─── Category Filter Config ───────────────────────────────────────────────────
 
 const CATEGORIES = [
-  { id: 'all',      label: 'Semua Menu'     },
-  { id: 'seafood',  label: 'Seafood Olahan' },
-  { id: 'sunda',    label: 'Paket Sunda'    },
-  { id: 'sayur',    label: 'Veggies & Co.'  },
-  { id: 'minuman',  label: 'Segar Minuman'  },
+  { id: 'all',             label: 'Semua'           },
+  { id: 'seafood',         label: 'Seafood'         },
+  { id: 'ikan-air-tawar',  label: 'Ikan Air Tawar'  },
+  { id: 'sunda',           label: 'Sunda'           },
+  { id: 'ayam-dan-daging', label: 'Ayam dan Daging' },
+  { id: 'sayuran',         label: 'Sayuran'         },
+  { id: 'minuman',         label: 'Segar Minuman'   },
 ] as const
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -95,7 +101,7 @@ export default function MenuSection() {
           'pb-16 md:pb-24',
         )}
       >
-        {/* Background Accent — mengikuti GallerySection */}
+        {/* Background Accent */}
         <div className="absolute inset-0 bg-brand-primary/[0.03] pointer-events-none" />
 
         {/* Watermark dekoratif kanan bawah */}
@@ -108,7 +114,7 @@ export default function MenuSection() {
 
           <span className="badge badge-primary mb-5">
             <Utensils className="w-3.5 h-3.5" />
-            E-Menu Digital Interaktif
+            Menu Kami
           </span>
 
           <h1
@@ -138,10 +144,10 @@ export default function MenuSection() {
         <div className="section-inner relative z-10">
 
           {/* ── Search & Category Filter Bar ── */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 bg-brand-surface p-4 rounded-2xl border border-brand-border shadow-card">
+          <div className="flex flex-col gap-4 mb-12">
 
-            {/* Category tabs */}
-            <div className="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:items-center md:gap-1.5">
+            {/* ── Category tabs — setiap tab punya card/border sendiri ── */}
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-2">
               {CATEGORIES.map((tab, idx) => {
                 const isActive  = activeTab === tab.id
                 const isLastOdd = idx === CATEGORIES.length - 1 && CATEGORIES.length % 2 !== 0
@@ -150,38 +156,34 @@ export default function MenuSection() {
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={cn(
-                      'relative px-3 py-2 text-xs md:text-sm md:px-4 font-bold',
-                      'rounded-xl md:rounded-full transition-colors duration-300 focus-brand',
-                      'flex items-center justify-center min-h-[36px] md:min-h-0',
-                      'whitespace-nowrap text-center',
-                      isLastOdd && 'col-span-2 md:col-span-1',
+                      // Base — setiap tab punya border & background sendiri
+                      'relative px-4 py-2.5 text-xs md:text-sm font-bold',
+                      'rounded-xl border transition-all duration-200 focus-brand',
+                      'flex items-center justify-center min-h-[40px]',
+                      'whitespace-nowrap text-center shadow-sm',
+                      // Odd last item di mobile: span 2 kolom
+                      isLastOdd && 'col-span-2 sm:col-span-1 md:col-span-[unset]',
+                      // Active state
                       isActive
-                        ? 'text-brand-dark'
-                        : 'text-brand-text hover:text-brand-dark',
+                        ? 'border-brand-primary bg-brand-primary text-brand-dark shadow-md'
+                        : 'border-brand-border bg-brand-surface text-brand-text hover:border-brand-primary/40 hover:bg-brand-primary/[0.06] hover:text-brand-dark',
                     )}
                   >
-                    <span className="relative z-10 leading-tight">{tab.label}</span>
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeMenuTab"
-                        className="absolute inset-0 bg-brand-primary rounded-xl md:rounded-full z-0"
-                        transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                      />
-                    )}
+                    {tab.label}
                   </button>
                 )
               })}
             </div>
 
-            {/* Search input */}
-            <div className="relative max-w-md w-full">
+            {/* ── Search input ── */}
+            <div className="relative w-full">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted pointer-events-none" />
               <input
                 type="text"
                 placeholder="Cari kepiting, timbel, kangkung..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="input pl-10 rounded-full"
+                className="input pl-10 rounded-xl w-full"
               />
               {searchQuery && (
                 <button
@@ -211,105 +213,105 @@ export default function MenuSection() {
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-                {filteredProducts.map(product => {
-                  const qty = basket[product.id] ?? 0
-                  return (
-                    <div
-                      key={product.id}
-                      className="card card-hover group flex flex-col"
-                    >
-                      {/* Product Image */}
-                      <div className="relative w-full h-56 overflow-hidden">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent pointer-events-none" />
+              {filteredProducts.map(product => {
+                const qty = basket[product.id] ?? 0
 
-                        {/* Category badge */}
-                        <span className="absolute top-4 left-4 badge badge-dark">
-                          {product.categoryLabel}
+                const waMessage = qty > 0
+                  ? buildMenuWAMessageWithQty(BUSINESS_INFO.name, product, qty)
+                  : buildMenuWAMessage(BUSINESS_INFO.name, product)
+
+                return (
+                  <div
+                    key={product.id}
+                    className="card card-hover group flex flex-col"
+                  >
+                    {/* Product Image */}
+                    <div className="relative w-full h-56 overflow-hidden">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        loading="lazy"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent pointer-events-none" />
+
+                      <span className="absolute top-4 left-4 badge badge-dark">
+                        {product.categoryLabel}
+                      </span>
+
+                      {product.badge && (
+                        <span className="absolute top-4 right-4 badge badge-red flex items-center gap-1">
+                          <Sparkles className="w-3 h-3" />
+                          {product.badge}
                         </span>
+                      )}
 
-                        {/* Optional badge (e.g. "Best Seller") */}
-                        {product.badge && (
-                          <span className="absolute top-4 right-4 badge badge-red flex items-center gap-1">
-                            <Sparkles className="w-3 h-3" />
-                            {product.badge}
-                          </span>
-                        )}
-
-                        {/* Dapur ready indicator */}
-                        <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-brand-dark/60 backdrop-blur-sm py-1 px-2.5 rounded-full text-[10px] font-bold text-white">
-                          <span className="w-1.5 h-1.5 rounded-full bg-brand-success animate-pulse" />
-                          Dapur Ready
-                        </div>
-                      </div>
-
-                      {/* Product Content */}
-                      <div className="p-6 flex flex-col flex-grow">
-                        <h3 className="font-display font-bold text-xl text-brand-dark group-hover:text-brand-primary-dark transition-colors leading-tight">
-                          {product.name}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="font-mono font-black text-lg text-brand-primary-dark">
-                            {product.priceFormatted}
-                          </span>
-                          <span className="text-brand-muted text-xs">· per porsi</span>
-                        </div>
-                        <p className="text-brand-text text-sm mt-3 leading-relaxed line-clamp-3 flex-grow">
-                          {product.description}
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="mt-6 pt-5 border-t border-brand-border flex items-center gap-3">
-                          {qty > 0 ? (
-                            <div className="flex items-center bg-brand-primary text-brand-dark px-2 py-1 rounded-full gap-2">
-                              <button
-                                onClick={() => handleRemoveFromBasket(product.id)}
-                                className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
-                                aria-label="Kurangi porsi"
-                              >
-                                <Minus className="w-4 h-4" />
-                              </button>
-                              <span className="font-bold text-sm min-w-[52px] text-center">
-                                {qty} porsi
-                              </span>
-                              <button
-                                onClick={() => handleAddToBasket(product)}
-                                className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
-                                aria-label="Tambah porsi"
-                              >
-                                <Plus className="w-4 h-4" />
-                              </button>
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => handleAddToBasket(product)}
-                              className="btn btn-outline btn-sm flex-1"
-                            >
-                              <Plus className="w-3.5 h-3.5" />
-                              Keranjang
-                            </button>
-                          )}
-
-                          <a
-                            href={buildWALink(BUSINESS_INFO.wa, product.waMessage)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => trackWhatsAppConversion(`Menu WA Order: ${product.name}`)}
-                            className="btn btn-wa btn-sm flex-1"
-                          >
-                            <ShoppingCart className="w-3.5 h-3.5" />
-                            Pesan WA
-                          </a>
-                        </div>
+                      <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-brand-dark/60 backdrop-blur-sm py-1 px-2.5 rounded-full text-[10px] font-bold text-white">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-success animate-pulse" />
+                        Dapur Ready
                       </div>
                     </div>
-                  )
-                })}
+
+                    {/* Product Content */}
+                    <div className="p-6 flex flex-col flex-grow">
+                      <h3 className="font-display font-bold text-xl text-brand-dark transition-colors leading-tight">
+                        {product.name}
+                      </h3>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="font-mono font-black text-lg text-brand-primary-dark">
+                          {formatProductPrice(product)}
+                        </span>
+                      </div>
+                      <p className="text-brand-text text-sm mt-3 leading-relaxed whitespace-pre-line break-words flex-grow">
+                        {product.description}
+                      </p>
+
+                      {/* Action Buttons */}
+                      <div className="mt-6 pt-5 border-t border-brand-border flex items-center gap-3">
+                        {qty > 0 ? (
+                          <div className="flex items-center bg-brand-primary text-brand-dark px-2 py-1 rounded-full gap-2">
+                            <button
+                              onClick={() => handleRemoveFromBasket(product.id)}
+                              className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
+                              aria-label="Kurangi porsi"
+                            >
+                              <Minus className="w-4 h-4" />
+                            </button>
+                            <span className="font-bold text-sm min-w-[52px] text-center">
+                              {qty} porsi
+                            </span>
+                            <button
+                              onClick={() => handleAddToBasket(product)}
+                              className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
+                              aria-label="Tambah porsi"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => handleAddToBasket(product)}
+                            className="btn btn-outline btn-sm flex-1"
+                          >
+                            <Plus className="w-3.5 h-3.5" />
+                            Keranjang
+                          </button>
+                        )}
+                        <a
+                          href={buildWALink(BUSINESS_INFO.wa, waMessage)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => trackWhatsAppConversion(`Menu WA Order: ${product.name}`)}
+                          className="btn btn-wa btn-sm flex-1 hover:text-white"
+                        >
+                          <ShoppingCart className="w-3.5 h-3.5" />
+                          Pesan WA
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </motion.div>
           )}
 
@@ -330,7 +332,7 @@ export default function MenuSection() {
             <a
               href={buildWALink(
                 BUSINESS_INFO.wa,
-                'Halo Admin Papatong, saya ingin berdiskusi mengenai paket katering gathering acara besar.',
+                buildCateringWAMessage(BUSINESS_INFO.name),
               )}
               target="_blank"
               rel="noopener noreferrer"

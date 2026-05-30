@@ -12,8 +12,8 @@ export const APP_CONFIG = {
   whatsappNumber:      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER      ?? '6281388497651',
   siteUrl:             process.env.NEXT_PUBLIC_SITE_URL             ?? 'https://warungpapatong.com',
   siteName:            'Warung Papatong',
-  defaultTitle:        'Resto Warung Papatong – Suasana Alam Terbuka dengan Hidangan Sunda dan Seafood Segar Terbaik',
-  defaultDescription:  'Tempat yang sempurna untuk berkumpul, menikmati makanan Kesundaan dan seafood. Warung Papatong pilihan utama untuk makanan Kesundaan dan seafood berkualitas tinggi.',
+  defaultTitle:        'Resto Warung Papatong – Seafood Segar dan Cita Rasa Sunda Autentik di Cibinong',
+  defaultDescription:  'Nikmati kelezatan seafood segar yang langsung dari laut, berpadu dengan cita rasa khas masakan Sunda yang hangat dan penuh tradisi. Kami menghadirkan harmoni rasa Nusantara — dari gurihnya ikan bakar hingga nikmatnya masakan khas Sunda — semua tersaji dalam suasana ramah dan penuh keakraban.',
   
   // ─── DATA TAMBAHAN UNTUK FIX ERROR ABOUT PAGE ──────────────────────────────
   whatsappBaseLink:    'https://wa.me',
