@@ -83,7 +83,7 @@ export const BUSINESS_INFO: BusinessInfo = {
   instagram:   'restowarungpapatong',
   tiktok:      'restowarungpapatong',
   youtube:     'warungpapatong',
-  email:       'warungpapatong.cibinong@gmail.com',
+  email:       'warungpapatong@gmail.com',
   mapQuery:    'RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
   mapsLink:    'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor/@-6.5120209,106.8329725,17z',
   founded:     '2018',
