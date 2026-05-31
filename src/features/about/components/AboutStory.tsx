@@ -63,8 +63,8 @@ function StoryImage() {
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 92%, 92% 100%, 0 100%)' }}
       >
         <img
-          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=900&fit=crop&q=85"
-          alt="Area Saung Lesehan Warung Papatong"
+          src="/images/o3-gallery/balon-udara2.webp"
+          alt="Spot foto balon udara Ikonik Warung Papatong"
           loading="lazy"
           className="aspect-[4/5] w-full object-cover transition-transform duration-700 hover:scale-105"
         />

@@ -159,13 +159,13 @@ function CtaBanner() {
       onClick: () => trackWhatsAppConversion('About Page CTA Banner'),
     },
     {
-      href: 'https://instagram.com/warungpapatong',
+      href: 'https://instagram.com/restowarungpapatong',
       label: 'Follow Instagram',
       icon: Instagram,
       className: 'bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] text-white border-transparent hover:opacity-90',
     },
     {
-      href: 'https://youtube.com/@warungpapatong',
+      href: 'https://youtube.com/@restowarungpapatong',
       label: 'Tonton di YouTube',
       icon: Youtube,
       className: 'bg-[#FF0000] text-white border-transparent hover:bg-[#cc0000]',
@@ -238,7 +238,7 @@ function CtaBanner() {
             ))}
 
             <a
-              href="https://tiktok.com/@warungpapatong"
+              href="https://tiktok.com/@restowarungpapatong"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-lg w-full bg-[#010101] text-white transition-all duration-300 hover:bg-[#1a1a1a] hover:shadow-lg sm:w-auto"
