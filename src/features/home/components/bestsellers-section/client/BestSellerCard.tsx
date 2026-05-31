@@ -1,13 +1,3 @@
-// src/features/home/components/BestSellerCards.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ CLIENT COMPONENT — hanya untuk:
-//    1. useEffect + setInterval (rotasi jam)
-//    2. useState (currentHour)
-//    3. AnimatePresence + motion.article (animasi masuk/keluar kartu)
-//
-// Semua string/label diterima sebagai props dari Server Component.
-// ─────────────────────────────────────────────────────────────────────────────
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -19,12 +9,18 @@ import { PRODUCTS_DATA, formatPrice } from '@/data'
 import type { Product } from '@/types'
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
+//
+// FIX: getDynamicDishes sekarang terima `tick` (bukan `currentHour`).
+// tick di-increment setiap intervalMs — jadi rotasi benar-benar terjadi
+// setiap interval, bukan hanya kalau jam berubah (max 1x per jam).
+//
+// Logika stagger offset tetap sama: 0, 5, 11 — menjamin variasi kategori.
 
-function getDynamicDishes(currentHour: number): Product[] {
+function getDynamicDishes(tick: number): Product[] {
   const total = PRODUCTS_DATA.length
   if (total === 0) return []
 
-  const baseOffset     = currentHour % total
+  const baseOffset     = tick % total
   const staggerOffsets = [0, 5, 11]
   const dishes: Product[] = []
 
@@ -60,23 +56,26 @@ export default function BestSellerCards({
   freshBadgeLabel,
   detailCtaText,
 }: BestSellerCardsProps) {
-  const [currentHour, setCurrentHour] = useState(() => new Date().getHours())
+  // FIX: pakai tick counter, bukan currentHour.
+  // tick increment setiap intervalMs → rotasi benar-benar terjadi setiap interval.
+  // Inisialisasi dari jam sekarang agar kartu pertama konsisten dengan waktu load.
+  const [tick, setTick] = useState(() => new Date().getHours())
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentHour(new Date().getHours())
+      setTick(prev => prev + 1)
     }, intervalMs)
     return () => clearInterval(timer)
   }, [intervalMs])
 
-  const dishes = getDynamicDishes(currentHour)
+  const dishes = getDynamicDishes(tick)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <AnimatePresence mode="popLayout">
         {dishes.map((dish, idx) => (
           <motion.article
-            key={`${dish.id}-${currentHour}`}
+            key={`${dish.id}-${tick}`}
             initial={{ opacity: 0, y: 30, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.98 }}

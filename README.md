@@ -1,214 +1,597 @@
-# 🍽️ Warung Papatong — Design System & Architecture
+# 🍽️ Warung Papatong — Website Resmi
 
-> **Tailwind CSS v3** · Next.js 15 · React 19 · TypeScript 5.8
+> **E-Menu Digital & Sistem Pre-Order Online untuk Resto Sunda Seafood No. 1 di Cibinong, Bogor.**
+
+[![Next.js](https://img.shields.io/badge/Next.js-15.3-black?logo=next.js)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
+[![Version](https://img.shields.io/badge/version-2.2.0-FFCC00?labelColor=202124)](#)
 
 ---
 
-## Perbedaan dari Versi Sebelumnya (v2.1)
+## Daftar Isi
 
-| Aspek | v2.0 (lama) | v2.1 (sekarang) |
+- [Tentang Project](#tentang-project)
+- [Tech Stack](#tech-stack)
+- [Fitur Utama](#fitur-utama)
+- [Struktur Project](#struktur-project)
+- [Arsitektur Komponen](#arsitektur-komponen)
+- [Arsitektur Data](#arsitektur-data)
+- [Design System](#design-system)
+- [Getting Started](#getting-started)
+- [Routes & Halaman](#routes--halaman)
+- [Konvensi Kode](#konvensi-kode)
+- [Deployment](#deployment)
+
+---
+
+## Tentang Project
+
+Website ini adalah platform digital resmi **Resto Warung Papatong** — restoran Sunda & Seafood di Cibinong, Bogor. Dibangun sebagai **aset digital penuh milik bisnis** (bukan platform pihak ketiga) dengan tujuan:
+
+- Memperkuat kehadiran online dan keterlihatan di Google Search & Google Maps Local Pack
+- Menyediakan sistem **e-menu digital** yang bisa diperbarui tanpa sentuh kode
+- Mengaktifkan alur **pre-order via WhatsApp** langsung dari website
+- Mendukung kampanye **Google Ads** aktif yang mengarah ke halaman spesifik
+
+---
+
+## Tech Stack
+
+| Kategori | Library / Tool | Versi |
 |---|---|---|
-| Tailwind | v4 (`@theme`) | **v3** (`tailwind.config.js`) |
-| PostCSS plugin | `@tailwindcss/postcss` | `tailwindcss` + `autoprefixer` |
-| CSS directives | `@theme { --color-... }` | `@tailwind base/components/utilities` |
-| Class merging | Manual | **`clsx` + `tailwind-merge` via `cn()`** |
-| Font | Space Grotesk | **Plus Jakarta Sans** (lebih cocok brand Sunda modern) |
+| Framework | Next.js (App Router) | `^15.3.2` |
+| UI Library | React | `^19.0.1` |
+| Language | TypeScript | `~5.8.2` |
+| Styling | Tailwind CSS | `^3.4.17` |
+| Animation | Motion (Framer Motion) | `^12.23.24` |
+| Icons | Lucide React | `^0.546.0` |
+| Utilities | clsx + tailwind-merge | latest |
+| Build | PostCSS + Autoprefixer | latest |
 
 ---
 
-## Mengapa Turun ke Tailwind v3?
+## Fitur Utama
 
-Tailwind v4 masih dalam fase stabilisasi. `@theme` custom property API-nya tidak se-mature v3 untuk:
-- Plugin `addComponents` / `addUtilities` yang dipakai untuk button & badge tokens
-- Ekosistem tooling (IntelliSense, Jest, Storybook) yang belum support penuh
-- `tailwind-merge` belum fully compatible dengan v4 class naming
+### 🛒 E-Menu & Pre-Order System
+- Katalog menu lengkap dengan filter kategori dan pencarian real-time
+- Keranjang belanja berbasis state — tambah, kurangi, dan kosongkan item
+- **Floating basket bar** muncul otomatis saat ada item di keranjang
+- Checkout modal merangkum pesanan dan langsung kirim ke WhatsApp admin
+- Pesan WA otomatis ter-format rapi dengan nama menu, jumlah, dan total harga
 
----
+### 💬 WhatsApp Integration
+- Semua tombol WA menggunakan **satu helper terpusat** (`src/lib/whatsapp.ts`)
+- Format pesan konsisten di seluruh halaman — kartu menu, modal checkout, banner katering
+- Pesan single-item, multi-item cart, dan catering inquiry masing-masing punya template sendiri
+- Nama bisnis diambil otomatis dari `BUSINESS_INFO` — tidak pernah hardcoded
 
-## Design Token Reference
+### 🎯 Single Source of Truth
+- Seluruh konten statis (teks, harga, info bisnis) terpusat di `src/data.ts`
+- **Satu field `price`** untuk kalkulasi dan tampilan — tidak ada duplikasi `priceFormatted`
+- `formatProductPrice()` dipakai di semua titik tampilan harga: UI, WA message, checkout
+- Type safety penuh via `src/types.ts` — compiler akan menangkap inkonsistensi
 
-Semua token didefinisikan di `tailwind.config.js` → `theme.extend`.
+### ⚡ Performa & SEO
+- **Server Components by default** — semua konten statis (heading, teks, NAP info) dirender sebagai HTML murni tanpa JavaScript. Google bot crawl langsung tanpa eksekusi JS
+- Client Components diisolasi seminimal mungkin — hanya untuk interactivity yang benar-benar butuh browser API (`useScroll`, `useState`, `useEffect`, `window`)
+- JSON-LD structured data: `Restaurant`, `Organization`, `FAQPage`, `Review`, `AggregateRating` — potensi rich result di SERP
+- `sitemap.ts`, `robots.ts`, `manifest.ts` — Next.js native (bukan file statis), terhubung ke `APP_CONFIG` sebagai single source
+- Image optimization via Next.js + format `.webp`
+- PWA-ready dengan service worker dan `manifest.ts`
 
-### Warna Brand
-
-```
-bg-brand-primary        #FFCC00  Kuning capung Papatong — CTA utama
-bg-brand-primary-hover  #F5C200  State hover tombol primary
-bg-brand-primary-light  #FFF3B0  Background subtle/tinted
-bg-brand-primary-dark   #CC9900  Text on light bg, label aktif
-
-bg-brand-red            #E60000  Cabai merah — badge promo, hot label
-bg-brand-red-hover      #CC0000  State hover red
-bg-brand-red-light      #FFE5E5  Background red subtle
-
-bg-brand-dark           #202124  Rich Black — navbar, heading, footer
-text-brand-text         #3D3D3D  Body text
-text-brand-muted        #6B7280  Secondary text, label
-text-brand-subtle       #9CA3AF  Disabled, placeholder
-
-bg-brand-bg             #F8F9FA  Page background
-bg-brand-surface        #FFFFFF  Card, modal
-bg-brand-surface-2      #F3F4F6  Nested card
-
-border-brand-border         #E5E7EB  Divider
-border-brand-border-strong  #D1D5DB  Input, card border kuat
-
-bg-wa                   #25D366  WhatsApp — jangan diubah
-```
-
-### Tipografi
-
-```
-font-sans     Inter (body, navigasi, deskripsi)
-font-display  Plus Jakarta Sans (heading, hero, display)
-font-mono     JetBrains Mono (harga, koordinat, jam)
-```
-
-### Utility Classes Tambahan (dari plugin)
-
-```
-.skeleton           Loading shimmer animation
-.text-gradient-brand  Gradient teks kuning → merah
-.glass              Glassmorphism putih
-.glass-dark         Glassmorphism gelap
-.focus-brand        Focus ring kuning untuk a11y
-```
-
-### Component Classes (addComponents)
-
-```
-Badge:
-  .badge .badge-primary .badge-red .badge-dark .badge-outline .badge-success
-
-Button:
-  .btn .btn-sm .btn-md .btn-lg .btn-xl
-  .btn-primary .btn-dark .btn-outline .btn-wa
-
-Card:
-  .card .card-hover
-
-Layout:
-  .section .section-inner
-  .section-label .section-title .section-subtitle
-
-Form:
-  .input
-
-Misc:
-  .divider
-```
-
----
-
-## Import Pattern
-
-```tsx
-// Utility merging (wajib untuk conditional classes)
-import { cn } from '@/lib/cn'
-
-// Data konten
-import { BUSINESS_INFO, PRODUCTS_DATA, HERO_DATA } from '@/data'
-
-// Config & tracking
-import { trackWhatsAppConversion, APP_CONFIG } from '@/lib/tracking'
-
-// Types
-import type { Product, Testimonial } from '@/types'
-
-// Navigation config
-import { NAV_ITEMS } from '@/config/navigation'
-```
-
----
-
-## WhatsApp Tracking (wajib di semua tombol WA)
-
-```tsx
-import { trackWhatsAppConversion } from '@/lib/tracking'
-import { buildWALink } from '@/data'
-import { BUSINESS_INFO } from '@/data'
-
-<a
-  href={buildWALink(BUSINESS_INFO.wa, product.waMessage)}
-  onClick={() => trackWhatsAppConversion('Hero CTA Primary Button')}
-  className="btn btn-wa btn-lg"
-  target="_blank"
-  rel="noopener noreferrer"
->
-  Pesan via WhatsApp
-</a>
-```
+### 🎨 Design System
+- Token warna, tipografi, shadow, dan animasi terdefinisi di `tailwind.config.js`
+- Komponen reusable (`.btn`, `.card`, `.badge`, `.input`) via Tailwind plugin — tidak perlu import
+- Semua warna telah divalidasi kontras WCAG AA (≥4.5:1 untuk teks normal)
+- Brand identity: **kuning `#FFCC00`** (primary) + **merah `#E60000`** (accent)
 
 ---
 
 ## Struktur Project
 
 ```
-src/
-├── app/                    # Next.js App Router
-│   ├── globals.css         # @tailwind directives + base styles
-│   ├── layout.tsx          # Root layout, metadata, fonts, JSON-LD
-│   ├── page.tsx            # Beranda (/)
-│   ├── menu/page.tsx       # E-Menu (/menu)
-│   ├── venue/page.tsx      # Galeri (/venue)
-│   └── about/page.tsx      # Tentang (/about)
+warung-papatong/
 │
-├── components/             # Shared, reusable lintas halaman
-│   ├── layout/
-│   │   ├── LayoutShell.tsx # Client wrapper: modal + basket state
-│   │   ├── Navbar.tsx      # Fixed nav (usePathname, scroll)
-│   │   └── Footer.tsx      # Footer statis
-│   ├── common/
-│   │   ├── FloatingWA.tsx  # Tombol WA floating (scroll trigger)
-│   │   └── LocationContact.tsx
-│   └── ui/                 # ← BARU: Atomic UI components
-│       ├── Button.tsx      # Wrapper .btn classes dengan variants
-│       ├── Badge.tsx       # Wrapper .badge classes
-│       ├── Card.tsx        # Wrapper .card + optional hover
-│       └── SectionHeader.tsx
+├── public/
+│   ├── images/
+│   │   ├── logo/
+│   │   ├── menu/
+│   │   │   ├── 01-seafood/
+│   │   │   ├── 02-ikan-air-tawar/
+│   │   │   ├── 03-ayam-dan-daging/
+│   │   │   ├── 04-sunda/
+│   │   │   ├── 05-sayuran/
+│   │   │   └── 06-minuman/
+│   │   └── venue/
+│   │       ├── 01-gallery/   # Entrance / tampak depan
+│   │       ├── 02-gallery/   # Wall of frame
+│   │       ├── 03-gallery/   # Spot foto balon udara
+│   │       ├── 04-gallery/   # Area makan utama
+│   │       ├── 05-gallery/   # Area samping
+│   │       ├── 06-gallery/   # Area lesehan
+│   │       ├── 07-gallery/   # Saung bambu
+│   │       ├── 08-gallery/   # Event wedding
+│   │       ├── 09-gallery/   # Foto pengunjung
+│   │       └── 10-gallery/   # Foto tim / waiter
+│   ├── sw.js                           # Service Worker (PWA)
+│   ├── web-app-manifest-192x192.png
+│   └── web-app-manifest-512x512.png
 │
-├── features/               # Page-specific Client Components
-│   ├── home/components/    Hero, BestSellers, AmbienceTeaser, dll
-│   ├── menu/components/    MenuSection
-│   ├── gallery/components/ GallerySection
-│   └── about/components/   AboutUs, TeamSection
-│
-├── config/
-│   └── navigation.ts       # NAV_ITEMS
-│
-├── lib/
-│   ├── cn.ts               # ← BARU: clsx + tailwind-merge
-│   ├── config.ts           # APP_CONFIG, trackWhatsAppConversion, JSON-LD
-│   └── tracking.ts         # Re-export barrel
-│
-├── types/
-│   └── global.d.ts         # Window augmentations, CSS Modules
-│
-├── data.ts                 # ⚠️ Single source of truth konten
-└── types.ts                # ⚠️ TypeScript interfaces
+└── src/
+    │
+    ├── app/                            # Next.js App Router
+    │   ├── page.tsx                    # Route: / (Beranda) — Server Component
+    │   ├── layout.tsx                  # Root layout + font + JSON-LD global
+    │   ├── globals.css                 # Tailwind directives + CSS base
+    │   ├── manifest.ts                 # PWA manifest — Next.js native
+    │   ├── sitemap.ts                  # Sitemap — Next.js native
+    │   ├── robots.ts                   # Robots.txt — Next.js native
+    │   ├── opengraph-image.png         # OG image default (1200×630) — auto-detected
+    │   ├── apple-icon.png
+    │   ├── favicon.ico
+    │   ├── icon0.svg
+    │   ├── icon1.png
+    │   ├── menu/page.tsx               # Route: /menu
+    │   ├── venue/page.tsx              # Route: /venue
+    │   └── tentang/page.tsx            # Route: /tentang
+    │
+    ├── components/                     # Komponen global lintas halaman
+    │   ├── common/
+    │   │   └── FloatingWA.tsx
+    │   ├── layout/
+    │   │   ├── Navbar.tsx
+    │   │   ├── Footer.tsx
+    │   │   └── LayoutShell.tsx         # Client Component — state Navbar + modal
+    │   └── ui/
+    │       ├── Badge.tsx
+    │       ├── Button.tsx
+    │       ├── Card.tsx
+    │       ├── SectionHeader.tsx
+    │       └── index.ts                # Barrel export
+    │
+    ├── features/
+    │   ├── home/
+    │   │   └── components/
+    │   │       ├── hero-section/
+    │   │       │   ├── HeroSection.tsx         # ✅ Server Component
+    │   │       │   └── client/
+    │   │       │       ├── HeroAnimations.tsx  # ⚡ Client — motion wrappers
+    │   │       │       └── HeroImage.tsx       # ⚡ Client — useScroll parallax
+    │   │       ├── bestsellers-section/
+    │   │       │   ├── BestSellers.tsx         # ✅ Server Component
+    │   │       │   └── client/
+    │   │       │       └── BestSellerCards.tsx # ⚡ Client — rotasi jam + AnimatePresence
+    │   │       ├── ambience-section/
+    │   │       │   ├── AmbienceTeaser.tsx      # ✅ Server Component
+    │   │       │   └── client/
+    │   │       │       └── AmbienceCard.tsx    # ⚡ Client — whileInView per kartu
+    │   │       ├── testimonials-section/
+    │   │       │   ├── TestimonialsSection.tsx # ✅ Server Component
+    │   │       │   └── client/
+    │   │       │       └── TestimonialsCarousel.tsx # ⚡ Client — carousel + resize
+    │   │       ├── faq-section/
+    │   │       │   ├── FaqSection.tsx          # ✅ Server Component
+    │   │       │   └── client/
+    │   │       │       └── FaqAccordion.tsx    # ⚡ Client — useState accordion
+    │   │       ├── location-section/
+    │   │       │   └── LocationSection.tsx     # ✅ Server Component (iframe = HTML murni)
+    │   │       ├── button/
+    │   │       │   └── WAButton.tsx            # ⚡ Client — onClick tracking saja
+    │   │       └── index.ts                    # Barrel export Server Components
+    │   │
+    │   ├── menu/components/
+    │   │   ├── MenuSection.tsx
+    │   │   └── CheckoutModal.tsx
+    │   ├── gallery/components/
+    │   │   └── GallerySection.tsx
+    │   └── about/components/
+    │       ├── AboutStory.tsx
+    │       ├── AboutTeam.tsx
+    │       └── AboutCTA.tsx
+    │
+    ├── lib/
+    │   ├── whatsapp.ts     # ⭐ Semua WA message builder
+    │   ├── cn.ts           # clsx + tailwind-merge
+    │   ├── tracking.ts     # Google Ads konversi tracking
+    │   └── config.ts       # APP_CONFIG + LOCAL_SEO_SCHEMA
+    │
+    ├── data.ts             # ⭐ Single Source of Truth — semua konten & helpers
+    └── types.ts            # ⭐ TypeScript interfaces untuk data.ts
 ```
 
 ---
 
-## Refactor yang Dilakukan
+## Arsitektur Komponen
 
-1. **`src/components/ui/`** — Ditambahkan folder baru untuk atomic UI components (Button, Badge, Card, SectionHeader). Ini menghindari duplikasi class `.btn btn-primary btn-lg` yang tersebar di setiap feature component.
+### Prinsip Server/Client Split
 
-2. **`src/lib/cn.ts`** — Helper `cn()` dari `clsx` + `tailwind-merge`. Wajib dipakai untuk semua conditional className di komponen.
+Setiap section halaman beranda dipisah menjadi dua lapisan:
 
-3. **`calculateBasketTotal()`** — Ditambahkan ke `data.ts` sebagai utility murni, menghindari logika duplikat di `InteractiveBooking.tsx`.
+```
+HeroSection.tsx (Server) ←── Render semua konten sebagai HTML
+  └── HeroAnimations.tsx (Client) ←── Hanya motion wrapper
+  └── HeroImage.tsx (Client)      ←── Hanya useScroll parallax
+  └── WAButton.tsx (Client)       ←── Hanya onClick tracking
+```
 
-4. **Font diubah** dari Space Grotesk ke **Plus Jakarta Sans** — lebih cocok untuk brand F&B Indonesia modern, lebih hangat tapi tetap clean.
+**Aturan:** jika sebuah komponen tidak butuh `useState`, `useEffect`, atau browser API — ia harus Server Component. Tidak ada `'use client'` di dalamnya.
 
-5. **`postcss.config.js`** (bukan `.mjs`) — Kompatibilitas lebih luas dengan tooling lama.
+### Kenapa Penting untuk SEO
+
+Server Components menghasilkan HTML penuh yang langsung bisa di-crawl Google tanpa JavaScript:
+
+```html
+<!-- Yang Google lihat — langsung, tanpa JS -->
+<h1>Lezatnya Seafood Segar...</h1>
+<h2>Menu Terpopuler Rekomendasi Hari Ini</h2>
+<h3>Cumi Bakar Kecap</h3>
+<p>Rp 52.000 / porsi</p>
+```
+
+Client Components hanya menambahkan animasi di atas HTML yang sudah ada — bukan menggantikannya.
+
+### Tabel Isolasi Client Logic
+
+| File | Type | Alasan butuh Client |
+|---|---|---|
+| `HeroAnimations.tsx` | Client | `motion` variants + stagger |
+| `HeroImage.tsx` | Client | `useScroll` (browser API) |
+| `WAButton.tsx` | Client | `onClick` event handler |
+| `AmbienceCard.tsx` | Client | `whileInView` scroll trigger |
+| `BestSellerCards.tsx` | Client | `useState` + `useEffect` + `setInterval` |
+| `FaqAccordion.tsx` | Client | `useState` (openId) + `AnimatePresence` |
+| `TestimonialsCarousel.tsx` | Client | `useState` + `useEffect` + `useRef` + `window` |
+| `LocationSection.tsx` | Server | `<iframe>` = HTML murni, tidak butuh JS |
+
+### WAButton — Komponen Terkecil yang Bisa Ada
+
+`WAButton` sengaja dibuat seminimal mungkin karena `onClick` adalah satu-satunya alasan ia menjadi Client Component. Letaknya di:
+
+```
+src/features/home/components/button/WAButton.tsx
+```
+
+**Props:**
+
+| Prop | Type | Default | Keterangan |
+|---|---|---|---|
+| `href` | `string` | — | URL WhatsApp (dari `buildWALink()`) |
+| `label` | `string` | — | Teks tombol |
+| `trackingLabel` | `string` | `'WhatsApp CTA'` | Label untuk Google Ads conversion |
+| `className` | `string` | style WA hijau default | Override className penuh |
+| `icon` | `ReactNode` | `<MessageSquare />` | Icon kustom |
+
+**Contoh penggunaan:**
+
+```tsx
+// Style default (hijau WA)
+<WAButton
+  href={buildWALink(BUSINESS_INFO.wa, 'Pesan meja...')}
+  label="Chat WhatsApp Sekarang"
+  trackingLabel="Hero WA Button"
+/>
+
+// Override style (untuk FAQ callout dengan btn-dark)
+<WAButton
+  href={buildWALink(BUSINESS_INFO.wa, 'Tanya FAQ...')}
+  label="Chat Langsung Sekarang"
+  trackingLabel="FAQ WhatsApp CTA"
+  className="btn btn-dark btn-md shrink-0"
+  icon={<MessageCircle className="w-4 h-4" />}
+/>
+```
+
+**Import dari Server Component:**
+
+```tsx
+import WAButton from '@/features/home/components/button/WAButton'
+// atau jika dalam folder yang sama:
+import WAButton from '../button/WAButton'
+```
+
+> ⚠️ **Jangan** import `WAButton` dari `index.ts` — barrel export hanya mengekspos Server Components.
 
 ---
 
-## Routes (JANGAN DIUBAH — Google Ads Aktif)
+## Arsitektur Data
 
-| Route | Halaman |
+### Prinsip Utama
+
+Seluruh konten statis **wajib** bersumber dari `src/data.ts`. Komponen tidak boleh menulis string konten secara hardcoded.
+
+```
+src/data.ts          ──→  Komponen (hanya baca, tidak tulis)
+src/types.ts         ──→  Validasi type seluruh data
+src/lib/whatsapp.ts  ──→  Format pesan WA (derived dari data)
+src/lib/config.ts    ──→  APP_CONFIG + JSON-LD schema (env-aware)
+```
+
+### Sistem Harga
+
+```typescript
+// ✅ BENAR — satu field, satu sumber
+{ price: 52000, priceUnit: '/ porsi' }
+// Tampilkan dengan: formatProductPrice(product) → 'Rp 52.000 / porsi'
+
+// ❌ SALAH — dua sumber rawan drift
+{ price: 52000, priceFormatted: 'Rp 52.000 / porsi' }
+```
+
+Selalu gunakan `formatProductPrice(product)` untuk menampilkan harga — di UI, di pesan WA, maupun di checkout modal.
+
+### Sistem Pesan WhatsApp
+
+Semua format pesan dibangun oleh helper di `src/lib/whatsapp.ts`:
+
+| Fungsi | Dipakai di |
 |---|---|
-| `/` | Beranda |
-| `/menu` | E-Menu Digital |
-| `/venue` | Galeri & Suasana |
-| `/about` | Tentang Kami |
+| `buildMenuWAMessage()` | Tombol "Pesan WA" per kartu (qty = 0) |
+| `buildMenuWAMessageWithQty()` | Tombol "Pesan WA" saat qty > 0 |
+| `buildCartWAMessage()` | CheckoutModal — multi-item |
+| `buildCateringWAMessage()` | Banner katering |
+
+Komponen **dilarang** menulis string pesan WA secara inline.
+
+### JSON-LD Structured Data
+
+| Schema | Lokasi | Tujuan |
+|---|---|---|
+| `LocalBusiness` + `Restaurant` | `layout.tsx` (via `LOCAL_SEO_SCHEMA`) | Semua halaman — dasar Local SEO |
+| `Organization` | `layout.tsx` | Knowledge Panel Google |
+| `Review` + `AggregateRating` | `page.tsx` (beranda) | Star rating snippet di SERP |
+| `FAQPage` | `page.tsx` (beranda) | Featured snippet accordion di SERP |
+
+---
+
+## Design System
+
+### Brand Colors (semua WCAG AA compliant)
+
+| Token | Hex | Kontras | Kegunaan |
+|---|---|---|---|
+| `brand-primary` | `#FFCC00` | 11.5:1 (+ dark text) | CTA utama, highlight |
+| `brand-primary-dark` | `#CC9900` | 4.6:1 on white | Label, badge teks |
+| `brand-red` | `#E60000` | 4.6:1 (+ white text) | Badge promo, error |
+| `brand-dark` | `#202124` | 16.1:1 on white | Heading, navbar |
+| `brand-text` | `#3D3D3D` | 10.7:1 on white | Body text |
+| `brand-muted` | `#6B7280` | 4.61:1 on white | Placeholder, caption |
+| `brand-subtle` | `#757575` | 4.54:1 on white | Disabled, hint |
+| `wa-DEFAULT` | `#25D366` | — | Tombol WA (brand color) |
+| `wa-hover` | `#128C7E` | 5.1:1 (+ white) | Hover tombol WA |
+
+> **Catatan:** `wa-DEFAULT` (#25D366 + white text = 2.84:1) tidak memenuhi WCAG AA untuk teks normal — ini adalah trade-off yang disengaja demi mempertahankan brand recognition WhatsApp. Hover state menggunakan `wa-hover` (#128C7E) yang sudah compliant.
+
+### Komponen Reusable (tanpa import)
+
+```html
+<!-- Buttons -->
+<button class="btn btn-primary btn-md">CTA Utama</button>
+<button class="btn btn-wa btn-sm">WhatsApp</button>
+<button class="btn btn-outline btn-sm">Sekunder</button>
+<button class="btn btn-dark btn-lg">Dark</button>
+
+<!-- Badges -->
+<span class="badge badge-primary">Terlaris</span>
+<span class="badge badge-red">Promo</span>
+<span class="badge badge-success">Tersedia</span>
+
+<!-- Cards -->
+<div class="card card-hover">...</div>
+
+<!-- Input -->
+<input class="input" placeholder="Cari menu..." />
+
+<!-- Section layout -->
+<section class="section">
+  <div class="section-inner">...</div>
+</section>
+```
+
+### Typography
+
+| Font | Class | Kegunaan |
+|---|---|---|
+| Plus Jakarta Sans | `font-display` | Heading, nama produk, display text |
+| Inter | `font-sans` | Body text, UI, label |
+| JetBrains Mono | `font-mono` | Harga, kode, jam operasional |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js `>= 18.17`
+- npm `>= 9` atau pnpm `>= 8`
+
+### Instalasi
+
+```bash
+# Clone repository
+git clone https://github.com/username/warung-papatong.git
+cd warung-papatong
+
+# Install dependencies
+npm install
+
+# Salin environment variables
+cp .env.example .env.local
+# → Edit .env.local sesuai kebutuhan
+
+# Jalankan development server
+npm run dev
+```
+
+Buka [http://localhost:3000](http://localhost:3000).
+
+### Scripts
+
+```bash
+npm run dev          # Development server dengan hot-reload
+npm run build        # Build production (wajib pass sebelum deploy)
+npm run start        # Preview production build secara lokal
+npm run lint         # ESLint check
+npm run type-check   # TypeScript check tanpa emit file
+```
+
+### Environment Variables
+
+| Variable | Contoh | Keterangan |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `https://warungpapatong.com` | URL produksi — dipakai sitemap & OG |
+| `NEXT_PUBLIC_GA_ID` | `G-XXXXXXXXXX` | Google Analytics (opsional) |
+| `NEXT_PUBLIC_GADS_ID` | `AW-XXXXXXXXX` | Google Ads conversion ID |
+| `NEXT_PUBLIC_GSC_VERIFY` | `abc123...` | Google Search Console verification token |
+
+---
+
+## Routes & Halaman
+
+> ⚠️ **JANGAN ubah path routes ini.** Semua route aktif di kampanye Google Ads. Mengubah path = memutus tracking konversi dan merusak kampanye iklan yang sedang berjalan.
+
+| Route | Halaman | Komponen Utama |
+|---|---|---|
+| `/` | Beranda | `HeroSection`, `BestSellers`, `AmbienceTeaser`, `TestimonialsSection`, `LocationSection`, `FaqSection` |
+| `/menu` | E-Menu Digital | `MenuSection`, `CheckoutModal` |
+| `/venue` | Galeri & Suasana | `GallerySection` |
+| `/tentang` | Tentang Kami | `AboutStory`, `AboutTeam`, `AboutCTA` |
+
+---
+
+## Konvensi Kode
+
+### Menambah Menu Baru
+
+Tambah objek di `PRODUCTS_DATA` di `src/data.ts`:
+
+```typescript
+{
+  id: 121,                              // ID unik, lanjutkan dari yang terakhir
+  name: 'Nama Menu Baru',
+  category: 'seafood',                  // sesuaikan dengan ProductCategory di types.ts
+  categoryLabel: 'Seafood',
+  description: 'Deskripsi menu...',
+  price: 45000,                         // angka Rupiah — satu-satunya field harga
+  priceUnit: '/ porsi',                 // opsional
+  image: '/images/menu/01-seafood/nama-file.webp',
+  badge: 'Terlaris',                    // opsional: 'Terlaris' | 'Rekomendasi'
+  isAvailable: true,
+}
+```
+
+Tidak perlu tulis `waMessage` — pesan WA otomatis terbentuk dari `name` dan `price` via `src/lib/whatsapp.ts`.
+
+### Menambah Kategori Menu
+
+1. Tambah nilai ke `ProductCategory` di `src/types.ts`
+2. Tambah entry di array `CATEGORIES` di `MenuSection.tsx`
+3. Gunakan `category` baru di produk pada `PRODUCTS_DATA`
+
+### Mengubah Info Bisnis
+
+Edit `BUSINESS_INFO` di `src/data.ts`. Perubahan langsung terefleksi di Navbar, Footer, Hero, Location section, semua link WA, dan JSON-LD schema secara otomatis.
+
+### Menambah Foto Menu / Venue
+
+1. Konversi ke **`.webp`** sebelum dimasukkan ke `public/`
+2. Menu → `public/images/menu/{kategori}/nama-file.webp`
+3. Venue → `public/images/venue/{nomor-gallery}/nama-file.webp`
+4. Penamaan: **kebab-case**, prefix nomor urut (`01-`, `02-`, dst.)
+
+### Aturan Import
+
+```typescript
+// ✅ Data & utilities
+import { BUSINESS_INFO, PRODUCTS_DATA, formatProductPrice } from '@/data'
+
+// ✅ WA message builder
+import { buildMenuWAMessage, buildCartWAMessage } from '@/lib/whatsapp'
+
+// ✅ Types
+import type { Product, BusinessInfo } from '@/types'
+
+// ✅ WAButton (Client Component — import langsung, bukan dari index.ts)
+import WAButton from '@/features/home/components/button/WAButton'
+
+// ✅ Server Components beranda (dari barrel)
+import { HeroSection, BestSellers } from '@/features/home/components'
+
+// ✅ Class merging
+import { cn } from '@/lib/cn'
+
+// ❌ JANGAN hardcode string konten di komponen
+// ❌ JANGAN tulis format pesan WA inline
+// ❌ JANGAN simpan harga sebagai string — selalu price: number
+// ❌ JANGAN tambah 'use client' ke komponen yang tidak butuhnya
+```
+
+### Menambah Section Baru di Beranda
+
+1. Buat folder baru di `src/features/home/components/nama-section/`
+2. Buat `NamaSection.tsx` sebagai Server Component (tanpa `'use client'`)
+3. Jika butuh interactivity, buat subfolder `client/` dan isolasi di sana
+4. Export dari `src/features/home/components/index.ts`
+5. Import di `src/app/page.tsx`
+
+---
+
+## Deployment
+
+Project di-deploy di **Vercel** dengan konfigurasi Next.js App Router.
+
+### Checklist Sebelum Deploy
+
+**Kode:**
+- [ ] `npm run type-check` — tidak ada TypeScript error
+- [ ] `npm run build` — build berhasil tanpa warning kritis
+- [ ] `npm run lint` — tidak ada ESLint error
+
+**Konten:**
+- [ ] Semua gambar baru sudah dikonversi ke `.webp`
+- [ ] `BUSINESS_INFO` sudah terisi lengkap dan akurat
+- [ ] Harga produk di `PRODUCTS_DATA` sudah diverifikasi dengan pemilik
+- [ ] Tidak ada teks hardcoded di komponen (semua dari `src/data.ts`)
+
+**SEO:**
+- [ ] `opengraph-image.png` ada di `src/app/` (1200×630px)
+- [ ] `APP_CONFIG.siteUrl` di `src/lib/config.ts` sudah URL produksi yang benar
+- [ ] JSON-LD schema di `layout.tsx` dan `page.tsx` sudah akurat
+
+**Route:**
+- [ ] Route `/menu`, `/venue`, `/tentang` **tidak berubah** (Google Ads aktif)
+- [ ] `sitemap.ts` sudah mencantumkan semua halaman publik
+
+**Post-deploy:**
+- [ ] Submit `https://warungpapatong.com/sitemap.xml` ke Google Search Console
+- [ ] Verifikasi rich result via [Google Rich Results Test](https://search.google.com/test/rich-results)
+- [ ] Cek Lighthouse score — target: Performance 90+, SEO 100, Accessibility 100
+- [ ] `CHANGELOG.md` sudah diupdate
+
+### Deploy via Vercel CLI
+
+```bash
+# Pastikan semua checklist terpenuhi
+npm run type-check && npm run build
+
+# Deploy production
+vercel --prod
+```
+
+---
+
+## Lisensi
+
+Proprietary — seluruh hak cipta dimiliki oleh **Resto Warung Papatong**.  
+Kode ini tidak boleh didistribusikan atau digunakan ulang tanpa izin tertulis.
+
+---
+
+<div align="center">
+
+Dibuat dengan ❤️ untuk membantu UMKM Indonesia go-digital.
+
+**[Google Maps](https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG)** · **[Instagram](https://instagram.com/restowarungpapatong)** · **[WhatsApp](https://wa.me/6281388497651)**
+
+</div>

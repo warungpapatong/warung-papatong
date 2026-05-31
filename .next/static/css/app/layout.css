@@ -376,7 +376,7 @@
 /* src/app/globals.css */
 /* ─────────────────────────────────────────────────────────────────────────────
    Warung Papatong — Global Stylesheet
-   Tailwind CSS v3 — pakai @tailwind directives (bukan @theme)
+   Tailwind CSS v3
    ─────────────────────────────────────────────────────────────────────────── */
 
 *, ::before, ::after {
@@ -899,7 +899,6 @@ html {
     -moz-text-size-adjust: 100%;
          text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    /* Menghindari horizontal scroll */
     overflow-x: hidden;
   }
 
@@ -913,11 +912,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
     min-height: 100dvh;
     line-height: 1.6;
-    /* Hardware acceleration untuk smooth scroll */
-    will-change: scroll-position;
 }
 
-/* ─── Typography resets ───────────────────────────────────────────── */
+/* ─── Typography ────────────────────────────────────────────────── */
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display), ui-sans-serif, sans-serif;
@@ -1010,7 +1007,7 @@ a:hover {
   color: rgb(204 153 0 / var(--tw-text-opacity, 1));
 }
 
-/* ─── Form base resets ────────────────────────────────────────────── */
+/* ─── Form resets ───────────────────────────────────────────────── */
 
 button {
     cursor: pointer;
@@ -1030,33 +1027,21 @@ img, video {
     height: auto;
   }
 
-/* ─── List resets ─────────────────────────────────────────────────── */
-
 ul, ol {
     list-style: none;
   }
 
-/* ─── Scrollbar brand (webkit) ────────────────────────────────────── */
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
 
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+::-webkit-scrollbar        { width: 6px; height: 6px; }
 
-::-webkit-scrollbar-track {
-    background: var(--scrollbar-track);
-  }
+::-webkit-scrollbar-track  { background: var(--scrollbar-track); }
 
-::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 9999px;
-  }
+::-webkit-scrollbar-thumb  { background: var(--scrollbar-thumb); border-radius: 9999px; }
 
-::-webkit-scrollbar-thumb:hover {
-    background: #CC9900;
-  }
+::-webkit-scrollbar-thumb:hover { background: #CC9900; }
 
-/* ─── Selection brand ────────────────────────────────────────────── */
+/* ─── Selection ─────────────────────────────────────────────────── */
 
 ::-moz-selection {
     background-color: #FFCC00;
@@ -1068,11 +1053,12 @@ ul, ol {
     color: #202124;
   }
 
-/* ─── Focus outline global ───────────────────────────────────────── */
+/* ─── Focus outline global ──────────────────────────────────────── */
 
 :focus-visible {
     outline: 2px solid #FFCC00;
-    outline-offset: 2px;
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 .badge {
   display: inline-flex;
@@ -1105,7 +1091,7 @@ ul, ol {
 }
 .badge-success {
   background-color: #DCFCE7;
-  color: #16A34A;
+  color: #14532D;
 }
 .btn {
   display: inline-flex;
@@ -1122,7 +1108,9 @@ ul, ol {
   overflow: hidden;
 }
 .btn:focus-visible {
-  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.35);
+  outline: 2px solid #FFCC00;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.45);
 }
 .btn:disabled {
   opacity: 0.5;
@@ -1150,11 +1138,13 @@ ul, ol {
 }
 .btn-primary:hover {
   background-color: #F5C200;
+  color: #202124;
   box-shadow: 0 8px 32px -4px rgba(255, 204, 0, 0.5);
   transform: translateY(-1px);
 }
 .btn-primary:active {
   transform: translateY(0);
+  color: #202124;
 }
 .btn-dark {
   background-color: #202124;
@@ -1162,25 +1152,32 @@ ul, ol {
 }
 .btn-dark:hover {
   background-color: #2d2f32;
+  color: #FFFFFF;
   transform: translateY(-1px);
 }
 .btn-outline {
   background-color: transparent;
   color: #202124;
-  border: 1.5px solid #D1D5DB;
+  border: 2px solid #D1D5DB;
 }
 .btn-outline:hover {
-  border-color: #FFCC00;
+  border-color: #CC9900;
   background-color: #FFF3B0;
+  color: #202124;
 }
 .btn-wa {
   background-color: #25D366;
   color: #FFFFFF;
 }
 .btn-wa:hover {
-  background-color: #1EBE5C;
+  background-color: #128C7E;
+  color: #FFFFFF;
   box-shadow: 0 4px 20px 0 rgba(37, 211, 102, 0.4);
   transform: translateY(-1px);
+}
+.btn-wa:focus-visible {
+  outline: 2px solid #128C7E;
+  outline-offset: 2px;
 }
 .card {
   background-color: #FFFFFF;
@@ -1266,14 +1263,16 @@ ul, ol {
   outline: none;
 }
 .input::-moz-placeholder {
-  color: #9CA3AF;
+  color: #757575;
 }
 .input::placeholder {
-  color: #9CA3AF;
+  color: #757575;
 }
 .input:focus {
   border-color: #FFCC00;
   box-shadow: inset 0 0 0 2px #FFCC00;
+  outline: 2px solid #FFCC00;
+  outline-offset: 0px;
 }
 .divider {
   display: flex;
@@ -1666,14 +1665,11 @@ ul, ol {
 .min-h-\[320px\] {
   min-height: 320px;
 }
-.min-h-\[36px\] {
-  min-height: 36px;
+.min-h-\[40px\] {
+  min-height: 40px;
 }
 .min-h-screen {
   min-height: 100vh;
-}
-.min-h-\[40px\] {
-  min-height: 40px;
 }
 .w-1\.5 {
   width: 0.375rem;
@@ -2689,7 +2685,7 @@ ul, ol {
 }
 .text-brand-subtle {
   --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+  color: rgb(117 117 117 / var(--tw-text-opacity, 1));
 }
 .text-brand-success {
   --tw-text-opacity: 1;
@@ -2759,7 +2755,7 @@ ul, ol {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .shadow-glow-primary {
-  --tw-shadow: 0 0 0 3px rgba(255, 204, 0, 0.35);
+  --tw-shadow: 0 0 0 3px rgba(255, 204, 0, 0.45);
   --tw-shadow-colored: 0 0 0 3px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
@@ -2888,8 +2884,9 @@ ul, ol {
   animation: shimmer 2s linear infinite;
 }
 .focus-brand:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.35);
+  outline: 2px solid #FFCC00;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.45);
 }
 .glass {
   background: rgba(255, 255, 255, 0.8);
@@ -2897,48 +2894,27 @@ ul, ol {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid #E5E7EB;
 }
-/* Safe area untuk iPhone notch */
-/* Truncate multi-line */
-.line-clamp-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+/* Safe area — iPhone notch */
 /* Background patterns */
-/* Noise texture overlay — naruh di dalam pseudo-element */
-/* Aspect ratio helpers (untuk browser lama) */
+/* Noise texture overlay */
+/* Aspect ratio helpers */
 .aspect-card    { aspect-ratio: 4 / 3; }
 /* Sticky header spacing */
 /* Hide scrollbar tapi tetap bisa scroll */
 
-/* ─── GOOGLE FONTS ─────────────────────────────────────────────────────────── */
-/* Import di layout.tsx via next/font/google untuk performa optimal.
-   CSS variables di-set oleh Next.js font loader di <html> element.
-   Fallback fonts di tailwind.config.js sudah handle ini. */
-
-/* ─── CSS CUSTOM PROPERTIES ─────────────────────────────────────────────────
-   Font family variables — di-inject oleh next/font via className di layout.tsx
-   Nama var harus konsisten dengan yang di-define di layout.tsx
-   ─────────────────────────────────────────────────────────────────────────── */
+/* ─── CSS CUSTOM PROPERTIES ──────────────────────────────────────────────── */
 :root {
-  /* Font variables — akan di-override oleh next/font di <html> */
   --font-sans:    'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Plus Jakarta Sans', ui-sans-serif, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, monospace;
 
-  /* Scrollbar brand styling */
   --scrollbar-thumb: #FFCC00;
   --scrollbar-track: #F3F4F6;
 }
 
-/* ─── BASE LAYER ─────────────────────────────────────────────────────────────
-   Global resets dan base element styles
-   ─────────────────────────────────────────────────────────────────────────── */
+/* ─── BASE LAYER ─────────────────────────────────────────────────────────── */
 
-/* ─── UTILITIES LAYER ─────────────────────────────────────────────────────────
-   Custom utilities yang belum di-cover tailwind.config.js
-   ─────────────────────────────────────────────────────────────────────────── */
+/* ─── UTILITIES LAYER ────────────────────────────────────────────────────── */
 .hover\:-translate-y-0\.5:hover {
   --tw-translate-y: -0.125rem;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -2970,6 +2946,10 @@ ul, ol {
 .hover\:border-brand-primary\/50:hover {
   border-color: rgb(255 204 0 / 0.5);
 }
+.hover\:bg-\[\#128C7E\]:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(18 140 126 / var(--tw-bg-opacity, 1));
+}
 .hover\:bg-\[\#1a1a1a\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(26 26 26 / var(--tw-bg-opacity, 1));
@@ -2997,16 +2977,16 @@ ul, ol {
   --tw-bg-opacity: 1;
   background-color: rgb(255 243 176 / var(--tw-bg-opacity, 1));
 }
+.hover\:bg-brand-primary\/\[0\.06\]:hover {
+  background-color: rgb(255 204 0 / 0.06);
+}
 .hover\:bg-brand-red-light:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 229 229 / var(--tw-bg-opacity, 1));
 }
 .hover\:bg-wa-hover:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(30 190 92 / var(--tw-bg-opacity, 1));
-}
-.hover\:bg-brand-primary\/\[0\.06\]:hover {
-  background-color: rgb(255 204 0 / 0.06);
+  background-color: rgb(18 140 126 / var(--tw-bg-opacity, 1));
 }
 .hover\:text-black\/70:hover {
   color: rgb(0 0 0 / 0.7);
@@ -3022,9 +3002,6 @@ ul, ol {
 .hover\:text-brand-success:hover {
   --tw-text-opacity: 1;
   color: rgb(22 163 74 / var(--tw-text-opacity, 1));
-}
-.hover\:text-white\/80:hover {
-  color: rgb(255 255 255 / 0.8);
 }
 .hover\:text-white:hover {
   --tw-text-opacity: 1;
@@ -3138,12 +3115,12 @@ ul, ol {
 }
 @media (min-width: 640px) {
 
-  .sm\:col-span-2 {
-    grid-column: span 2 / span 2;
-  }
-
   .sm\:col-span-1 {
     grid-column: span 1 / span 1;
+  }
+
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
   }
 
   .sm\:mt-10 {
@@ -3291,10 +3268,6 @@ ul, ol {
 }
 @media (min-width: 768px) {
 
-  .md\:col-span-1 {
-    grid-column: span 1 / span 1;
-  }
-
   .md\:mb-14 {
     margin-bottom: 3.5rem;
   }
@@ -3335,10 +3308,6 @@ ul, ol {
     max-height: 70vh;
   }
 
-  .md\:min-h-0 {
-    min-height: 0px;
-  }
-
   .md\:min-h-\[420px\] {
     min-height: 420px;
   }
@@ -3357,10 +3326,6 @@ ul, ol {
 
   .md\:w-8 {
     width: 2rem;
-  }
-
-  .md\:w-auto {
-    width: auto;
   }
 
   .md\:grid-cols-2 {
@@ -3383,12 +3348,8 @@ ul, ol {
     align-items: flex-end;
   }
 
-  .md\:items-center {
-    align-items: center;
-  }
-
-  .md\:gap-1\.5 {
-    gap: 0.375rem;
+  .md\:gap-2 {
+    gap: 0.5rem;
   }
 
   .md\:gap-6 {
@@ -3397,14 +3358,6 @@ ul, ol {
 
   .md\:gap-8 {
     gap: 2rem;
-  }
-
-  .md\:gap-2 {
-    gap: 0.5rem;
-  }
-
-  .md\:rounded-full {
-    border-radius: 9999px;
   }
 
   .md\:border-l {
@@ -3429,11 +3382,6 @@ ul, ol {
 
   .md\:p-8 {
     padding: 2rem;
-  }
-
-  .md\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 
   .md\:py-24 {
