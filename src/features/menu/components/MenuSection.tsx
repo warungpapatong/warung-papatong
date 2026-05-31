@@ -1,25 +1,18 @@
-// src/features/menu/components/MenuSection.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// UI TWEAK:
-//   - Category filter tab: setiap tab kini punya border + background sendiri
-//     sehingga jelas terlihat sebagai button tersendiri, bukan satu strip menyatu.
-//   - Active state: border-brand-primary + bg-brand-primary + text-brand-dark
-//   - Inactive state: border-brand-border + bg-brand-surface + text-brand-text
-//     dengan hover: border-brand-primary/40 + bg-brand-primary/8 + text-brand-dark
-// ─────────────────────────────────────────────────────────────────────────────
-
 'use client'
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import {
-  ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles,
-} from 'lucide-react'
+import { ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
 import {
-  PRODUCTS_DATA, BUSINESS_INFO,
-  buildWALink, formatPrice, formatProductPrice,
+  PRODUCTS_DATA,
+  BUSINESS_INFO,
+  buildWALink,
+  formatPrice,
+  formatProductPrice,
+  MENU_CATEGORIES,
+  MENU_PAGE_DATA,
 } from '@/data'
 import {
   buildMenuWAMessage,
@@ -29,28 +22,11 @@ import {
 import { trackWhatsAppConversion } from '@/lib/tracking'
 import CheckoutModal from '@/features/menu/components/CheckoutModal'
 
-// ─── Category Filter Config ───────────────────────────────────────────────────
-
-const CATEGORIES = [
-  { id: 'all',             label: 'Semua'           },
-  { id: 'seafood',         label: 'Seafood'         },
-  { id: 'ikan-air-tawar',  label: 'Ikan Air Tawar'  },
-  { id: 'sunda',           label: 'Sunda'           },
-  { id: 'ayam-dan-daging', label: 'Ayam dan Daging' },
-  { id: 'sayuran',         label: 'Sayuran'         },
-  { id: 'minuman',         label: 'Segar Minuman'   },
-] as const
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function MenuSection() {
-
-  const [activeTab,      setActiveTab]      = useState('all')
+  const [activeTab,      setActiveTab]      = useState<string>('all')
   const [searchQuery,    setSearchQuery]    = useState('')
   const [basket,         setBasket]         = useState<Record<number, number>>({})
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
-
-  // ── Basket handlers ───────────────────────────────────────────────────────
 
   const handleAddToBasket = useCallback((product: Product) => {
     setBasket(prev => ({
@@ -72,12 +48,12 @@ export default function MenuSection() {
 
   const handleClearBasket = useCallback(() => setBasket({}), [])
 
-  // ── Derived values ────────────────────────────────────────────────────────
-
   const filteredProducts = PRODUCTS_DATA.filter(p => {
     const matchesCategory = activeTab === 'all' || p.category === activeTab
-    const matchesSearch   = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            p.description.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesSearch   = (
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
     return matchesCategory && matchesSearch
   })
 
@@ -88,82 +64,53 @@ export default function MenuSection() {
     return acc + (p ? p.price * qty : 0)
   }, 0)
 
-  // ─────────────────────────────────────────────────────────────────────────
+  const d = MENU_PAGE_DATA
+
   return (
     <>
-      {/* ── Unified Menu Section (Hero + Catalog) ── */}
       <section
         id="menu"
-        className={cn(
-          'relative overflow-hidden',
-          'bg-brand-bg',
-          'pt-28 md:pt-36',
-          'pb-16 md:pb-24',
-        )}
+        className="relative overflow-hidden bg-brand-bg pb-16 pt-28 md:pb-24 md:pt-36"
       >
-        {/* Background Accent */}
-        <div className="absolute inset-0 bg-brand-primary/[0.03] pointer-events-none" />
+        <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
 
-        {/* Watermark dekoratif kanan bawah */}
-        <span className="absolute bottom-12 right-8 text-[120px] font-black opacity-[0.03] select-none pointer-events-none font-display text-brand-dark leading-none hidden lg:block">
-          MENU
+        <span className="pointer-events-none absolute bottom-12 right-8 hidden select-none font-display text-[120px] font-black leading-none text-brand-dark opacity-[0.03] lg:block">
+          {d.watermarkText}
         </span>
 
-        {/* ── HERO CONTENT ─────────────────────────────────────────────── */}
-        <div className="section-inner relative z-10 text-center mb-14 md:mb-20">
-
+        <div className="section-inner relative z-10 mb-14 text-center md:mb-20">
           <span className="badge badge-primary mb-5">
-            <Utensils className="w-3.5 h-3.5" />
-            Menu Kami
+            <Utensils className="h-3.5 w-3.5" />
+            {d.badge}
           </span>
 
-          <h1
-            className={cn(
-              'font-display font-black',
-              'text-brand-dark',
-              'tracking-tight',
-              'leading-[0.95]',
-              'text-4xl md:text-6xl',
-              'max-w-3xl mx-auto',
-              'mt-4',
-            )}
-          >
-            Daftar Menu
-            <span className="block text-brand-primary mt-2">
-              Hidangan Autentik
+          <h1 className="mx-auto mt-4 max-w-3xl font-display text-4xl font-black leading-[0.95] tracking-tight text-brand-dark md:text-6xl">
+            {d.title}
+            <span className="mt-2 block text-brand-primary">
+              {d.titleAccent}
             </span>
           </h1>
 
-          <p className="max-w-xl mx-auto text-sm md:text-base text-brand-text leading-relaxed mt-6">
-            Pilih hidangan favorit, masukkan ke keranjang, dan pesan langsung via WhatsApp — mudah &amp; cepat!
+          <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-brand-text md:text-base">
+            {d.description}
           </p>
-
         </div>
 
-        {/* ── CATALOG CONTENT ──────────────────────────────────────────── */}
         <div className="section-inner relative z-10">
 
-          {/* ── Search & Category Filter Bar ── */}
-          <div className="flex flex-col gap-4 mb-12">
+          <div className="mb-12 flex flex-col gap-4">
 
-            {/* ── Category tabs — setiap tab punya card/border sendiri ── */}
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-2">
-              {CATEGORIES.map((tab, idx) => {
+              {MENU_CATEGORIES.map((tab, idx) => {
                 const isActive  = activeTab === tab.id
-                const isLastOdd = idx === CATEGORIES.length - 1 && CATEGORIES.length % 2 !== 0
+                const isLastOdd = idx === MENU_CATEGORIES.length - 1 && MENU_CATEGORIES.length % 2 !== 0
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     className={cn(
-                      // Base — setiap tab punya border & background sendiri
-                      'relative px-4 py-2.5 text-xs md:text-sm font-bold',
-                      'rounded-xl border transition-all duration-200 focus-brand',
-                      'flex items-center justify-center min-h-[40px]',
-                      'whitespace-nowrap text-center shadow-sm',
-                      // Odd last item di mobile: span 2 kolom
-                      isLastOdd && 'col-span-2 sm:col-span-1 md:col-span-[unset]',
-                      // Active state
+                      'relative flex min-h-[40px] items-center justify-center whitespace-nowrap rounded-xl border px-4 py-2.5 text-center text-xs font-bold shadow-sm transition-all duration-200 focus-brand md:text-sm',
+                      isLastOdd && 'col-span-2 sm:col-span-1',
                       isActive
                         ? 'border-brand-primary bg-brand-primary text-brand-dark shadow-md'
                         : 'border-brand-border bg-brand-surface text-brand-text hover:border-brand-primary/40 hover:bg-brand-primary/[0.06] hover:text-brand-dark',
@@ -175,35 +122,31 @@ export default function MenuSection() {
               })}
             </div>
 
-            {/* ── Search input ── */}
             <div className="relative w-full">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-muted pointer-events-none" />
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-muted" />
               <input
                 type="text"
-                placeholder="Cari kepiting, timbel, kangkung..."
+                placeholder={d.searchPlaceholder}
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="input pl-10 rounded-xl w-full"
+                className="input w-full rounded-xl pl-10"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-brand-muted hover:text-brand-dark transition-colors focus-brand rounded-full p-0.5"
-                  aria-label="Hapus pencarian"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-brand-muted transition-colors hover:text-brand-dark focus-brand"
+                  aria-label={d.searchClearLabel}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
 
           </div>
 
-          {/* ── Product Grid ── */}
           {filteredProducts.length === 0 ? (
-            <div className="text-center py-24 bg-brand-surface rounded-3xl border-2 border-dashed border-brand-border">
-              <p className="text-brand-muted text-base">
-                Menu tidak ditemukan. Coba kata kunci lain!
-              </p>
+            <div className="rounded-3xl border-2 border-dashed border-brand-border bg-brand-surface py-24 text-center">
+              <p className="text-base text-brand-muted">{d.emptyStateText}</p>
             </div>
           ) : (
             <motion.div
@@ -211,7 +154,7 @@ export default function MenuSection() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
             >
               {filteredProducts.map(product => {
                 const qty = basket[product.id] ?? 0
@@ -221,71 +164,66 @@ export default function MenuSection() {
                   : buildMenuWAMessage(BUSINESS_INFO.name, product)
 
                 return (
-                  <div
-                    key={product.id}
-                    className="card card-hover group flex flex-col"
-                  >
-                    {/* Product Image */}
-                    <div className="relative w-full h-56 overflow-hidden">
+                  <div key={product.id} className="card card-hover group flex flex-col">
+
+                    <div className="relative h-56 w-full overflow-hidden">
                       <img
                         src={product.image}
                         alt={product.name}
                         loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent pointer-events-none" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent" />
 
-                      <span className="absolute top-4 left-4 badge badge-dark">
+                      <span className="absolute left-4 top-4 badge badge-dark">
                         {product.categoryLabel}
                       </span>
 
                       {product.badge && (
-                        <span className="absolute top-4 right-4 badge badge-red flex items-center gap-1">
-                          <Sparkles className="w-3 h-3" />
+                        <span className="absolute right-4 top-4 badge badge-red flex items-center gap-1">
+                          <Sparkles className="h-3 w-3" />
                           {product.badge}
                         </span>
                       )}
 
-                      <div className="absolute bottom-4 left-4 flex items-center gap-1.5 bg-brand-dark/60 backdrop-blur-sm py-1 px-2.5 rounded-full text-[10px] font-bold text-white">
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-success animate-pulse" />
-                        Dapur Ready
+                      <div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-brand-dark/60 px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur-sm">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand-success" />
+                        {d.kitchenReadyLabel}
                       </div>
                     </div>
 
-                    {/* Product Content */}
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h3 className="font-display font-bold text-xl text-brand-dark transition-colors leading-tight">
+                    <div className="flex flex-grow flex-col p-6">
+                      <h3 className="font-display text-xl font-bold leading-tight text-brand-dark transition-colors">
                         {product.name}
                       </h3>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="font-mono font-black text-lg text-brand-primary-dark">
+                      <div className="mt-2 flex items-center gap-2">
+                        <span className="font-mono text-lg font-black text-brand-primary-dark">
                           {formatProductPrice(product)}
                         </span>
                       </div>
-                      <p className="text-brand-text text-sm mt-3 leading-relaxed whitespace-pre-line break-words flex-grow">
+                      <p className="mt-3 flex-grow break-words text-sm leading-relaxed text-brand-text">
                         {product.description}
                       </p>
 
-                      {/* Action Buttons */}
-                      <div className="mt-6 pt-5 border-t border-brand-border flex items-center gap-3">
+                      <div className="mt-6 flex items-center gap-3 border-t border-brand-border pt-5">
                         {qty > 0 ? (
-                          <div className="flex items-center bg-brand-primary text-brand-dark px-2 py-1 rounded-full gap-2">
+                          <div className="flex items-center gap-2 rounded-full bg-brand-primary px-2 py-1 text-brand-dark">
                             <button
                               onClick={() => handleRemoveFromBasket(product.id)}
-                              className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
-                              aria-label="Kurangi porsi"
+                              className="rounded-full p-1.5 transition-colors hover:bg-brand-dark/15 focus-brand"
+                              aria-label={d.reduceLabel}
                             >
-                              <Minus className="w-4 h-4" />
+                              <Minus className="h-4 w-4" />
                             </button>
-                            <span className="font-bold text-sm min-w-[52px] text-center">
-                              {qty} porsi
+                            <span className="min-w-[52px] text-center text-sm font-bold">
+                              {qty} {d.porsiSuffix}
                             </span>
                             <button
                               onClick={() => handleAddToBasket(product)}
-                              className="p-1.5 hover:bg-brand-dark/15 rounded-full transition-colors focus-brand"
-                              aria-label="Tambah porsi"
+                              className="rounded-full p-1.5 transition-colors hover:bg-brand-dark/15 focus-brand"
+                              aria-label={d.addLabel}
                             >
-                              <Plus className="w-4 h-4" />
+                              <Plus className="h-4 w-4" />
                             </button>
                           </div>
                         ) : (
@@ -293,8 +231,8 @@ export default function MenuSection() {
                             onClick={() => handleAddToBasket(product)}
                             className="btn btn-outline btn-sm flex-1"
                           >
-                            <Plus className="w-3.5 h-3.5" />
-                            Keranjang
+                            <Plus className="h-3.5 w-3.5" />
+                            {d.addToCartLabel}
                           </button>
                         )}
                         <a
@@ -302,50 +240,50 @@ export default function MenuSection() {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={() => trackWhatsAppConversion(`Menu WA Order: ${product.name}`)}
-                          className="btn btn-wa btn-sm flex-1 hover:text-white"
+                          className="btn btn-wa btn-sm flex-1"
                         >
-                          <ShoppingCart className="w-3.5 h-3.5" />
-                          Pesan WA
+                          <ShoppingCart className="h-3.5 w-3.5" />
+                          {d.orderWaLabel}
                         </a>
                       </div>
                     </div>
+
                   </div>
                 )
               })}
             </motion.div>
           )}
 
-          {/* ── Catering Banner ── */}
-          <div className="mt-20 bg-brand-primary border-2 border-brand-border-strong p-8 md:p-12 rounded-4xl flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-red/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="space-y-4 max-w-xl relative z-10">
-              <span className="badge badge-red">Katering & Corporate Gathering</span>
-              <h2 className="font-display font-black text-3xl md:text-4xl text-brand-dark tracking-tight leading-tight">
-                Mengadakan Acara Besar atau Gathering Kantor?
-              </h2>
-              <p className="text-sm text-brand-text leading-relaxed">
-                Tim dapur Papatong siap menyusun porsi prasmanan, paket besek hantaran,
-                arisan komunitas, hingga tumpeng megah untuk menyukseskan perayaan
-                korporat Anda di Bogor. Hubungi Banquet Manager kami.
-              </p>
+          <div className="relative mt-20 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-primary p-8 md:p-12">
+            <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-brand-red/10 blur-3xl" />
+
+            <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row md:justify-between">
+              <div className="max-w-xl space-y-4">
+                <span className="badge badge-red">{d.cateringBadge}</span>
+                <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-brand-dark md:text-4xl">
+                  {d.cateringTitle}
+                </h2>
+                <p className="text-sm leading-relaxed text-brand-text">
+                  {d.cateringDescription}
+                </p>
+              </div>
+              <a
+                href={buildWALink(
+                  BUSINESS_INFO.wa,
+                  buildCateringWAMessage(BUSINESS_INFO.name),
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackWhatsAppConversion('Menu Page — Catering Lead Banner')}
+                className="btn btn-dark btn-lg relative z-10 shrink-0"
+              >
+                {d.cateringCtaLabel}
+              </a>
             </div>
-            <a
-              href={buildWALink(
-                BUSINESS_INFO.wa,
-                buildCateringWAMessage(BUSINESS_INFO.name),
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackWhatsAppConversion('Menu Page — Catering Lead Banner')}
-              className="btn btn-dark btn-lg shrink-0 relative z-10"
-            >
-              Diskusi Paket Acara
-            </a>
           </div>
 
         </div>
 
-        {/* ── Floating Basket Bar ── */}
         <AnimatePresence>
           {totalItems > 0 && (
             <motion.div
@@ -353,16 +291,16 @@ export default function MenuSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 60 }}
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-              className="fixed bottom-24 left-6 right-6 lg:left-auto lg:right-12 z-[150] max-w-sm glass p-4 rounded-2xl shadow-card-lg border-2 border-brand-primary/40"
+              className="fixed bottom-24 left-6 right-6 z-floating max-w-sm rounded-2xl border-2 border-brand-primary/40 glass p-4 shadow-card-lg lg:left-auto lg:right-12"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <ShoppingCart className="w-4 h-4 text-brand-primary-dark" />
-                  <span className="font-bold text-sm text-brand-dark">
-                    {totalItems} item
+                  <ShoppingCart className="h-4 w-4 text-brand-primary-dark" />
+                  <span className="text-sm font-bold text-brand-dark">
+                    {totalItems} {d.basketItemsLabel}
                   </span>
-                  <span className="text-brand-muted text-xs">·</span>
-                  <span className="font-black text-sm text-brand-primary-dark">
+                  <span className="text-xs text-brand-muted">·</span>
+                  <span className="text-sm font-black text-brand-primary-dark">
                     {formatPrice(subtotal)}
                   </span>
                 </div>
@@ -370,7 +308,7 @@ export default function MenuSection() {
                   onClick={() => setIsCheckoutOpen(true)}
                   className="btn btn-primary btn-sm"
                 >
-                  Checkout
+                  {d.basketCheckoutLabel}
                 </button>
               </div>
             </motion.div>
@@ -379,7 +317,6 @@ export default function MenuSection() {
 
       </section>
 
-      {/* ── Checkout Modal ── */}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}

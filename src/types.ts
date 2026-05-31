@@ -41,6 +41,7 @@ export interface BusinessInfo {
   hours:       string;
   instagram:   string;
   tiktok?:     string;
+  youtube?:    string;
   email?:      string;
   mapQuery:    string;        // Embed query
   mapsLink:    string;        // Link ke Google Maps
@@ -139,17 +140,6 @@ export interface GalleryItem {
 export interface PreOrderBasketItem {
   product:  Product;
   quantity: number;
-}
-
-// ─── Team ─────────────────────────────────────────────────────────────────
-
-export interface TeamMember {
-  id:          number;
-  name:        string;
-  role:        string;
-  photo:       string;
-  bio:         string;
-  specialty?:  string;
 }
 
 // ─── Hero Section ─────────────────────────────────────────────────────────
@@ -265,6 +255,8 @@ export interface GalleryPageData {
   expandBtnText:    string;
   lightboxTitle:    string;
   lightboxBackText: string;
+  lightboxCloseLabel: string   // ← tambahkan ini
+  estLabel:           string   // ← tambahkan ini
   instagramBadge:   string;
   instagramTitle:   string;
   instagramDesc:    string;

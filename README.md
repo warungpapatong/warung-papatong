@@ -166,7 +166,7 @@ warung-papatong/
     │   │       ├── ambience-section/
     │   │       │   ├── AmbienceTeaser.tsx      # ✅ Server Component
     │   │       │   └── client/
-    │   │       │       └── AmbienceCard.tsx    # ⚡ Client — whileInView per kartu
+    │   │       │       └── AmbienceCards.tsx   # ⚡ Client — whileInView per kartu
     │   │       ├── testimonials-section/
     │   │       │   ├── TestimonialsSection.tsx # ✅ Server Component
     │   │       │   └── client/

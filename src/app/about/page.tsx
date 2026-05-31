@@ -1,22 +1,80 @@
 // src/app/about/page.tsx
-// Orchestrator only — tidak ada UI logic di sini.
 
 import type { Metadata } from 'next'
-import AboutStory  from '@/features/about/components/AboutStory'
-// import AboutTeam   from '@/features/about/components/AboutTeam'
-import AboutCTA    from '@/features/about/components/AboutCTA'
+import { BUSINESS_INFO } from '@/data'
+import { APP_CONFIG } from '@/lib/config'
+
+import AboutStory from '@/features/about/components/AboutStory'
+import AboutCTA from '@/features/about/components/AboutCTA'
 
 export const metadata: Metadata = {
-  title:       'Tentang Kami - Resto Warung Papatong',
-  description: 'Kisah, nilai, dan tim di balik Warung Papatong — saung lesehan terapung dengan kuliner Sunda & seafood autentik di Cibinong sejak 2018.',
+  title:
+    'Tentang Warung Papatong — Resto Seafood & Sunda Favorit Cibinong',
+
+  description:
+    'Mengenal lebih dekat Warung Papatong, restoran Sunda dan Seafood keluarga di Cibinong sejak 2018. Nikmati suasana saung lesehan, live music, area gathering, dan hidangan seafood segar berkualitas.',
+
+  keywords:
+    'tentang warung papatong, sejarah warung papatong, resto seafood cibinong, restoran keluarga bogor, saung lesehan cibinong, seafood bogor, tempat makan keluarga cibinong, restoran sunda bogor, seafood sentul',
+
+  alternates: {
+    canonical: `${APP_CONFIG.siteUrl}/about`,
+  },
+
+  openGraph: {
+    title:
+      'Tentang Warung Papatong — Seafood & Sunda Favorit Cibinong',
+
+    description:
+      'Kisah perjalanan Warung Papatong menghadirkan pengalaman kuliner Sunda autentik dan seafood segar dalam suasana saung lesehan yang nyaman.',
+
+    url: `${APP_CONFIG.siteUrl}/about`,
+    siteName: BUSINESS_INFO.name,
+    locale: 'id_ID',
+    type: 'website',
+
+    images: [
+      {
+        url: `${APP_CONFIG.siteUrl}/images/venue/03-gallery/balon-udara2.webp`,
+        width: 1200,
+        height: 630,
+        alt: 'Tentang Warung Papatong',
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+
+    title:
+      'Tentang Warung Papatong — Seafood & Sunda Favorit Cibinong',
+
+    description:
+      'Mengenal sejarah, filosofi, dan pengalaman kuliner keluarga di Warung Papatong.',
+
+    images: [
+      `${APP_CONFIG.siteUrl}/images/venue/03-gallery/balon-udara2.webp`,
+    ],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default function AboutPage() {
   return (
     <>
-      <AboutStory  />
-      {/* <AboutTeam   /> */}
-      <AboutCTA    />
+      <AboutStory />
+      <AboutCTA />
     </>
   )
 }

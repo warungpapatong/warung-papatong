@@ -8,19 +8,11 @@ import { ArrowRight, Star } from 'lucide-react'
 import { PRODUCTS_DATA, formatPrice } from '@/data'
 import type { Product } from '@/types'
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-//
-// FIX: getDynamicDishes sekarang terima `tick` (bukan `currentHour`).
-// tick di-increment setiap intervalMs — jadi rotasi benar-benar terjadi
-// setiap interval, bukan hanya kalau jam berubah (max 1x per jam).
-//
-// Logika stagger offset tetap sama: 0, 5, 11 — menjamin variasi kategori.
-
 function getDynamicDishes(tick: number): Product[] {
   const total = PRODUCTS_DATA.length
   if (total === 0) return []
 
-  const baseOffset     = tick % total
+  const baseOffset = tick % total
   const staggerOffsets = [0, 5, 11]
   const dishes: Product[] = []
 
@@ -39,8 +31,6 @@ function getDynamicDishes(tick: number): Product[] {
   return dishes
 }
 
-// ─── Props ────────────────────────────────────────────────────────────────────
-
 interface BestSellerCardsProps {
   intervalMs: number
   ctaHref: string
@@ -48,23 +38,11 @@ interface BestSellerCardsProps {
   detailCtaText: string
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
-export default function BestSellerCards({
-  intervalMs,
-  ctaHref,
-  freshBadgeLabel,
-  detailCtaText,
-}: BestSellerCardsProps) {
-  // FIX: pakai tick counter, bukan currentHour.
-  // tick increment setiap intervalMs → rotasi benar-benar terjadi setiap interval.
-  // Inisialisasi dari jam sekarang agar kartu pertama konsisten dengan waktu load.
+export default function BestSellerCards({ intervalMs, ctaHref, freshBadgeLabel, detailCtaText }: BestSellerCardsProps) {
   const [tick, setTick] = useState(() => new Date().getHours())
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTick(prev => prev + 1)
-    }, intervalMs)
+    const timer = setInterval(() => setTick(prev => prev + 1), intervalMs)
     return () => clearInterval(timer)
   }, [intervalMs])
 
@@ -83,7 +61,6 @@ export default function BestSellerCards({
             layout
             className="card card-hover group flex flex-col h-[470px] sm:h-[490px] md:h-[520px] lg:h-[490px] xl:h-[470px]"
           >
-            {/* Image */}
             <div className="relative aspect-card w-full overflow-hidden">
               <img
                 src={dish.image}
@@ -106,7 +83,6 @@ export default function BestSellerCards({
               </span>
             </div>
 
-            {/* Body */}
             <div className="p-6 md:p-8 flex flex-col flex-grow justify-between gap-3">
               <div className="space-y-2">
                 <span className="text-[10px] font-mono tracking-widest text-brand-success uppercase font-bold">
@@ -133,7 +109,6 @@ export default function BestSellerCards({
                 </Link>
               </div>
             </div>
-
           </motion.article>
         ))}
       </AnimatePresence>

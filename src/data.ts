@@ -59,13 +59,10 @@ import type {
   GalleryItem,
   GalleryPageData,
   HeroData,
-  InstagramFeedItem,
   LocationData,
   NavbarData,
   Product,
   Stat,
-  Step,
-  TeamMember,
   TestimonialsData,
   Testimonial,
 } from '@/types';
@@ -84,7 +81,8 @@ export const BUSINESS_INFO: BusinessInfo = {
   city:        'Cibinong, Bogor',
   hours:       'Setiap Hari, 11:00 - 22:00 WIB',
   instagram:   'restowarungpapatong',
-  tiktok:      'warungpapatong',
+  tiktok:      'restowarungpapatong',
+  youtube:     'warungpapatong',
   email:       'warungpapatong.cibinong@gmail.com',
   mapQuery:    'RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
   mapsLink:    'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor/@-6.5120209,106.8329725,17z',
@@ -121,6 +119,59 @@ export const STATS_DATA: Stat[] = [
     description: 'Pelayanan ramah berkelas restoran bintang lima.',
   },
 ];
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// ⑱ MENU PAGE DATA
+// ════════════════════════════════════════════════════════════════════════════
+
+export const MENU_CATEGORIES = [
+  { id: 'all',             label: 'Semua'           },
+  { id: 'seafood',         label: 'Seafood'         },
+  { id: 'ikan-air-tawar',  label: 'Ikan Air Tawar'  },
+  { id: 'sunda',           label: 'Sunda'           },
+  { id: 'ayam-dan-daging', label: 'Ayam dan Daging' },
+  { id: 'sayuran',         label: 'Sayuran'         },
+  { id: 'minuman',         label: 'Segar Minuman'   },
+] as const
+
+export type MenuCategoryId = typeof MENU_CATEGORIES[number]['id']
+
+export const MENU_PAGE_DATA = {
+  badge:                 'Menu Kami',
+  title:                 'Daftar Menu',
+  titleAccent:           'Hidangan Autentik',
+  description:           'Pilih hidangan favorit, masukkan ke keranjang, dan pesan langsung via WhatsApp — mudah & cepat!',
+  searchPlaceholder:     'Cari kepiting, timbel, kangkung...',
+  searchClearLabel:      'Hapus pencarian',
+  emptyStateText:        'Menu tidak ditemukan. Coba kata kunci lain!',
+  kitchenReadyLabel:     'Dapur Ready',
+  addToCartLabel:        'Keranjang',
+  addLabel:              'Tambah porsi',
+  reduceLabel:           'Kurangi porsi',
+  orderWaLabel:          'Pesan WA',
+  porsiSuffix:           'porsi',
+  cateringBadge:         'Katering & Corporate Gathering',
+  cateringTitle:         'Mengadakan Acara Besar atau Gathering Kantor?',
+  cateringDescription:   'Tim dapur Papatong siap menyusun porsi prasmanan, paket besek hantaran, arisan komunitas, hingga tumpeng megah untuk menyukseskan perayaan korporat Anda di Bogor. Hubungi Banquet Manager kami.',
+  cateringCtaLabel:      'Diskusi Paket Acara',
+  basketItemsLabel:      'item',
+  basketCheckoutLabel:   'Checkout',
+  watermarkText:         'MENU',
+} as const
+
+export const CHECKOUT_MODAL_DATA = {
+  title:             'Keranjang Belanja',
+  itemSuffix:        'item',
+  closeLabel:        'Tutup',
+  emptyText:         'Keranjang masih kosong.',
+  reduceLabel:       'Kurangi',
+  addLabel:          'Tambah',
+  totalLabel:        'Total',
+  orderWaLabel:      'Pesan via WhatsApp',
+  clearLabel:        'Kosongkan Keranjang',
+  dialogTitleId:     'checkout-title',
+} as const
 
 // ════════════════════════════════════════════════════════════════════════════
 // ③ PRODUCTS DATA
@@ -396,45 +447,98 @@ export const FAQS_DATA: FAQItem[] = [
 // ════════════════════════════════════════════════════════════════════════════
 
 export const GALLERY_DATA: GalleryItem[] = [
-  { id: 1,  image: '/images/venue/01-gallery/entrance.webp', alt: 'Tampak depan Warung Papatong.', category: 'tempat', size: 'large'  },
-  { id: 2,  image: '/images/venue/01-gallery/entrance2.webp', alt: 'Tampak depan Warung Papatong Sunda Seafood dengan area makan semi-outdoor dan akses parkir luas.', category: 'tempat', size: 'medium'  },
-  { id: 3,  image: '/images/venue/02-gallery/wall-of-frame1.webp', alt: 'Spot welcome wall ikonik Warung Papatong dengan mural tropis artistik yang cocok untuk area foto pengunjung.', category: 'tempat', size: 'medium' },
-  { id: 4,  image: '/images/venue/03-gallery/balon-udara1.webp', alt: 'Spot foto balon udara ikonik Warung Papatong dikelilingi pepohonan tropis dan lampu gantung outdoor.', category: 'tempat', size: 'medium' },
-  { id: 5,  image: '/images/venue/04-gallery/main-place2.webp', alt: 'Area makan utama semi-outdoor dengan meja panjang luas dan nuansa angin sejuk dan pencahayaan alami.', category: 'tempat', size: 'large'  },
-  { id: 6,  image: '/images/venue/05-gallery/side-place1.webp', alt: 'Interior area makan industrial modern semi outdoor Warung Papatong.', category: 'tempat', size: 'medium' },
-  { id: 7,  image: '/images/venue/06-gallery/area-lesehan2.webp', alt: 'Area makan lesehan modern dengan konsep terbuka dan suasana santai.', category: 'tempat', size: 'medium' },
-  { id: 8,  image: '/images/venue/07-gallery/saung-bambu.webp', alt: 'Saung bambu tradisional Warung Papatong lengkap dengan area bermain anak dan nuansa pedesaan asri.', category: 'tempat', size: 'large'  },
-  { id: 9,  image: '/images/venue/08-gallery/wedding4.webp', alt: 'Spot foto pernikahan di Warung Papatong.', category: 'tempat', size: 'medium' },
-  { id: 10, image: '/images/venue/09-gallery/pengunjung.webp', alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', category: 'aktivitas', size: 'medium' },
-  { id: 11, image: '/images/venue/09-gallery/pengunjung1.webp', alt: 'Foto pengunjung di Saung Bambu', category: 'aktivitas', size: 'large'  },
-  { id: 12, image: '/images/venue/09-gallery/pengunjung2.webp', alt: 'Foto pengunjung di Area Makan Utama', category: 'aktivitas', size: 'large'  },
-  { id: 13, image: '/images/venue/10-gallery/service-waiter.webp', alt: 'Foto pelayan di Warung Papatong', category: 'aktivitas', size: 'medium' },
+  { 
+    id: 1,  
+    image: '/images/venue/01-gallery/entrance.webp', 
+    alt: 'Tampak depan Warung Papatong.', 
+    category: 'tempat', 
+    size: 'large'  
+  },
+  { 
+    id: 2,  
+    image: '/images/venue/01-gallery/entrance2.webp', 
+    alt: 'Tampak depan Warung Papatong Sunda Seafood dengan area makan semi-outdoor dan akses parkir luas.', 
+    category: 'tempat', 
+    size: 'medium'  
+  },
+  { 
+    id: 3,  
+    image: '/images/venue/02-gallery/wall-of-frame1.webp', 
+    alt: 'Spot welcome wall ikonik Warung Papatong dengan mural tropis artistik yang cocok untuk area foto pengunjung.', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 4,  
+    image: '/images/venue/03-gallery/balon-udara1.webp', 
+    alt: 'Spot foto balon udara ikonik Warung Papatong dikelilingi pepohonan tropis dan lampu gantung outdoor.', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 5,  
+    image: '/images/venue/04-gallery/main-place2.webp', 
+    alt: 'Area makan utama semi-outdoor dengan meja panjang luas dan nuansa angin sejuk dan pencahayaan alami.', 
+    category: 'tempat', 
+    size: 'large'  
+  },
+  { 
+    id: 6,  
+    image: '/images/venue/05-gallery/side-place1.webp', 
+    alt: 'Interior area makan industrial modern semi outdoor Warung Papatong.', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 7,  
+    image: '/images/venue/06-gallery/area-lesehan2.webp', 
+    alt: 'Area makan lesehan modern dengan konsep terbuka dan suasana santai.', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 8,  
+    image: '/images/venue/07-gallery/saung-bambu.webp', 
+    alt: 'Saung bambu tradisional Warung Papatong lengkap dengan area bermain anak dan nuansa pedesaan asri.', 
+    category: 'tempat', 
+    size: 'large'  
+  },
+  { 
+    id: 9,  
+    image: '/images/venue/08-gallery/wedding4.webp', 
+    alt: 'Spot foto pernikahan di Warung Papatong.', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 10, 
+    image: '/images/venue/09-gallery/pengunjung.webp', 
+    alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', 
+    category: 'aktivitas', 
+    size: 'medium' 
+  },
+  { 
+    id: 11, 
+    image: '/images/venue/09-gallery/pengunjung1.webp', 
+    alt: 'Foto pengunjung di Saung Bambu', 
+    category: 'aktivitas', 
+    size: 'large'  
+  },
+  { 
+    id: 12, 
+    image: '/images/venue/09-gallery/pengunjung2.webp', 
+    alt: 'Foto pengunjung di Area Makan Utama', 
+    category: 'aktivitas', 
+    size: 'large'  
+  },
+  { 
+    id: 13, 
+    image: '/images/venue/10-gallery/service-waiter.webp', 
+    alt: 'Foto pelayan di Warung Papatong', 
+    category: 'aktivitas', 
+    size: 'medium' 
+  },
 ];
-
-// // ════════════════════════════════════════════════════════════════════════════
-// // ⑧ TEAM DATA
-// // ════════════════════════════════════════════════════════════════════════════
-
-// export const TEAM_DATA: TeamMember[] = [
-//   {
-//     id: 1, name: 'H. Jaka Permana', role: 'Owner & Founder',
-//     photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80',
-//     bio: 'Mendirikan Warung Papatong pada tahun 2018 dengan visi menyajikan kuliner Sunda autentik berstandar premium yang ramah untuk kumpul keluarga besar Jabodetabek.',
-//     specialty: 'Visi Bisnis & Pelestarian Budaya Kuliner',
-//   },
-//   {
-//     id: 2, name: 'Chef Cecep Sunandar', role: 'Senior Head Chef',
-//     photo: 'https://images.unsplash.com/photo-1583394293214-28ded15ee548?w=600&auto=format&fit=crop&q=60',
-//     bio: 'Berbekal pengalaman 15+ tahun di bidang hidangan laut nusantara, meracik bumbu legendaris Saus Padang Istimewa dan sambal ulek khas Papatong yang memanjakan lidah.',
-//     specialty: 'Sunda Tradisional & Seafood Fusion',
-//   },
-//   {
-//     id: 3, name: 'Ibu Rina Sulaeman', role: 'Banquet & Operational Manager',
-//     photo: 'https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?q=80&w=387&auto=format&fit=crop',
-//     bio: 'Menangani kelancaran operasional harian resto, koordinasi pre-order banquet khusus arisan, reuni, corporate gathering, hingga dekorasi meja kejutan ulang tahun.',
-//     specialty: 'Layanan Pelanggan & Koordinasi Rombongan',
-//   },
-// ];
 
 // ════════════════════════════════════════════════════════════════════════════
 // ⑨ HERO DATA
@@ -469,9 +573,21 @@ export const HERO_DATA: HeroData = {
 // ════════════════════════════════════════════════════════════════════════════
 
 export const AMBIENCE_TEASER_DATA: AmbienceTeaserItem[] = [
-  { url: '/images/venue/06-gallery/area-lesehan1.webp', caption: 'Lesehan Semi Outdoor',  desc: 'Menikmati makan dengan susana teduh sembari lesehan' },
-  { url: '/images/venue/07-gallery/saung-bambu.webp', caption: 'Saung Bambu',    desc: 'Lanskap rimbun pepohonan hijau sejuk khas pedesaan Jawa Barat' },
-  { url: '/images/venue/03-gallery/balon-udara2.webp', caption: 'Spot Foto Ikonik', desc: 'Spot foto balon udara ikonik Warung Papatong.' },
+  { 
+    url: '/images/venue/06-gallery/area-lesehan1.webp', 
+    caption: 'Lesehan Semi Outdoor',  
+    desc: 'Menikmati makan dengan susana teduh sembari lesehan' 
+  },
+  { 
+    url: '/images/venue/07-gallery/saung-bambu.webp', 
+    caption: 'Saung Bambu',    
+    desc: 'Lanskap rimbun pepohonan hijau sejuk khas pedesaan Jawa Barat' 
+  },
+  { 
+    url: '/images/venue/03-gallery/balon-udara2.webp', 
+    caption: 'Spot Foto Ikonik', 
+    desc: 'Spot foto balon udara ikonik Warung Papatong.' 
+  },
 ];
 
 export const AMBIENCE_TEASER_CONTENT: AmbienceTeaserData = {
@@ -517,7 +633,7 @@ export const TESTIMONIALS_CONTENT: TestimonialsData = {
 
 export const LOCATION_DATA: LocationData = {
   badge:         'DENGAN AKSES STRATEGIS',
-  title:         'Mudah Dijangkau, Bersebelahan GOR Pemda',
+  title:         'Mudah Dijangkau, Berdekatan dengan GOR Pemda',
   description:   'Berlokasi prima di Nanggewer, Cibinong, hanya terpaut beberapa menit dari Exit Toll Sirkuit Sentul. Area kami di tepi jalan raya utama GOR Pemda, menjamin kemudahan manuver putar balik untuk Bus Wisata ataupun rombongan besar.',
   labelAddress:  'Alamat Lengkap',
   labelHours:    'Jam Operasional',
@@ -547,24 +663,98 @@ export const FAQ_SECTION_DATA: FaqSectionData = {
 // ════════════════════════════════════════════════════════════════════════════
 
 export const GALLERY_PAGE_DATA: GalleryPageData = {
-  badge:            'Lanskap Saung Pasundan',
-  title:            'Galeri & Suasana',
-  titleAccent:      'Warung Papatong',
-  description:      'Menatap kenyamanan saung lesehan semi-outdoor, area keluarga yang luas, hingga atmosfer santai khas Sunda yang membuat pengunjung betah menikmati waktu bersama.',
+  badge:              'Lanskap Saung Pasundan',
+  title:              'Galeri & Suasana',
+  titleAccent:        'Warung Papatong',
+  description:        'Menatap kenyamanan saung lesehan semi-outdoor, area keluarga yang luas, hingga atmosfer santai khas Sunda yang membuat pengunjung betah menikmati waktu bersama.',
   filterTabs: [
     { id: 'semua',     label: 'Semua Koleksi'           },
     { id: 'tempat',   label: 'Suasana Resto & Lesehan' },
     { id: 'aktivitas', label: 'Aktivitas & Hidangan'    },
   ],
-  expandBtnText:    'Perbesar',
-  lightboxTitle:    'Detail Galeri Foto',
-  lightboxBackText: 'Kembali ke Koleksi',
-  instagramBadge:   'Live Instagram Feed',
-  instagramTitle:   'Aktivitas Terbaru dari @{instagram}',
-  instagramDesc:    'Intip suasana hangat Warung Papatong mulai dari saung lesehan, live music malam hari, sampai momen seru para pengunjung yang menikmati kebersamaan di setiap sudut restoran.',
-  instagramCtaText: 'Kunjungi Instagram Resmi',
-  elfsightAppId:    'elfsight-app-f0efd7c9-1075-4d19-aa42-d8afd8399e02',
+  expandBtnText:      'Perbesar',
+  lightboxTitle:      'Detail Galeri Foto',
+  lightboxBackText:   'Kembali ke Koleksi',
+  lightboxCloseLabel: 'Tutup galeri',
+  estLabel:           'Est.',
+  instagramBadge:     'Live Instagram Feed',
+  instagramTitle:     'Aktivitas Terbaru dari @{instagram}',
+  instagramDesc:      'Intip suasana hangat Warung Papatong mulai dari saung lesehan, live music malam hari, sampai momen seru para pengunjung yang menikmati kebersamaan di setiap sudut restoran.',
+  instagramCtaText:   'Kunjungi Instagram Resmi',
+  elfsightAppId:      'elfsight-app-f0efd7c9-1075-4d19-aa42-d8afd8399e02',
 };
+
+// ════════════════════════════════════════════════════════════════════════════
+// ⑲ ABOUT PAGE DATA
+// ════════════════════════════════════════════════════════════════════════════
+
+export const ABOUT_CTA_DATA = {
+  waMessage:          'Halo Admin Papatong, saya ingin reservasi meja saung lesehan.',
+
+  infoSectionBadge:   'Temukan Kami',
+  infoSectionTitle:   'Informasi & Lokasi Warung Papatong',
+  infoSectionDesc:    'Kami siap menyambut Anda - dari reservasi dadakan hingga gathering ratusan orang.',
+
+  mapsLabel:          'Buka di Google Maps',
+  mapsIframeTitle:    'Lokasi Warung Papatong di Google Maps',
+  addressCardTitle:   'Alamat',
+  hoursCardTitle:     'Jam Operasional',
+  contactCardTitle:   'Hubungi Kami',
+  openNowLabel:       'Sedang Buka Sekarang',
+  waResponseDesc:     'Respons cepat via WhatsApp - tersedia setiap hari selama jam operasional',
+
+  statsCapacity:      '200+',
+  statsCapacityLabel: 'Kursi Kapasitas',
+  statsRating:        '4.9★',
+  statsRatingLabel:   'Rating Pelanggan',
+  statsFoundedLabel:  'Tahun Berdiri',
+
+  ctaBadge:           'Reservasi Online Cepat',
+  ctaTitle:           'Kunci Saung Lesehan',
+  ctaTitleAccent:     'Favorit Anda Sekarang',
+  ctaDesc:            'Amankan lokasi saung lesehan untuk rombongan dinas, arisan keluarga, atau rapat korporat. Potong waktu tunggu dapur dengan pre-order langsung via WhatsApp.',
+
+  waCtaLabel:         'Booking via WhatsApp',
+  igCtaLabel:         'Follow Instagram',
+  ytCtaLabel:         'Tonton di YouTube',
+  ttCtaLabel:         'Ikuti di TikTok',
+} as const
+
+export const ABOUT_STORY_DATA = {
+  badge:           'Warisan Rasa Sunda & Seafood',
+  heroTitle:       'Kisah di Balik',
+  heroTitleAccent: 'Saung Papatong',
+  heroDesc:        'Dari kecintaan mendalam pada kuliner Parahyangan, Warung Papatong hadir membawa kehangatan saung lesehan terapung di jantung Cibinong sejak 2018.',
+
+  storyImage:      '/images/venue/03-gallery/balon-udara2.webp',
+  storyImageAlt:   'Spot foto balon udara Ikonik Warung Papatong',
+
+  storyLabel:      'Sejarah & Tradisi Kuliner',
+  storyTitle:      'Warisan Rasa Saung Sunda & Hasil Nelayan Nusantara',
+
+  p1Before:  'Didirikan dengan kecintaan mendalam pada pusaka kuliner Parahyangan,',
+  p1Bold:    'Warung Papatong',
+  p1After:   'mengawinkan kelembutan timbel tradisional dengan gairah kuliner seafood segar yang diolah langsung pasca-tangkapan kolam.',
+
+  p2Before:  'Nama',
+  p2Italic:  'Papatong',
+  p2After:   '(artinya capung dalam Bahasa Sunda) dipilih sebagai cerminan harmoni dengan alam terbuka. Di sini, pengunjung tidak hanya bersantap — melainkan mengikat silaturahmi di saung terapung, ditemani gemericik air dan petikan musik akustik live.',
+
+  highlights: [
+    {
+      title: 'Tradisi Pilihan',
+      body:  'Kami hanya memanen ikan segar langsung dari kolam saung sesaat sebelum dinikmati pelanggan.',
+    },
+    {
+      title: 'Bumbu Ulekan Asli',
+      body:  'Rempah ditumbuk tradisional tanpa pengawet sintetik — jaminan kesegaran rasa setiap sajian.',
+    },
+  ],
+
+  blockquote:       'Kebahagiaan paling murni adalah ketika melihat keluarga besar duduk mengitari saung lesehan, tertawa lepas sembari berebut kepiting saus Padang di bawah angin sewayup Papatong.',
+  blockquoteAttrib: '~ Keluarga Besar Pengelola Warung Papatong',
+  watermarkText:    'TENTANG',
+} as const
 
 // ════════════════════════════════════════════════════════════════════════════
 // ⑯ NAVBAR DATA

@@ -1,19 +1,3 @@
-// src/app/page.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ Server Component murni
-// ✅ metadata — override title/description/OG khusus halaman beranda
-// ✅ JSON-LD Review + FAQ schema untuk rich result di SERP
-//
-// OG IMAGE:
-//   Menggunakan src/app/opengraph-image.png (Next.js file-based convention).
-//   Next.js otomatis generate <meta og:image> dari file tersebut —
-//   tidak perlu tulis URL manual di metadata.images.
-//
-// LOGO:
-//   Menggunakan hasil favicon generator di public/ (icon.png, favicon.ico, dll).
-//   Next.js otomatis pick up icon.png/icon.ico dari src/app/ atau public/.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { Metadata } from 'next'
 
 import { APP_CONFIG } from '@/lib/config'
@@ -27,11 +11,6 @@ import {
   FaqSection,
   LocationSection,
 } from '@/features/home/components'
-
-// ─── Per-page Metadata ────────────────────────────────────────────────────────
-// Override metadata layout.tsx khusus untuk halaman beranda.
-// Tidak perlu tulis `images` — Next.js otomatis pakai opengraph-image.png
-// yang ada di src/app/ sebagai og:image untuk semua halaman di bawah app/.
 
 export const metadata: Metadata = {
   title: `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong, Booking Lesehan Rombongan`,
@@ -47,22 +26,13 @@ export const metadata: Metadata = {
     siteName:    APP_CONFIG.siteName,
     locale:      'id_ID',
     type:        'website',
-    // ✅ Tidak perlu tulis `images` di sini.
-    // Next.js otomatis inject og:image dari src/app/opengraph-image.png
   },
   twitter: {
     card:        'summary_large_image',
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong`,
     description: 'Rating 4.8★ dari 4.000+ ulasan Google. Booking lesehan rombongan gratis.',
-    // ✅ Tidak perlu tulis `images` — Next.js pakai opengraph-image.png juga
   },
 }
-
-// ─── Review JSON-LD ───────────────────────────────────────────────────────────
-// TestimonialsSection dirender client-side (carousel) sehingga Google tidak
-// crawl teks ulasan dari HTML. JSON-LD ini menginjeksikan semua ulasan
-// langsung ke <head> sebagai structured data — crawlable tanpa JS.
-// Potensi: Google menampilkan star rating snippet di SERP.
 
 function buildReviewSchema() {
   return {
@@ -79,10 +49,7 @@ function buildReviewSchema() {
     },
     review: TESTIMONIALS_DATA.map(r => ({
       '@type':  'Review',
-      author: {
-        '@type': 'Person',
-        name:    r.name,
-      },
+      author:   { '@type': 'Person', name: r.name },
       reviewBody:   r.review,
       reviewRating: {
         '@type':      'Rating',
@@ -95,15 +62,11 @@ function buildReviewSchema() {
   }
 }
 
-// ─── FAQ JSON-LD ──────────────────────────────────────────────────────────────
-// FaqSection sudah server-rendered, tapi FAQPage schema memberi sinyal ekstra
-// ke Google untuk featured snippet accordion di halaman hasil pencarian.
-
 function buildFaqSchema() {
   return {
-    '@context':  'https://schema.org',
-    '@type':     'FAQPage',
-    mainEntity:  FAQS_DATA.map(item => ({
+    '@context': 'https://schema.org',
+    '@type':    'FAQPage',
+    mainEntity: FAQS_DATA.map(item => ({
       '@type': 'Question',
       name:    item.question,
       acceptedAnswer: {
@@ -113,8 +76,6 @@ function buildFaqSchema() {
     })),
   }
 }
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   return (

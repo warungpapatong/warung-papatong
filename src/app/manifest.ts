@@ -1,18 +1,6 @@
-// src/app/manifest.ts
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ Next.js native MetadataRoute.Manifest — lebih baik dari manifest.json statis:
-//    - nama & deskripsi dari BUSINESS_INFO (single source of truth)
-//    - tidak ada drift antara manifest dan metadata lainnya
-//
-// Output: GET /manifest.webmanifest
-//
-// CATATAN:
-//   Hapus file public/manifest.json statis jika ada.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { MetadataRoute } from 'next'
+
 import { BUSINESS_INFO } from '@/data'
-import { APP_CONFIG } from '@/lib/config'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -22,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url:        '/',
     display:          'standalone',
     background_color: '#ffffff',
-    theme_color:      '#ffffff',
+    theme_color:      '#FFCC00',
     lang:             'id',
     scope:            '/',
     icons: [
@@ -39,12 +27,11 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: 'maskable',
       },
     ],
-    // shortcuts: pintasan ke halaman menu dari home screen app
     shortcuts: [
       {
-        name:      'Lihat Menu',
+        name:       'Lihat Menu',
         short_name: 'Menu',
-        url:       '/menu',
+        url:        '/menu',
         icons: [{ src: '/web-app-manifest-192x192.png', sizes: '192x192' }],
       },
     ],

@@ -1,12 +1,3 @@
-// src/features/home/components/FaqAccordion.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ CLIENT COMPONENT — hanya untuk:
-//    1. useState (openId accordion)
-//    2. AnimatePresence + motion.div (animasi buka/tutup)
-//
-// Data FAQ diterima sebagai props dari Server Component.
-// ─────────────────────────────────────────────────────────────────────────────
-
 'use client'
 
 import { useState } from 'react'
@@ -49,7 +40,7 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
                 className={`p-1.5 rounded-full shrink-0 transition-all duration-300 ${
                   isOpen
                     ? 'rotate-180 bg-brand-primary text-brand-dark'
-                    : 'bg-brand-surface-2 text-brand-primary'
+                    : 'bg-brand-surface-2 text-brand-primary-dark'
                 }`}
               >
                 <ChevronDown className="w-4 h-4" />

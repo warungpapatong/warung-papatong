@@ -1,28 +1,18 @@
-// src/features/menu/components/CheckoutModal.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// Modal checkout keranjang belanja — tampilkan item, hitung total,
-// kirim order langsung ke WhatsApp admin.
-//
-// REFACTOR (harga):
-//   - `product.priceFormatted` DIHAPUS dari Product interface
-//   - Tampilan harga satuan per item menggunakan formatProductPrice(product)
-//   - Total & subtotal tetap menggunakan formatPrice() (angka kalkulasi)
-//   - Pesan WA menggunakan buildCartWAMessage() dari src/lib/whatsapp.ts
-// ─────────────────────────────────────────────────────────────────────────────
-
 'use client'
 
 import { motion } from 'motion/react'
 import { ShoppingCart, Trash2, MessageSquare, X } from 'lucide-react'
 import type { Product, PreOrderBasketItem } from '@/types'
 import {
-  PRODUCTS_DATA, formatPrice, formatProductPrice,
-  BUSINESS_INFO, buildWALink,
+  PRODUCTS_DATA,
+  formatPrice,
+  formatProductPrice,
+  BUSINESS_INFO,
+  buildWALink,
+  CHECKOUT_MODAL_DATA,
 } from '@/data'
 import { buildCartWAMessage } from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface CheckoutModalProps {
   isOpen:             boolean
@@ -33,8 +23,6 @@ interface CheckoutModalProps {
   onClearBasket:      () => void
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function CheckoutModal({
   isOpen,
   onClose,
@@ -43,10 +31,8 @@ export default function CheckoutModal({
   onRemoveFromBasket,
   onClearBasket,
 }: CheckoutModalProps) {
-
   if (!isOpen) return null
 
-  // ── Derived state ──────────────────────────────────────────────────────────
   const basketItems: PreOrderBasketItem[] = Object.entries(basket)
     .map(([idStr, qty]) => {
       const p = PRODUCTS_DATA.find(product => product.id === parseInt(idStr))
@@ -55,12 +41,12 @@ export default function CheckoutModal({
     .filter((item): item is PreOrderBasketItem => item !== null)
 
   const subtotal = basketItems.reduce(
-    (acc, item) => acc + item.product.price * item.quantity, 0,
+    (acc, item) => acc + item.product.price * item.quantity,
+    0,
   )
 
   const totalQty = basketItems.reduce((a, b) => a + b.quantity, 0)
 
-  // ── Checkout handler ───────────────────────────────────────────────────────
   const handleCheckout = () => {
     const message = buildCartWAMessage(
       BUSINESS_INFO.name,
@@ -73,16 +59,17 @@ export default function CheckoutModal({
     onClose()
   }
 
+  const { title, itemSuffix, closeLabel, emptyText, reduceLabel, addLabel, totalLabel, orderWaLabel, clearLabel, dialogTitleId } = CHECKOUT_MODAL_DATA
+
   return (
     <div
       className="fixed inset-0 z-modal overflow-y-auto"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="checkout-title"
+      aria-labelledby={dialogTitleId}
     >
-      <div className="flex items-end sm:items-center justify-center min-h-screen sm:p-4">
+      <div className="flex min-h-screen items-end justify-center sm:items-center sm:p-4">
 
-        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -92,86 +79,83 @@ export default function CheckoutModal({
           aria-hidden="true"
         />
 
-        {/* Panel */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 40 }}
           transition={{ type: 'spring', duration: 0.4 }}
-          className="relative bg-brand-surface w-full sm:max-w-md sm:rounded-3xl rounded-t-3xl border border-brand-border shadow-card-lg overflow-hidden"
+          className="relative w-full overflow-hidden rounded-t-3xl border border-brand-border bg-brand-surface shadow-card-lg sm:max-w-md sm:rounded-3xl"
         >
 
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-5 border-b border-brand-border">
+          <div className="flex items-center justify-between border-b border-brand-border px-6 py-5">
             <div className="flex items-center gap-2.5">
-              <ShoppingCart className="w-5 h-5 text-brand-primary-dark" />
-              <h2 id="checkout-title" className="font-display font-black text-lg text-brand-dark">
-                Keranjang Belanja
+              <ShoppingCart className="h-5 w-5 text-brand-primary-dark" />
+              <h2
+                id={dialogTitleId}
+                className="font-display text-lg font-black text-brand-dark"
+              >
+                {title}
               </h2>
-              <span className="badge badge-primary text-xs">{totalQty} item</span>
+              <span className="badge badge-primary text-xs">
+                {totalQty} {itemSuffix}
+              </span>
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-full text-brand-muted hover:text-brand-dark hover:bg-brand-border transition-colors focus-brand"
-              aria-label="Tutup"
+              className="rounded-full p-2 text-brand-muted transition-colors hover:bg-brand-border hover:text-brand-dark focus-brand"
+              aria-label={closeLabel}
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
           </div>
 
-          {/* Item list */}
-          <div className="px-6 py-4 space-y-3 max-h-[50vh] overflow-y-auto">
+          <div className="max-h-[50vh] space-y-3 overflow-y-auto px-6 py-4">
             {basketItems.length === 0 ? (
-              <p className="text-center text-brand-muted text-sm py-10">
-                Keranjang masih kosong.
+              <p className="py-10 text-center text-sm text-brand-muted">
+                {emptyText}
               </p>
             ) : (
               basketItems.map(item => (
                 <div
                   key={item.product.id}
-                  className="flex items-center gap-4 bg-brand-surface-2 border border-brand-border rounded-2xl p-3"
+                  className="flex items-center gap-4 rounded-2xl border border-brand-border bg-brand-surface-2 p-3"
                 >
-                  {/* Thumbnail */}
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-14 h-14 rounded-xl object-cover shrink-0"
+                    className="h-14 w-14 shrink-0 rounded-xl object-cover"
                   />
 
-                  {/* Info */}
-                  <div className="flex-grow min-w-0">
-                    <p className="font-bold text-sm text-brand-dark line-clamp-1">
+                  <div className="min-w-0 flex-grow">
+                    <p className="line-clamp-1 text-sm font-bold text-brand-dark">
                       {item.product.name}
                     </p>
-                    {/* ↓ Single source: formatProductPrice() — sama persis dengan kartu menu */}
-                    <p className="text-xs text-brand-muted mt-0.5">
+                    <p className="mt-0.5 text-xs text-brand-muted">
                       {formatProductPrice(item.product)}
                     </p>
                   </div>
 
-                  {/* Counter */}
-                  <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex shrink-0 items-center gap-1.5">
                     <button
                       onClick={() => onRemoveFromBasket(item.product.id)}
-                      className="w-7 h-7 rounded-full border border-brand-border bg-brand-surface flex items-center justify-center text-brand-dark hover:bg-brand-border transition-colors"
-                      aria-label="Kurangi"
+                      className="flex h-7 w-7 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-dark transition-colors hover:bg-brand-border"
+                      aria-label={reduceLabel}
                     >
                       −
                     </button>
-                    <span className="w-6 text-center font-bold text-sm text-brand-dark">
+                    <span className="w-6 text-center text-sm font-bold text-brand-dark">
                       {item.quantity}
                     </span>
                     <button
                       onClick={() => onAddToBasket(item.product)}
-                      className="w-7 h-7 rounded-full border border-brand-border bg-brand-surface flex items-center justify-center text-brand-dark hover:bg-brand-border transition-colors"
-                      aria-label="Tambah"
+                      className="flex h-7 w-7 items-center justify-center rounded-full border border-brand-border bg-brand-surface text-brand-dark transition-colors hover:bg-brand-border"
+                      aria-label={addLabel}
                     >
                       +
                     </button>
                   </div>
 
-                  {/* Line total — kalkulasi dari price canonical */}
-                  <span className="text-xs font-black text-brand-primary-dark shrink-0 w-20 text-right">
+                  <span className="w-20 shrink-0 text-right text-xs font-black text-brand-primary-dark">
                     {formatPrice(item.product.price * item.quantity)}
                   </span>
                 </div>
@@ -179,36 +163,33 @@ export default function CheckoutModal({
             )}
           </div>
 
-          {/* Footer */}
           {basketItems.length > 0 && (
-            <div className="px-6 pb-6 pt-4 border-t border-brand-border space-y-4">
-
-              {/* Total row */}
+            <div className="space-y-4 border-t border-brand-border px-6 pb-6 pt-4">
               <div className="flex items-center justify-between">
-                <span className="font-bold text-sm text-brand-dark">Total</span>
-                <span className="font-display font-black text-xl text-brand-primary-dark">
+                <span className="text-sm font-bold text-brand-dark">{totalLabel}</span>
+                <span className="font-display text-xl font-black text-brand-primary-dark">
                   {formatPrice(subtotal)}
                 </span>
               </div>
 
-              {/* Actions */}
               <button
                 onClick={handleCheckout}
                 className="btn btn-wa btn-lg w-full"
               >
-                <MessageSquare className="w-5 h-5" />
-                Pesan via WhatsApp
+                <MessageSquare className="h-5 w-5" />
+                {orderWaLabel}
               </button>
 
               <button
                 onClick={onClearBasket}
-                className="btn btn-outline btn-sm w-full flex items-center justify-center gap-1.5 text-brand-red border-brand-red/30 hover:bg-brand-red-light"
+                className="btn btn-outline btn-sm w-full border-brand-red/30 text-brand-red hover:bg-brand-red-light"
               >
-                <Trash2 className="w-3.5 h-3.5" />
-                Kosongkan Keranjang
+                <Trash2 className="h-3.5 w-3.5" />
+                {clearLabel}
               </button>
             </div>
           )}
+
         </motion.div>
       </div>
     </div>

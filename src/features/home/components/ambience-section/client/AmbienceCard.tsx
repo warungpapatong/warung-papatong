@@ -1,10 +1,3 @@
-// src/features/home/components/AmbienceCard.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ CLIENT COMPONENT — hanya untuk whileInView scroll animation
-// ✅ Terima data sebagai props dari Server Component
-// ✅ Seminimal mungkin: HANYA motion wrapper + whileInView
-// ─────────────────────────────────────────────────────────────────────────────
-
 'use client'
 
 import { motion } from 'motion/react'
@@ -17,13 +10,7 @@ interface AmbienceCardProps {
   idx: number
 }
 
-export default function AmbienceCard({
-  url,
-  caption,
-  desc,
-  brandLabel,
-  idx,
-}: AmbienceCardProps) {
+export default function AmbienceCard({ url, caption, desc, brandLabel, idx }: AmbienceCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -32,7 +19,6 @@ export default function AmbienceCard({
       transition={{ duration: 0.6, delay: idx * 0.15 }}
       className="group relative h-96 overflow-hidden rounded-4xl border border-brand-border hover:border-brand-primary/40 shadow-card hover:shadow-card-lg transition-all duration-500 flex flex-col justify-end p-6"
     >
-      {/* Background image */}
       <img
         src={url}
         alt={caption}
@@ -40,10 +26,8 @@ export default function AmbienceCard({
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
       />
 
-      {/* Gradient mask */}
       <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent transition-opacity duration-300" />
 
-      {/* Caption */}
       <div className="relative z-10 space-y-1.5">
         <span className="text-[9px] font-mono font-bold tracking-widest text-brand-success uppercase flex items-center gap-1">
           {brandLabel}

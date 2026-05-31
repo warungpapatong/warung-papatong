@@ -1,26 +1,9 @@
-// src/features/home/components/HeroSection.tsx
-// ─────────────────────────────────────────────────────────────────────────────
-// ✅ SERVER COMPONENT — tidak ada 'use client', tidak ada hooks browser
-// ✅ Semua konten (teks, links, stats, CTA) di-render sebagai static HTML
-//    → Google bot crawl langsung tanpa eksekusi JS
-// ✅ Client logic diisolasi di:
-//    - HeroAnimations.tsx  → motion wrappers (stagger, fade-up)
-//    - HeroImage.tsx       → parallax scroll (useScroll)
-//
-// ARSITEKTUR PATTERN: "Client Shell, Server Leaf"
-//   Server Component merender semua konten bermakna (untuk SEO).
-//   Client Component hanya membungkus sebagai shell animasi.
-//   Konten tetap ada di HTML meskipun JS dimatikan.
-// ─────────────────────────────────────────────────────────────────────────────
-
 import Link from 'next/link'
-
 import {
   ArrowRight,
   Clock,
   Instagram,
   MapPin,
-  MessageSquare,
   Star,
   UtensilsCrossed,
 } from 'lucide-react'
@@ -33,9 +16,6 @@ import {
   formatProductPrice,
 } from '@/data'
 
-import { trackWhatsAppConversion } from '@/lib/tracking'
-
-// Client components — seminimal mungkin
 import {
   HeroAnimatedContainer,
   HeroAnimatedItem,
@@ -44,23 +24,12 @@ import {
 import HeroImage from './client/HeroImage'
 import WAButton from '../button/WAButton'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// getFeaturedMenu() — logika yang sebelumnya di useMemo()
-//
-// Di Server Component, ini cukup fungsi biasa.
-// Tidak perlu useMemo karena Server Component hanya render sekali per request,
-// tidak ada re-render seperti di client.
-// ─────────────────────────────────────────────────────────────────────────────
-
 function getFeaturedMenu() {
   const currentBlock = Math.floor(new Date().getHours() / 4)
   return PRODUCTS_DATA[currentBlock % PRODUCTS_DATA.length]
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
-
 export default function HeroSection() {
-  // ✅ Computed di server — tidak perlu hook
   const featuredMenu = getFeaturedMenu()
 
   return (
@@ -68,29 +37,19 @@ export default function HeroSection() {
       id="beranda"
       className="relative overflow-hidden bg-brand-bg pt-28 pb-20 sm:pt-32 lg:min-h-screen lg:flex lg:items-center"
     >
-      {/* Ambient glow — pure CSS, zero JS */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute left-1/2 top-0 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-brand-primary/5 blur-3xl sm:h-[500px] sm:w-[500px]" />
       </div>
 
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-10 lg:px-8">
 
-        {/* ── LEFT: teks & CTA ── */}
-        {/*
-          HeroAnimatedContainer adalah Client Component, tapi children-nya
-          (semua JSX di bawah) tetap di-render sebagai server HTML.
-          Motion hanya menambahkan CSS transform di atas HTML yang sudah ada.
-          Ini disebut "Client boundary dengan server subtree".
-        */}
         <HeroAnimatedContainer className="order-1 lg:col-span-6">
 
-          {/* Pill badge */}
           <HeroAnimatedItem className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-brand-primary/5 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-primary-dark sm:text-xs">
             <span className="h-2 w-2 rounded-full bg-brand-primary" />
             {HERO_DATA.pillBadge}
           </HeroAnimatedItem>
 
-          {/* Headline — tag h1 penting untuk SEO */}
           <HeroAnimatedItem
             as="h1"
             className="max-w-2xl font-display text-4xl font-black leading-[1.02] tracking-tight text-brand-dark sm:text-5xl lg:text-6xl"
@@ -98,7 +57,6 @@ export default function HeroSection() {
             {HERO_DATA.headlineText}
           </HeroAnimatedItem>
 
-          {/* Description */}
           <HeroAnimatedItem
             as="p"
             className="mt-5 max-w-xl text-base leading-relaxed text-brand-text sm:text-lg"
@@ -106,33 +64,23 @@ export default function HeroSection() {
             {HERO_DATA.description}
           </HeroAnimatedItem>
 
-          {/* CTA buttons */}
           <HeroAnimatedItem className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* Menu CTA */}
             <Link
               href="/menu"
-              className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-4 text-sm font-bold text-brand-dark shadow-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:text-black/70 hover:shadow-xl active:scale-[0.985] sm:text-base"
+              className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-4 text-sm font-bold text-brand-dark shadow-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:text-brand-dark hover:shadow-xl active:scale-[0.985] sm:text-base"
             >
               <UtensilsCrossed className="h-5 w-5 transition-transform duration-300 group-hover:rotate-3" />
               <span>{HERO_DATA.ctaMenuText}</span>
               <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
 
-            {/* WhatsApp CTA */}
-            {/*
-              onClick handler butuh 'use client', tapi kita tidak mau semua
-              konten jadi client. Solusi: bungkus onClick ke komponen kecil
-              terpisah, atau gunakan data-attribute + event delegation.
-              Di sini kita buat inline component sederhana yang hanya handle onClick.
-              Lihat catatan di bawah tentang WAButton.
-            */}
             <WAButton
               href={buildWALink(BUSINESS_INFO.wa, HERO_DATA.waMessage)}
               label={HERO_DATA.ctaBookingText}
+              trackingLabel="Hero WA Button"
             />
           </HeroAnimatedItem>
 
-          {/* Quick links */}
           <HeroAnimatedItem className="mt-6 flex flex-wrap items-center gap-3">
             <a
               href={BUSINESS_INFO.mapsLink}
@@ -155,10 +103,7 @@ export default function HeroSection() {
             </a>
           </HeroAnimatedItem>
 
-          {/* Stats bar */}
           <HeroAnimatedItem className="mt-8 grid grid-cols-3 border-t border-brand-border pt-5 sm:mt-10 sm:gap-2 sm:pt-6">
-
-            {/* Rating */}
             <div className="flex flex-col justify-start pr-3">
               <div className="flex items-center gap-1">
                 <Star className="h-3.5 w-3.5 fill-brand-warning text-brand-warning sm:h-4 sm:w-4" />
@@ -171,7 +116,6 @@ export default function HeroSection() {
               </p>
             </div>
 
-            {/* Hours */}
             <div className="flex flex-col justify-start border-l border-brand-border px-3">
               <div className="flex items-center gap-1">
                 <Clock className="h-3.5 w-3.5 text-brand-primary-dark sm:h-4 sm:w-4" />
@@ -184,7 +128,6 @@ export default function HeroSection() {
               </p>
             </div>
 
-            {/* Location */}
             <div className="flex flex-col justify-start border-l border-brand-border pl-3">
               <div className="flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5 text-brand-primary-dark sm:h-4 sm:w-4" />
@@ -196,21 +139,14 @@ export default function HeroSection() {
                 {HERO_DATA.stats.locationLabel}
               </p>
             </div>
-
           </HeroAnimatedItem>
 
         </HeroAnimatedContainer>
 
-        {/* ── RIGHT: gambar & featured menu ── */}
         <HeroRightCol className="relative order-2 lg:col-span-6">
 
-          {/* Kitchen status pill — pure HTML, zero JS */}
           <div className="mb-4 flex justify-end">
             <div className="flex items-center gap-3 rounded-2xl border border-brand-border bg-white px-4 py-3 shadow-lg">
-              {/*
-                Animasi ping ini pure CSS (Tailwind animate-ping),
-                tidak butuh JS sama sekali — aman di Server Component.
-              */}
               <span className="relative flex h-3 w-3">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-green-500" />
@@ -226,11 +162,6 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/*
-            HeroImage = Client Component untuk parallax scroll (useScroll).
-            Data featuredMenu dikirim sebagai props dari server —
-            tidak ada data fetching di client.
-          */}
           <HeroImage
             featuredMenu={featuredMenu}
             featuredTodayLabel={HERO_DATA.featuredTodayLabel}
@@ -238,18 +169,14 @@ export default function HeroSection() {
             kitchenStatusDesc={HERO_DATA.kitchenStatusDesc}
           />
 
-          {/* Featured menu card — pure server HTML, crawlable */}
           <div className="mt-5 overflow-hidden rounded-[1.75rem] border border-brand-border bg-white shadow-xl">
             <div className="p-5">
-
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-muted">
                 {HERO_DATA.featuredTodayLabel}
               </p>
 
               <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-
                 <div className="min-w-0 flex-1">
-                  {/* ✅ Nama produk & deskripsi ada di HTML — Google crawl langsung */}
                   <h3 className="text-xl font-black tracking-tight text-brand-dark sm:text-2xl">
                     {featuredMenu.name}
                   </h3>
@@ -265,7 +192,6 @@ export default function HeroSection() {
                     {formatProductPrice(featuredMenu)}
                   </span>
                 </div>
-
               </div>
             </div>
           </div>
