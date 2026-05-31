@@ -3,8 +3,6 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles } from 'lucide-react'
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
 import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
 import {
@@ -22,16 +20,7 @@ import {
   buildCateringWAMessage,
 } from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
-
-// Dynamic import — CheckoutModal tidak ikut bundle saat halaman /menu pertama dimuat.
-// Baru di-fetch saat user klik tombol checkout di floating basket bar.
-const CheckoutModal = dynamic(
-  () => import('@/features/menu/components/CheckoutModal'),
-  {
-    loading: () => null,
-    ssr: false,
-  },
-)
+import CheckoutModal from '@/features/menu/components/CheckoutModal'
 
 export default function MenuSection() {
   const [activeTab,      setActiveTab]      = useState<string>('all')
@@ -177,14 +166,12 @@ export default function MenuSection() {
                 return (
                   <div key={product.id} className="card card-hover group flex flex-col">
 
-                    {/* Wrapper relative wajib ada untuk next/image fill */}
                     <div className="relative h-56 w-full overflow-hidden">
-                      <Image
+                      <img
                         src={product.image}
                         alt={product.name}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent" />
 
