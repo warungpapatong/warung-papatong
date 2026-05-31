@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'motion/react'
+import Image from 'next/image'
 import { ShoppingCart, Trash2, MessageSquare, X } from 'lucide-react'
 import type { Product, PreOrderBasketItem } from '@/types'
 import {
@@ -59,7 +60,18 @@ export default function CheckoutModal({
     onClose()
   }
 
-  const { title, itemSuffix, closeLabel, emptyText, reduceLabel, addLabel, totalLabel, orderWaLabel, clearLabel, dialogTitleId } = CHECKOUT_MODAL_DATA
+  const {
+    title,
+    itemSuffix,
+    closeLabel,
+    emptyText,
+    reduceLabel,
+    addLabel,
+    totalLabel,
+    orderWaLabel,
+    clearLabel,
+    dialogTitleId,
+  } = CHECKOUT_MODAL_DATA
 
   return (
     <div
@@ -120,11 +132,15 @@ export default function CheckoutModal({
                   key={item.product.id}
                   className="flex items-center gap-4 rounded-2xl border border-brand-border bg-brand-surface-2 p-3"
                 >
-                  <img
-                    src={item.product.image}
-                    alt={item.product.name}
-                    className="h-14 w-14 shrink-0 rounded-xl object-cover"
-                  />
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl">
+                    <Image
+                      src={item.product.image}
+                      alt={item.product.name}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                    />
+                  </div>
 
                   <div className="min-w-0 flex-grow">
                     <p className="line-clamp-1 text-sm font-bold text-brand-dark">

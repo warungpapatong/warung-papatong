@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import Image from 'next/image'
 import { Quote, Star } from 'lucide-react'
 
 import type { Testimonial } from '@/types'
@@ -17,7 +18,7 @@ interface TestimonialsCarouselProps {
 
 export default function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps) {
   const [currentIndex, setCurrentIndex]           = useState(0)
-  const [itemsPerView, setItemsPerView]           = useState(3)
+  const [itemsPerView, setItemsPerView]           = useState<number | null>(null)
   const [transitionEnabled, setTransitionEnabled] = useState(true)
 
   const trackRef = useRef<HTMLDivElement | null>(null)
@@ -31,7 +32,7 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
   }, [])
 
   const extendedTestimonials = useMemo(
-    () => [...testimonials, ...testimonials.slice(0, itemsPerView)],
+    () => [...testimonials, ...testimonials.slice(0, itemsPerView ?? 3)],
     [testimonials, itemsPerView],
   )
 
@@ -55,6 +56,19 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
       })
     }
   }, [currentIndex, total, transitionEnabled])
+
+  if (itemsPerView === null) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {[0, 1, 2].map(i => (
+          <div
+            key={i}
+            className="h-[360px] lg:h-[380px] xl:h-[400px] rounded-[2rem] bg-brand-border/30 animate-pulse"
+          />
+        ))}
+      </div>
+    )
+  }
 
   return (
     <>
@@ -99,12 +113,12 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
 
                     <div className="mt-auto pt-5">
                       <div className="flex items-center gap-3 border-t border-brand-border pt-4">
-                        <img
+                        <Image
                           src={review.avatar}
                           alt={review.name}
-                          loading="lazy"
-                          referrerPolicy="no-referrer"
-                          className="h-11 w-11 rounded-full border border-brand-border object-cover shadow-card"
+                          width={44}
+                          height={44}
+                          className="rounded-full border border-brand-border object-cover shadow-card"
                         />
                         <div className="min-w-0">
                           <h4 className="truncate font-display text-sm leading-none font-black text-brand-dark">
@@ -140,11 +154,13 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
             key={idx}
             onClick={() => setCurrentIndex(idx)}
             aria-label={`Slide ${idx + 1}`}
-            className={`rounded-full transition-all duration-500 ${
-              currentIndex % total === idx
-                ? 'h-2.5 w-10 bg-brand-primary'
-                : 'h-2.5 w-2.5 bg-brand-border hover:bg-brand-muted'
-            }`}
+            className={`relative rounded-full transition-all duration-500
+              before:absolute before:inset-[-14px] before:content-['']
+              ${
+                currentIndex % total === idx
+                  ? 'h-2.5 w-10 bg-brand-primary'
+                  : 'h-2.5 w-2.5 bg-brand-border hover:bg-brand-muted'
+              }`}
           />
         ))}
       </div>

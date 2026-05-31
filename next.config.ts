@@ -1,5 +1,3 @@
-// next.config.ts
-
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -7,36 +5,26 @@ const nextConfig: NextConfig = {
 
   images: {
     formats: ['image/avif', 'image/webp'],
-
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'plus.unsplash.com',
-        pathname: '/**',
-      },
+      { protocol: 'https', hostname: 'images.unsplash.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'plus.unsplash.com', pathname: '/**' },
     ],
-
     minimumCacheTTL: 60 * 60 * 24 * 7,
-
     deviceSizes: [375, 640, 768, 1024, 1280, 1440, 1920],
     imageSizes: [16, 32, 64, 96, 128, 256, 384],
   },
 
   compiler: {
-    removeConsole:
-      process.env.NODE_ENV === 'production'
-        ? { exclude: ['error', 'warn'] }
-        : false,
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['error', 'warn'] }
+      : false,
   },
 
   experimental: {
     optimizePackageImports: ['lucide-react', 'motion'],
   },
+
+  transpilePackages: [],
 
   async headers() {
     return [

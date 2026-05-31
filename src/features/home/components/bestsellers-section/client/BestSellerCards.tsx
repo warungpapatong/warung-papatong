@@ -2,32 +2,31 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Star } from 'lucide-react'
 
 import { PRODUCTS_DATA, formatPrice } from '@/data'
 import type { Product } from '@/types'
 
+const MotionImage = motion.create(Image)
+
 function getDynamicDishes(tick: number): Product[] {
   const total = PRODUCTS_DATA.length
   if (total === 0) return []
-
   const baseOffset = tick % total
   const staggerOffsets = [0, 5, 11]
   const dishes: Product[] = []
-
   for (const stagger of staggerOffsets) {
     const dish = PRODUCTS_DATA[(baseOffset + stagger) % total]
     if (!dishes.some(d => d.id === dish.id)) dishes.push(dish)
   }
-
   let fallback = 0
   while (dishes.length < Math.min(3, total)) {
     const dish = PRODUCTS_DATA[(baseOffset + fallback) % total]
     if (!dishes.some(d => d.id === dish.id)) dishes.push(dish)
     fallback++
   }
-
   return dishes
 }
 
@@ -62,22 +61,22 @@ export default function BestSellerCards({ intervalMs, ctaHref, freshBadgeLabel, 
             className="card card-hover group flex flex-col h-[470px] sm:h-[490px] md:h-[520px] lg:h-[490px] xl:h-[470px]"
           >
             <div className="relative aspect-card w-full overflow-hidden">
-              <img
+
+              <MotionImage
                 src={dish.image}
                 alt={dish.name}
-                loading="lazy"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 420px"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               {dish.badge && (
                 <span className="absolute top-4 left-4 badge badge-primary flex items-center gap-1">
                   <Star className="w-3 h-3 fill-brand-dark" />
                   {dish.badge}
                 </span>
               )}
-
               <span className="absolute bottom-4 right-4 font-mono font-black text-xs text-brand-dark bg-brand-primary px-3 py-1.5 rounded-xl">
                 {formatPrice(dish.price)}
               </span>
@@ -95,11 +94,8 @@ export default function BestSellerCards({ intervalMs, ctaHref, freshBadgeLabel, 
                   {dish.description}
                 </p>
               </div>
-
               <div className="pt-4 border-t border-brand-border flex items-center justify-between">
-                <span className="text-[10px] font-mono text-brand-subtle">
-                  {freshBadgeLabel}
-                </span>
+                <span className="text-[10px] font-mono text-brand-subtle">{freshBadgeLabel}</span>
                 <Link
                   href={ctaHref}
                   className="text-xs font-mono font-extrabold text-brand-primary-dark hover:text-brand-primary flex items-center gap-1 transition-colors"
