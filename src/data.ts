@@ -73,7 +73,7 @@ import type {
 
 export const BUSINESS_INFO: BusinessInfo = {
   name:        'Resto Warung Papatong',
-  tagline:     'Tempat Makan Sunda & Seafood Rekomendasi di Cibinong',
+  tagline:     'Sunda & Seafood',
   description: 'Menggabungkan cita rasa kuliner Sunda autentik yang gemah ripah dengan kesegaran seafood istimewa. Nikmati area lesehan semi-outdoor yang asri, panggung live music, serta parkir luas yang ramah rombongan besar.',
   phone:       '0813-8849-7651',
   wa:          '6281388497651',

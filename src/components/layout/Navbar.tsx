@@ -63,17 +63,35 @@ export default function Navbar() {
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/90 backdrop-blur-md border-b border-brand-border py-3 shadow-sm'
-            : 'bg-transparent py-5'
+            ? 'border-b border-brand-border bg-white/90 py-2.5 shadow-sm backdrop-blur-md sm:py-3'
+            : 'bg-transparent py-3 sm:py-5'
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-
-          {/* LOGO + BRAND NAME */}
+        <div
+          className="
+            mx-auto
+            flex
+            max-w-7xl
+            items-center
+            justify-between
+            gap-2
+            px-3
+            sm:gap-3
+            sm:px-6
+            lg:px-8
+          "
+        >
+          {/* LOGO + BRAND */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 shrink-0"
             aria-label="Warung Papatong"
+            className="
+              flex
+              min-w-0
+              flex-1
+              items-center
+              gap-2
+            "
           >
             <Image
               src="/images/logo/papatong-logo.webp"
@@ -81,16 +99,74 @@ export default function Navbar() {
               width={140}
               height={40}
               priority
-              className="h-12 w-auto rounded-full object-contain"
+              className="
+                h-9
+                w-auto
+                shrink-0
+                rounded-full
+                object-contain
+                sm:h-10
+                md:h-11
+                lg:h-12
+              "
             />
-            <span className="font-display font-black text-base text-brand-dark tracking-tight leading-none">
-              Warung<br />
-              <span className="text-brand-primary-dark">Papatong</span>
-            </span>
+
+            <div className="min-w-0 flex flex-col leading-tight">
+              <div className="flex items-baseline gap-1">
+                <span
+                  className="
+                    truncate
+                    font-display
+                    text-xs
+                    font-black
+                    tracking-tight
+                    text-brand-dark
+                    sm:text-sm
+                    md:text-base
+                  "
+                >
+                  Warung
+                </span>
+
+                <span
+                  className="
+                    truncate
+                    font-display
+                    text-xs
+                    font-black
+                    tracking-tight
+                    text-brand-primary-dark
+                    sm:text-sm
+                    md:text-base
+                  "
+                >
+                  Papatong
+                </span>
+              </div>
+
+              <span
+                className="
+                  max-w-[120px]
+                  truncate
+                  text-[8px]
+                  font-medium
+                  uppercase
+                  tracking-[0.08em]
+                  text-brand-dark/80
+                  sm:max-w-[180px]
+                  sm:text-[9px]
+                  md:max-w-none
+                  md:text-[10px]
+                  md:tracking-[0.15em]
+                "
+              >
+                {BUSINESS_INFO.tagline}
+              </span>
+            </div>
           </Link>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden items-center gap-1 lg:flex">
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === '/'
@@ -114,9 +190,8 @@ export default function Navbar() {
           </nav>
 
           {/* RIGHT SIDE */}
-          <div className="flex items-center gap-2 sm:gap-3">
-
-            {/* WA BUTTON */}
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            {/* DESKTOP WA */}
             <button
               onClick={() => handleWA('Navbar — Pesan via WA')}
               className="hidden sm:inline-flex btn btn-wa btn-md hover:text-brand-dark"
@@ -128,9 +203,25 @@ export default function Navbar() {
             {/* MOBILE WA */}
             <button
               onClick={() => handleWA('Navbar Mobile — Pesan via WA')}
-              className="sm:hidden inline-flex btn btn-wa btn-sm hover:text-brand-dark"
+              className="
+                sm:hidden
+                inline-flex
+                items-center
+                gap-1
+                rounded-xl
+                bg-green-500
+                px-2.5
+                py-2
+                text-[11px]
+                font-semibold
+                text-white
+                shadow-sm
+                transition-all
+                hover:scale-[1.02]
+                active:scale-[0.98]
+              "
             >
-              <MessageSquare className="h-4 w-4" />
+              <MessageSquare className="h-3.5 w-3.5" />
               Pesan Via WA
             </button>
 
@@ -138,20 +229,34 @@ export default function Navbar() {
             <button
               onClick={() => setOpen((v) => !v)}
               aria-label="Toggle Menu"
-              className="lg:hidden rounded-xl p-2 text-brand-dark transition-colors hover:bg-brand-primary-light"
+              className="
+                shrink-0
+                rounded-xl
+                p-2
+                text-brand-dark
+                transition-colors
+                hover:bg-brand-primary-light
+                lg:hidden
+              "
             >
-              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {open ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
 
         {/* TABLET DROPDOWN */}
         <div
-          className={`hidden sm:block lg:hidden overflow-hidden transition-all duration-300 ${
-            open ? 'max-h-96 border-t border-brand-border' : 'max-h-0'
+          className={`hidden overflow-hidden transition-all duration-300 sm:block lg:hidden ${
+            open
+              ? 'max-h-96 border-t border-brand-border'
+              : 'max-h-0'
           }`}
         >
-          <nav className="mx-auto flex max-w-7xl flex-wrap gap-2 px-6 py-4 bg-white">
+          <nav className="mx-auto flex max-w-7xl flex-wrap gap-2 bg-white px-6 py-4">
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === '/'

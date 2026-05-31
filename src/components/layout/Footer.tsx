@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Mail, Phone, ArrowUpRight, Instagram } from 'lucide-react'
 import { NAV_ITEMS } from '@/config/navigation'
-import { BUSINESS_INFO, buildWALink } from '@/data'
+import { BUSINESS_INFO, FOOTER_DATA, buildWALink } from '@/data'
 
 const WA_FOOTER_MSG = 'Halo Admin Papatong, saya ingin bertanya mengenai reservasi.'
 
@@ -107,9 +107,12 @@ export default function Footer() {
 
           {/* ── Brand column ── */}
           <div className="sm:col-span-2 lg:col-span-5 space-y-6">
-
             {/* Logo + Brand Name */}
-            <Link href="/" className="flex items-center gap-3" aria-label="Beranda Warung Papatong">
+            <Link
+              href="/"
+              className="flex items-center gap-3"
+              aria-label="Beranda Warung Papatong"
+            >
               <Image
                 src="/images/logo/papatong-logo.webp"
                 alt="Logo Warung Papatong"
@@ -117,22 +120,25 @@ export default function Footer() {
                 height={48}
                 className="rounded-full h-12 w-auto object-contain shrink-0"
               />
+
               <div className="flex flex-col leading-tight">
-                <span className="font-display font-black text-lg text-white tracking-tight">
-                  Warung
-                </span>
-                <span className="font-display font-black text-lg text-brand-primary tracking-tight -mt-1">
-                  Papatong
-                </span>
-                <span className="text-[10px] text-white/30 font-mono tracking-widest uppercase mt-0.5">
-                  Est. {BUSINESS_INFO.founded}
+                <div className="flex items-baseline gap-1">
+                  <span className="font-display font-black text-lg text-white tracking-tight">
+                    Warung
+                  </span>
+
+                  <span className="font-display font-black text-lg text-brand-primary tracking-tight">
+                    Papatong
+                  </span>
+                </div>
+
+                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-white/70">
+                  {BUSINESS_INFO.tagline}
                 </span>
               </div>
             </Link>
-
             <p className="text-white/55 text-sm leading-relaxed max-w-sm">
-              Surganya masakan Sunda autentik dan hidangan seafood segar di Cibinong.
-              Tempat silaturahmi favorit keluarga Jabodetabek.
+              {FOOTER_DATA.brandTagline}
             </p>
 
             {/* Social buttons */}
@@ -164,7 +170,7 @@ export default function Footer() {
 
           {/* ── Nav column ── */}
           <div className="lg:col-span-3">
-            <ColLabel>Navigasi</ColLabel>
+            <ColLabel>{FOOTER_DATA.colNavLabel}</ColLabel>
             <ul className="space-y-3">
               {NAV_ITEMS.map(item => (
                 <li key={item.href}>
@@ -182,7 +188,7 @@ export default function Footer() {
 
           {/* ── Contact column ── */}
           <div className="sm:col-span-2 lg:col-span-4">
-            <ColLabel>Hubungi Kami</ColLabel>
+            <ColLabel>{FOOTER_DATA.colContactLabel}</ColLabel>
             <ul className="space-y-4">
               <ContactRow
                 icon={<MapPin className="w-3.5 h-3.5 text-brand-primary" />}
@@ -216,7 +222,7 @@ export default function Footer() {
         <p className="text-xs text-white/30 text-center">
           &copy; {new Date().getFullYear()}{' '}
           <span className="text-white/50 font-semibold">{BUSINESS_INFO.name}</span>
-          {' '}· All Rights Reserved.
+          {' '}· {FOOTER_DATA.copyrightSuffix}
         </p>
 
       </div>
