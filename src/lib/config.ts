@@ -18,7 +18,7 @@ export const APP_CONFIG = {
   // ─── DATA TAMBAHAN UNTUK FIX ERROR ABOUT PAGE ──────────────────────────────
   whatsappBaseLink:    'https://wa.me',
   businessName:        'Resto Warung Papatong',
-  handoverEmail:       'warungpapatong.cibinong@gmail.com',
+  handoverEmail:       'warungpapatong@gmail.com',
 } as const;
 
 // ─── GOOGLE ADS TRACKING ─────────────────────────────────────────────────────
