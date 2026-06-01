@@ -70,29 +70,28 @@ export default function Navbar() {
         <div
           className="
             mx-auto
-            flex
+            grid
             max-w-7xl
+            grid-cols-[auto_1fr_auto]
             items-center
-            justify-between
-            gap-2
+            gap-4
             px-3
-            sm:gap-3
             sm:px-6
             lg:px-8
           "
         >
           {/* LOGO + BRAND */}
-          <Link
-            href="/"
-            aria-label="Warung Papatong"
-            className="
-              flex
-              min-w-0
-              flex-1
-              items-center
-              gap-2
-            "
-          >
+            <Link
+              href="/"
+              aria-label="Warung Papatong"
+              className="
+                flex
+                min-w-0
+                items-center
+                gap-2
+                shrink-0
+              "
+            >
             <Image
               src="/images/logo/papatong-logo.webp"
               alt="Warung Papatong"
@@ -166,7 +165,7 @@ export default function Navbar() {
           </Link>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center justify-center gap-1 lg:flex">
             {NAV_ITEMS.map((item) => {
               const isActive =
                 item.href === '/'
