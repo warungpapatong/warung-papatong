@@ -98,75 +98,22 @@ export default function Navbar() {
             "
           >
             <Image
-              src="/images/logo/papatong-logo.webp"
+              src="/images/logo/papatong-logo.png"
               alt="Warung Papatong"
-              width={140}
-              height={40}
+              width={300}
+              height={100}
               priority
               className="
-                h-9
+                h-16
                 w-auto
                 shrink-0
                 rounded-full
                 object-contain
-                sm:h-10
-                md:h-11
-                lg:h-12
+                sm:h-8
+                md:h-12
+                lg:h-16
               "
             />
-
-            <div className="min-w-0 flex flex-col leading-tight">
-              <div className="flex items-baseline gap-1">
-                <span
-                  className="
-                    truncate
-                    font-display
-                    text-xs
-                    font-black
-                    tracking-tight
-                    text-brand-dark
-                    sm:text-sm
-                    md:text-base
-                  "
-                >
-                  Warung
-                </span>
-
-                <span
-                  className="
-                    truncate
-                    font-display
-                    text-xs
-                    font-black
-                    tracking-tight
-                    text-brand-primary-dark
-                    sm:text-sm
-                    md:text-base
-                  "
-                >
-                  Papatong
-                </span>
-              </div>
-
-              <span
-                className="
-                  max-w-[120px]
-                  truncate
-                  text-[8px]
-                  font-medium
-                  uppercase
-                  tracking-[0.08em]
-                  text-brand-dark/80
-                  sm:max-w-[180px]
-                  sm:text-[9px]
-                  md:max-w-none
-                  md:text-[10px]
-                  md:tracking-[0.15em]
-                "
-              >
-                {BUSINESS_INFO.tagline}
-              </span>
-            </div>
           </Link>
 
           {/* DESKTOP NAV */}

@@ -110,32 +110,16 @@ export default function Footer() {
             {/* Logo + Brand Name */}
             <Link
               href="/"
-              className="flex items-center gap-3"
-              aria-label="Beranda Warung Papatong"
+              className="inline-flex items-center p-3"
+              aria-label="Warung Papatong Home"
             >
               <Image
-                src="/images/logo/papatong-logo.webp"
+                src="/images/logo/papatong-logo.png"
                 alt="Logo Warung Papatong"
-                width={160}
-                height={48}
-                className="rounded-full h-12 w-auto object-contain shrink-0"
+                width={400}
+                height={150}
+                className="h-20 w-auto object-contain"
               />
-
-              <div className="flex flex-col leading-tight">
-                <div className="flex items-baseline gap-1">
-                  <span className="font-display font-black text-lg text-white tracking-tight">
-                    Warung
-                  </span>
-
-                  <span className="font-display font-black text-lg text-brand-primary tracking-tight">
-                    Papatong
-                  </span>
-                </div>
-
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-white/70">
-                  {BUSINESS_INFO.tagline}
-                </span>
-              </div>
             </Link>
             <p className="text-white/55 text-sm leading-relaxed max-w-sm">
               {FOOTER_DATA.brandTagline}

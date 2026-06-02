@@ -449,7 +449,7 @@ export const FAQS_DATA: FAQItem[] = [
 export const GALLERY_DATA: GalleryItem[] = [
   { 
     id: 1,  
-    image: '/images/venue/01-gallery/entrance.webp', 
+    image: '/images/venue/01-gallery/new-entrance.webp', 
     alt: 'Tampak depan Warung Papatong.', 
     category: 'tempat', 
     size: 'large'  
@@ -505,17 +505,17 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 9,  
-    image: '/images/venue/08-gallery/wedding4.webp', 
-    alt: 'Spot foto pernikahan di Warung Papatong.', 
+    image: '/images/venue/07-gallery/saung-bambu2.webp', 
+    alt: 'Saung bambu tradisional Warung Papatong.', 
     category: 'tempat', 
     size: 'medium' 
   },
   { 
     id: 10, 
-    image: '/images/venue/09-gallery/pengunjung.webp', 
-    alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', 
+    image: '/images/venue/09-gallery/pengunjung3.webp', 
+    alt: 'Foto pengunjung di Area Makan Utama', 
     category: 'aktivitas', 
-    size: 'medium' 
+    size: 'large'  
   },
   { 
     id: 11, 
@@ -533,9 +533,37 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 13, 
+    image: '/images/venue/09-gallery/pengunjung.webp', 
+    alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', 
+    category: 'aktivitas', 
+    size: 'medium' 
+  },
+  { 
+    id: 14, 
     image: '/images/venue/10-gallery/service-waiter.webp', 
     alt: 'Foto pelayan di Warung Papatong', 
     category: 'aktivitas', 
+    size: 'medium' 
+  },
+  { 
+    id: 15,  
+    image: '/images/venue/03-gallery/playground-atas.webp', 
+    alt: 'Tempat bermain anak di Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 16,  
+    image: '/images/venue/03-gallery/playground-bawah.webp', 
+    alt: 'Tempat bermain anak di dekat saung bambu Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+    { 
+    id: 17,  
+    image: '/images/venue/03-gallery/kolam-ikan.webp', 
+    alt: 'Kolam ikan koi segar di Warung Papatong', 
+    category: 'tempat', 
     size: 'medium' 
   },
 ];
