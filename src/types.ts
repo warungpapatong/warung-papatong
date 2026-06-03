@@ -124,7 +124,7 @@ export interface FAQItem {
 
 // ─── Gallery ──────────────────────────────────────────────────────────────
 
-export type GalleryCategory = 'semua' | 'tempat' | 'aktivitas';
+export type GalleryCategory = 'semua' | 'tempat' | 'aktivitas'| 'makanan' | 'minuman';
 export type GallerySize     = 'large' | 'medium' | 'small';
 
 export interface GalleryItem {
@@ -242,7 +242,7 @@ export interface FaqSectionData {
 // ─── Gallery Page (src/features/gallery) ─────────────────────────────────
 
 export interface GalleryFilterTab {
-  id:    'semua' | 'tempat' | 'aktivitas';
+  id:    'semua' | 'tempat' | 'aktivitas' | 'makanan' | 'minuman';
   label: string;
 }
 

@@ -470,9 +470,9 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 4,  
-    image: '/images/venue/03-gallery/balon-udara1.webp', 
-    alt: 'Spot foto balon udara ikonik Warung Papatong dikelilingi pepohonan tropis dan lampu gantung outdoor.', 
-    category: 'tempat', 
+    image: '/images/menu/01-seafood/01-cumi-bakar-kecap.webp', 
+    alt: 'Cumi Bakar Kecap Warung Papatong.', 
+    category: 'makanan', 
     size: 'medium' 
   },
   { 
@@ -484,9 +484,9 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 6,  
-    image: '/images/venue/05-gallery/side-place1.webp', 
-    alt: 'Interior area makan industrial modern semi outdoor Warung Papatong.', 
-    category: 'tempat', 
+    image: '/images/menu/02-ikan-air-tawar/01-gurame-pecak.webp', 
+    alt: 'Gurame Pecak Warung Papatong.', 
+    category: 'makanan', 
     size: 'medium' 
   },
   { 
@@ -498,10 +498,10 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 8,  
-    image: '/images/venue/07-gallery/saung-bambu.webp', 
-    alt: 'Saung bambu tradisional Warung Papatong lengkap dengan area bermain anak dan nuansa pedesaan asri.', 
-    category: 'tempat', 
-    size: 'large'  
+    image: '/images/menu/04-sunda/01-nasi-timbel.webp', 
+    alt: 'Nasi Timbel Sunda Warung Papatong.', 
+    category: 'makanan', 
+    size: 'medium' 
   },
   { 
     id: 9,  
@@ -566,6 +566,27 @@ export const GALLERY_DATA: GalleryItem[] = [
     category: 'tempat', 
     size: 'medium' 
   },
+  { 
+    id: 18,  
+    image: '/images/venue/07-gallery/saung-bambu1.webp', 
+    alt: 'Tampak dalam saung bambu Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 19,  
+    image: '/images/menu/05-sayuran/01-kangkung-ebi-balacan.webp', 
+    alt: 'Kangkung Ebi Balacan Warung Papatong.', 
+    category: 'makanan', 
+    size: 'medium' 
+  },
+  { 
+    id: 20,  
+    image: '/images/menu/01-seafood/06-lobster-telur-asin.webp', 
+    alt: 'Lobster Telur Asin Warung Papatong.', 
+    category: 'makanan', 
+    size: 'medium' 
+  },
 ];
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -602,14 +623,14 @@ export const HERO_DATA: HeroData = {
 
 export const AMBIENCE_TEASER_DATA: AmbienceTeaserItem[] = [
   { 
-    url: '/images/venue/06-gallery/area-lesehan1.webp', 
+    url: '/images/venue/06-gallery/area-lesehan2.webp', 
     caption: 'Lesehan Semi Outdoor',  
     desc: 'Menikmati makan dengan susana teduh sembari lesehan' 
   },
   { 
-    url: '/images/venue/07-gallery/saung-bambu.webp', 
+    url: '/images/venue/07-gallery/saung-bambu2.webp', 
     caption: 'Saung Bambu',    
-    desc: 'Lanskap rimbun pepohonan hijau sejuk khas pedesaan Jawa Barat' 
+    desc: 'Lanskap rimbun pepohonan hijau sejuk khas pedesaan Cibinong' 
   },
   { 
     url: '/images/venue/03-gallery/balon-udara2.webp', 
@@ -698,7 +719,8 @@ export const GALLERY_PAGE_DATA: GalleryPageData = {
   filterTabs: [
     { id: 'semua',     label: 'Semua Koleksi'           },
     { id: 'tempat',   label: 'Suasana Resto & Lesehan' },
-    { id: 'aktivitas', label: 'Aktivitas & Hidangan'    },
+    { id: 'aktivitas', label: 'Aktivitas Resto'    },
+    { id: 'makanan',  label: 'Sajian Makanan'     },
   ],
   expandBtnText:      'Perbesar',
   lightboxTitle:      'Detail Galeri Foto',
