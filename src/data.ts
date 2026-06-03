@@ -498,38 +498,38 @@ export const GALLERY_DATA: GalleryItem[] = [
   },
   { 
     id: 8,  
-    image: '/images/menu/04-sunda/01-nasi-timbel.webp', 
-    alt: 'Nasi Timbel Sunda Warung Papatong.', 
-    category: 'makanan', 
-    size: 'medium' 
-  },
-  { 
-    id: 9,  
     image: '/images/venue/07-gallery/saung-bambu2.webp', 
     alt: 'Saung bambu tradisional Warung Papatong.', 
     category: 'tempat', 
     size: 'medium' 
   },
   { 
-    id: 10, 
+    id: 9, 
     image: '/images/venue/09-gallery/pengunjung3.webp', 
     alt: 'Foto pengunjung di Area Makan Utama', 
     category: 'aktivitas', 
     size: 'large'  
   },
   { 
-    id: 11,  
-    image: '/images/menu/01-seafood/06-lobster-telur-asin.webp', 
-    alt: 'Lobster Telur Asin Warung Papatong.', 
+    id: 10,  
+    image: '/images/menu/04-sunda/01-nasi-timbel.webp', 
+    alt: 'Nasi Timbel Sunda Warung Papatong.', 
     category: 'makanan', 
     size: 'medium' 
   },
   { 
-    id: 12, 
+    id: 11, 
     image: '/images/venue/09-gallery/pengunjung1.webp', 
     alt: 'Foto pengunjung di Saung Bambu', 
     category: 'aktivitas', 
     size: 'large'  
+  },
+    { 
+    id: 12,  
+    image: '/images/menu/01-seafood/06-lobster-telur-asin.webp', 
+    alt: 'Lobster Telur Asin Warung Papatong.', 
+    category: 'makanan', 
+    size: 'medium' 
   },
   { 
     id: 13, 
