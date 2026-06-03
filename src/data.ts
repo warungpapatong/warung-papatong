@@ -518,73 +518,73 @@ export const GALLERY_DATA: GalleryItem[] = [
     size: 'large'  
   },
   { 
-    id: 11, 
+    id: 11,  
+    image: '/images/menu/01-seafood/06-lobster-telur-asin.webp', 
+    alt: 'Lobster Telur Asin Warung Papatong.', 
+    category: 'makanan', 
+    size: 'medium' 
+  },
+  { 
+    id: 12, 
     image: '/images/venue/09-gallery/pengunjung1.webp', 
     alt: 'Foto pengunjung di Saung Bambu', 
     category: 'aktivitas', 
     size: 'large'  
   },
   { 
-    id: 12, 
+    id: 13, 
     image: '/images/venue/09-gallery/pengunjung2.webp', 
     alt: 'Foto pengunjung di Area Makan Utama', 
     category: 'aktivitas', 
     size: 'large'  
   },
   { 
-    id: 13, 
-    image: '/images/venue/09-gallery/pengunjung.webp', 
-    alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', 
-    category: 'aktivitas', 
-    size: 'medium' 
-  },
-  { 
-    id: 14, 
-    image: '/images/venue/10-gallery/service-waiter.webp', 
-    alt: 'Foto pelayan di Warung Papatong', 
-    category: 'aktivitas', 
-    size: 'medium' 
-  },
-  { 
-    id: 15,  
-    image: '/images/venue/03-gallery/playground-atas.webp', 
-    alt: 'Tempat bermain anak di Warung Papatong', 
-    category: 'tempat', 
-    size: 'medium' 
-  },
-  { 
-    id: 16,  
-    image: '/images/venue/03-gallery/playground-bawah.webp', 
-    alt: 'Tempat bermain anak di dekat saung bambu Warung Papatong', 
-    category: 'tempat', 
-    size: 'medium' 
-  },
-    { 
-    id: 17,  
-    image: '/images/venue/03-gallery/kolam-ikan.webp', 
-    alt: 'Kolam ikan koi segar di Warung Papatong', 
-    category: 'tempat', 
-    size: 'medium' 
-  },
-  { 
-    id: 18,  
-    image: '/images/venue/07-gallery/saung-bambu1.webp', 
-    alt: 'Tampak dalam saung bambu Warung Papatong', 
-    category: 'tempat', 
-    size: 'medium' 
-  },
-  { 
-    id: 19,  
+    id: 14,  
     image: '/images/menu/05-sayuran/01-kangkung-ebi-balacan.webp', 
     alt: 'Kangkung Ebi Balacan Warung Papatong.', 
     category: 'makanan', 
     size: 'medium' 
   },
   { 
+    id: 15, 
+    image: '/images/venue/09-gallery/pengunjung.webp', 
+    alt: 'Foto pengunjung di Spot foto Ikonik Balon Udara', 
+    category: 'aktivitas', 
+    size: 'medium' 
+  },
+  { 
+    id: 16, 
+    image: '/images/venue/10-gallery/service-waiter.webp', 
+    alt: 'Foto pelayan di Warung Papatong', 
+    category: 'aktivitas', 
+    size: 'medium' 
+  },
+  { 
+    id: 17,  
+    image: '/images/venue/03-gallery/playground-atas.webp', 
+    alt: 'Tempat bermain anak di Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
+    id: 18,  
+    image: '/images/venue/03-gallery/playground-bawah.webp', 
+    alt: 'Tempat bermain anak di dekat saung bambu Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+    { 
+    id: 19,  
+    image: '/images/venue/03-gallery/kolam-ikan.webp', 
+    alt: 'Kolam ikan koi segar di Warung Papatong', 
+    category: 'tempat', 
+    size: 'medium' 
+  },
+  { 
     id: 20,  
-    image: '/images/menu/01-seafood/06-lobster-telur-asin.webp', 
-    alt: 'Lobster Telur Asin Warung Papatong.', 
-    category: 'makanan', 
+    image: '/images/venue/07-gallery/saung-bambu1.webp', 
+    alt: 'Tampak dalam saung bambu Warung Papatong', 
+    category: 'tempat', 
     size: 'medium' 
   },
 ];
