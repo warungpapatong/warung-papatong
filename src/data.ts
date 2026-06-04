@@ -595,7 +595,7 @@ export const GALLERY_DATA: GalleryItem[] = [
 
 export const HERO_DATA: HeroData = {
   pillBadge:          'Kuliner Sunda & Seafood No. 1 Cibinong',
-  headlineText:       'Lezatnya Seafood Segar Berpadu Wanginya Nasi Timbel Sunda Autentik',
+  headlineText:       'Lezatnya Seafood Segar Berpadu dengan masakan Sunda Otentik dalam suasa Asri',
   description:        'Ucapkan selamat tinggal pada mengantre lama & kuota kehabisan makan malam! Warung Papatong hadir dengan sistem booking lesehan teratur dan pre-order digital instan untuk rombongan makan Anda.',
   ctaBookingText:     'Booking Tempat Sekarang',
   ctaMenuText:        'Lihat Daftar Menu',
@@ -739,71 +739,140 @@ export const GALLERY_PAGE_DATA: GalleryPageData = {
 // ════════════════════════════════════════════════════════════════════════════
 
 export const ABOUT_CTA_DATA = {
-  waMessage:          'Halo Admin Papatong, saya ingin reservasi meja saung lesehan.',
+  waMessage:
+    'Halo Admin Warung Papatong, saya ingin melakukan reservasi.',
 
-  infoSectionBadge:   'Temukan Kami',
-  infoSectionTitle:   'Informasi & Lokasi Warung Papatong',
-  infoSectionDesc:    'Kami siap menyambut Anda - dari reservasi dadakan hingga gathering ratusan orang.',
+  infoSectionBadge:
+    'Kontak & Lokasi',
 
-  mapsLabel:          'Buka di Google Maps',
-  mapsIframeTitle:    'Lokasi Warung Papatong di Google Maps',
-  addressCardTitle:   'Alamat',
-  hoursCardTitle:     'Jam Operasional',
-  contactCardTitle:   'Hubungi Kami',
-  openNowLabel:       'Sedang Buka Sekarang',
-  waResponseDesc:     'Respons cepat via WhatsApp - tersedia setiap hari selama jam operasional',
+  infoSectionTitle:
+    'Kunjungi Warung Papatong',
 
-  statsCapacity:      '200+',
-  statsCapacityLabel: 'Kursi Kapasitas',
-  statsRating:        '4.9★',
-  statsRatingLabel:   'Rating Pelanggan',
-  statsFoundedLabel:  'Tahun Berdiri',
+  infoSectionDesc:
+    'Nikmati masakan Sunda autentik dan seafood segar dalam suasana semi-outdoor yang nyaman di Cibinong.',
 
-  ctaBadge:           'Reservasi Online Cepat',
-  ctaTitle:           'Kunci Saung Lesehan',
-  ctaTitleAccent:     'Favorit Anda Sekarang',
-  ctaDesc:            'Amankan lokasi saung lesehan untuk rombongan dinas, arisan keluarga, atau rapat korporat. Potong waktu tunggu dapur dengan pre-order langsung via WhatsApp.',
+  mapsLabel:
+    'Buka di Google Maps',
 
-  waCtaLabel:         'Booking via WhatsApp',
-  igCtaLabel:         'Follow Instagram',
-  ytCtaLabel:         'Tonton di YouTube',
-  ttCtaLabel:         'Ikuti di TikTok',
+  mapsIframeTitle:
+    'Lokasi Warung Papatong',
+
+  addressCardTitle:
+    'Alamat',
+
+  hoursCardTitle:
+    'Jam Operasional',
+
+  contactCardTitle:
+    'Hubungi Kami',
+
+  openNowLabel:
+    'Buka Setiap Hari',
+
+  waResponseDesc:
+    'Reservasi dan informasi tersedia melalui WhatsApp selama jam operasional.',
+
+  statsCapacity:
+    '200+',
+
+  statsCapacityLabel:
+    'Kapasitas Tamu',
+
+  statsRating:
+    '2019',
+
+  statsRatingLabel:
+    'Sejak Berdiri',
+
+  statsFoundedLabel:
+    'Tahun Berdiri',
+
+  ctaBadge:
+    'Reservasi Mudah',
+
+  ctaTitle:
+    'Rayakan Momen',
+
+  ctaTitleAccent:
+    'Bersama Kami',
+
+  ctaDesc:
+    'Mulai dari makan keluarga, arisan, gathering perusahaan, hingga acara spesial lainnya. Reservasikan tempat Anda dan nikmati suasana khas Warung Papatong.',
+
+  waCtaLabel:
+    'Reservasi WhatsApp',
+
+  igCtaLabel:
+    'Instagram',
+
+  ytCtaLabel:
+    'YouTube',
+
+  ttCtaLabel:
+    'TikTok',
 } as const
 
 export const ABOUT_STORY_DATA = {
-  badge:           'Warisan Rasa Sunda & Seafood',
-  heroTitle:       'Kisah di Balik',
-  heroTitleAccent: 'Saung Papatong',
-  heroDesc:        'Dari kecintaan mendalam pada kuliner Parahyangan, Warung Papatong hadir membawa kehangatan saung lesehan terapung di jantung Cibinong sejak 2018.',
+  badge:           'Kuliner Sunda & Seafood Sejak 2019',
+
+  heroTitle:       'Cerita di Balik',
+  heroTitleAccent: 'Warung Papatong',
+
+  heroDesc:
+    'Berdiri sejak tahun 2019 di kawasan Cibinong, Warung Papatong menghadirkan perpaduan cita rasa khas Sunda dan seafood segar dalam suasana semi-outdoor yang nyaman untuk keluarga, sahabat, dan berbagai acara kebersamaan.',
 
   storyImage:      '/images/venue/03-gallery/balon-udara2.webp',
-  storyImageAlt:   'Spot foto balon udara Ikonik Warung Papatong',
+  storyImageAlt:   'Suasana Warung Papatong',
 
-  storyLabel:      'Sejarah & Tradisi Kuliner',
-  storyTitle:      'Warisan Rasa Saung Sunda & Hasil Nelayan Nusantara',
+  storyLabel:      'Tentang Kami',
 
-  p1Before:  'Didirikan dengan kecintaan mendalam pada pusaka kuliner Parahyangan,',
-  p1Bold:    'Warung Papatong',
-  p1After:   'mengawinkan kelembutan timbel tradisional dengan gairah kuliner seafood segar yang diolah langsung pasca-tangkapan kolam.',
+  storyTitle:
+    'Menghadirkan Kehangatan Kuliner Nusantara dalam Suasana Asri',
 
-  p2Before:  'Nama',
-  p2Italic:  'Papatong',
-  p2After:   '(artinya capung dalam Bahasa Sunda) dipilih sebagai cerminan harmoni dengan alam terbuka. Di sini, pengunjung tidak hanya bersantap — melainkan mengikat silaturahmi di saung terapung, ditemani gemericik air dan petikan musik akustik live.',
+  p1Before:
+    'Berawal dari kecintaan terhadap kekayaan kuliner Nusantara, khususnya masakan Sunda dan seafood segar,',
+
+  p1Bold:
+    ' Warung Papatong ',
+
+  p1After:
+    'hadir sebagai tempat berkumpul yang mengutamakan kualitas rasa, kenyamanan suasana, dan pengalaman bersantap yang berkesan bagi setiap pengunjung.',
+
+  p2Before:
+    'Nama',
+
+  p2Italic:
+    ' Papatong ',
+
+  p2After:
+    '(capung dalam bahasa Sunda) dipilih sebagai simbol keberuntungan, kelincahan, dan keharmonisan dengan alam. Filosofi tersebut tercermin dalam konsep semi-outdoor kami yang memadukan suasana terbuka, udara segar, serta nuansa alami yang menenangkan.',
 
   highlights: [
     {
-      title: 'Tradisi Pilihan',
-      body:  'Kami hanya memanen ikan segar langsung dari kolam saung sesaat sebelum dinikmati pelanggan.',
+      title: 'Masakan Sunda Otentik',
+      body:
+        'Menyajikan berbagai hidangan khas Sunda dengan cita rasa tradisional yang dijaga secara konsisten oleh tim dapur berpengalaman.',
     },
     {
-      title: 'Bumbu Ulekan Asli',
-      body:  'Rempah ditumbuk tradisional tanpa pengawet sintetik — jaminan kesegaran rasa setiap sajian.',
+      title: 'Seafood Segar Berkualitas',
+      body:
+        'Menggunakan bahan baku seafood pilihan yang dipasok secara rutin untuk menjaga kualitas, kesegaran, dan kelezatan setiap sajian.',
+    },
+    {
+      title: 'Tempat untuk Kebersamaan',
+      body:
+        'Dengan kapasitas hingga 200 orang dan area Floor, Lesehan, Café, serta Saung, Warung Papatong menjadi pilihan ideal untuk keluarga, komunitas, maupun gathering perusahaan.',
     },
   ],
 
-  blockquote:       'Kebahagiaan paling murni adalah ketika melihat keluarga besar duduk mengitari saung lesehan, tertawa lepas sembari berebut kepiting saus Padang di bawah angin sewayup Papatong.',
-  blockquoteAttrib: '~ Keluarga Besar Pengelola Warung Papatong',
-  watermarkText:    'TENTANG',
+  blockquote:
+    'Kami percaya bahwa makanan terbaik bukan hanya tentang rasa, tetapi juga tentang kebersamaan yang tercipta di setiap meja.',
+
+  blockquoteAttrib:
+    '~ Warung Papatong',
+
+  watermarkText:
+    'PAPATONG',
 } as const
 
 // ════════════════════════════════════════════════════════════════════════════

@@ -100,7 +100,13 @@ export default function MenuSection() {
 
           <div className="mb-12 flex flex-col gap-4">
 
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-2">
+            <div
+                className="
+                  grid grid-cols-2 gap-2
+                  sm:grid-cols-3
+                  md:flex md:flex-wrap md:items-center md:justify-center md:gap-3
+                "
+              >
               {MENU_CATEGORIES.map((tab, idx) => {
                 const isActive  = activeTab === tab.id
                 const isLastOdd = idx === MENU_CATEGORIES.length - 1 && MENU_CATEGORIES.length % 2 !== 0
