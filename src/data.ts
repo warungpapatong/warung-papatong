@@ -222,7 +222,7 @@ export const PRODUCTS_DATA: Product[] = [
     name: 'Ikan Kuwe Bakar Jimbaran', 
     category: 'seafood', 
     categoryLabel: 'Seafood',
-    description: 'Ikan Kuwe Bakar Jimbaran segar berdaging tebal. Pilihan gaya masak lainnya: Bakar cabe ijo, Bakar Kecap, Bakar Polos, atau Saos Padang.',
+    description: 'Ikan Kuwe segar berdaging tebal dibakar dengan Bumbu Jimbaran khas Bali. Pilihan masakan lainnya: Bakar Cabe Ijo, Bakar Kecap, Bakar Polos, atau Saos Padang.',
     price: 19000, 
     priceUnit: '/ ons',
     image: '/images/menu/01-seafood/04-kuwe-bakar-jimbaran.webp',
@@ -595,8 +595,8 @@ export const GALLERY_DATA: GalleryItem[] = [
 
 export const HERO_DATA: HeroData = {
   pillBadge:          'Kuliner Sunda & Seafood No. 1 Cibinong',
-  headlineText:       'Lezatnya Seafood Segar Berpadu dengan masakan Sunda Otentik dalam suasa Asri',
-  description:        'Ucapkan selamat tinggal pada mengantre lama & kuota kehabisan makan malam! Warung Papatong hadir dengan sistem booking lesehan teratur dan pre-order digital instan untuk rombongan makan Anda.',
+  headlineText:       'Rasakan Sensasi Sunda dan Segarnya Seafood di Tengah Sejuknya Bogor!',
+  description:        'Selamat datang di tempat di mana kelezatan tradisi Sunda bertemu dengan kesegaran hidangan laut pilihan. Dengan konsep semi-outdoor yang asri dan deretan saung yang nyaman, kami siap menjadi ruang berkumpul terbaik untuk keluarga, sahabat, hingga acara besar Anda. Yuk, sejenak lepas penat dan nikmati momen hangat bersama kami! Booking sekarang juga!',
   ctaBookingText:     'Booking Tempat Sekarang',
   ctaMenuText:        'Lihat Daftar Menu',
   featuredTodayLabel: 'Spesial Hari Ini',
