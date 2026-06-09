@@ -3,7 +3,7 @@
   "private": true,
   "version": "2.1.0",
   "browserslist": {
-  "production": [
+    "production": [
       "last 2 Chrome versions",
       "last 2 Firefox versions",
       "last 2 Safari versions",
@@ -20,21 +20,23 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "^15.3.2",
-    "react": "^19.0.1",
-    "react-dom": "^19.0.1",
+    "clsx": "^2.1.1",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
-    "clsx": "^2.1.1",
+    "next": "^15.3.2",
+    "qrcode": "^1.5.4",
+    "react": "^19.0.1",
+    "react-dom": "^19.0.1",
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "@types/node": "^22.14.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
     "typescript": "~5.8.2"
   }
 }

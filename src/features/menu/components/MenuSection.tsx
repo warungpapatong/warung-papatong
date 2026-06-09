@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles } from 'lucide-react'
+import { ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles, BookOpen, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
 import {
@@ -21,6 +21,95 @@ import {
 } from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
 import CheckoutModal from '@/features/menu/components/CheckoutModal'
+
+// ─── Config ──────────────────────────────────────────────────────────────────
+
+const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1M-z3FuQCmDNILTBXF72jJoqWWyE5_PTf/view'
+
+// ─── FullMenuBanner ───────────────────────────────────────────────────────────
+
+function FullMenuBanner() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const QRCode = (await import('qrcode')).default
+        if (cancelled || !canvasRef.current) return
+        await QRCode.toCanvas(canvasRef.current, FULL_MENU_PDF_URL, {
+          width: 148,
+          margin: 2,
+          color: { dark: '#1a1a1a', light: '#ffffff' },
+        })
+      } catch (err) {
+        console.warn('QR Code generation failed:', err)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [])
+
+  return (
+    <div className="relative mt-16 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-surface p-8 md:p-12">
+
+      <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-brand-primary/20 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 right-0 h-48 w-48 rounded-full bg-brand-primary/10 blur-2xl" />
+
+      <div className="relative z-10 flex flex-col items-center gap-10 md:flex-row md:justify-between md:gap-16">
+
+        {/* Left — teks + CTA */}
+        <div className="max-w-lg space-y-5 text-center md:text-left">
+          <span className="badge badge-primary inline-flex items-center gap-1.5">
+            <BookOpen className="h-3.5 w-3.5" />
+            Buku Menu Lengkap
+          </span>
+
+          <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-brand-dark md:text-4xl">
+            Mau lihat semua menu{' '}
+            <span className="text-brand-primary">secara lengkap?</span>
+          </h2>
+
+          <p className="text-sm leading-relaxed text-brand-text">
+            Klik tombol di bawah untuk membuka buku menu PDF kami — semua
+            pilihan, harga, dan paket tersedia lengkap di sana.
+            <span className="hidden md:inline">
+              {' '}Atau scan QR code di samping langsung dari kamera HP kamu.
+            </span>
+          </p>
+
+          <a
+            href={FULL_MENU_PDF_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-lg"
+          >
+            <BookOpen className="h-4 w-4" />
+            Buka Menu Lengkap
+            <ExternalLink className="h-3.5 w-3.5 opacity-70" />
+          </a>
+        </div>
+
+        {/* Right — QR code card (desktop only) */}
+        <div className="hidden shrink-0 flex-col items-center gap-3 md:flex">
+          <div className="rounded-2xl border-2 border-brand-border bg-white p-3 shadow-card">
+            <canvas
+              ref={canvasRef}
+              width={148}
+              height={148}
+              aria-label="QR Code menuju buku menu PDF lengkap"
+            />
+          </div>
+          <p className="text-center text-xs font-semibold text-brand-muted">
+            Scan untuk buka menu PDF
+          </p>
+        </div>
+
+      </div>
+    </div>
+  )
+}
+
+// ─── MenuSection ──────────────────────────────────────────────────────────────
 
 export default function MenuSection() {
   const [activeTab,      setActiveTab]      = useState<string>('all')
@@ -78,6 +167,7 @@ export default function MenuSection() {
           {d.watermarkText}
         </span>
 
+        {/* ── Header ── */}
         <div className="section-inner relative z-10 mb-14 text-center md:mb-20">
           <span className="badge badge-primary mb-5">
             <Utensils className="h-3.5 w-3.5" />
@@ -98,15 +188,15 @@ export default function MenuSection() {
 
         <div className="section-inner relative z-10">
 
+          {/* ── Filter & Search ── */}
           <div className="mb-12 flex flex-col gap-4">
-
             <div
-                className="
-                  grid grid-cols-2 gap-2
-                  sm:grid-cols-3
-                  md:flex md:flex-wrap md:items-center md:justify-center md:gap-3
-                "
-              >
+              className="
+                grid grid-cols-2 gap-2
+                sm:grid-cols-3
+                md:flex md:flex-wrap md:items-center md:justify-center md:gap-3
+              "
+            >
               {MENU_CATEGORIES.map((tab, idx) => {
                 const isActive  = activeTab === tab.id
                 const isLastOdd = idx === MENU_CATEGORIES.length - 1 && MENU_CATEGORIES.length % 2 !== 0
@@ -147,9 +237,9 @@ export default function MenuSection() {
                 </button>
               )}
             </div>
-
           </div>
 
+          {/* ── Product Grid ── */}
           {filteredProducts.length === 0 ? (
             <div className="rounded-3xl border-2 border-dashed border-brand-border bg-brand-surface py-24 text-center">
               <p className="text-base text-brand-muted">{d.emptyStateText}</p>
@@ -260,7 +350,11 @@ export default function MenuSection() {
             </motion.div>
           )}
 
-          <div className="relative mt-20 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-primary p-8 md:p-12">
+          {/* ── Full Menu PDF Banner ── */}
+          <FullMenuBanner />
+
+          {/* ── Catering Banner ── */}
+          <div className="relative mt-12 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-primary p-8 md:p-12">
             <div className="pointer-events-none absolute right-0 top-0 h-64 w-64 rounded-full bg-brand-red/10 blur-3xl" />
 
             <div className="relative z-10 flex flex-col items-center gap-8 md:flex-row md:justify-between">
@@ -290,6 +384,7 @@ export default function MenuSection() {
 
         </div>
 
+        {/* ── Floating Basket ── */}
         <AnimatePresence>
           {totalItems > 0 && (
             <motion.div
