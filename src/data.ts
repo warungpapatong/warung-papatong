@@ -132,7 +132,8 @@ export const MENU_CATEGORIES = [
   { id: 'sunda',           label: 'Sunda'           },
   { id: 'ayam-dan-daging', label: 'Ayam dan Daging' },
   { id: 'sayuran',         label: 'Sayuran'         },
-  { id: 'minuman',         label: 'Segar Minuman'   },
+  { id: 'minuman',         label: 'Minuman Segar'   },
+  { id: 'snacks',          label: 'Snack & Camilan' },
 ] as const
 
 export type MenuCategoryId = typeof MENU_CATEGORIES[number]['id']
@@ -326,6 +327,44 @@ export const PRODUCTS_DATA: Product[] = [
     price: 25000,
     priceUnit: '/ porsi',
     image: '/images/menu/05-sayuran/02-karedok.webp',
+    badge: 'Rekomendasi',
+    isAvailable: true,
+  },
+  {
+    id: 113,
+    name: 'Udang Goreng Bawang',
+    category: 'seafood',
+    categoryLabel: 'Seafood',
+    description: 'Perpaduan sempurna antara udang segar pilihan yang digoreng hingga kuning keemasan, menghasilkan tekstur luar yang crispy namun tetap lembut dan manis di dalam. Dibalut dengan limpahan bawang putih cincang gurih yang ditumis hingga matang sempurna dan bumbu rahasia yang meresap. Setiap gigitan menawarkan harmoni rasa gurih, asin, dan aroma harum bawang yang memikat selera.',
+    price: 35000,
+    priceUnit: '/ porsi',
+    image: '/images/menu/01-seafood/07-udang-goreng-bawang.webp',
+    badge: 'Rekomendasi',
+    isAvailable: true,
+  },
+  {
+    id: 114,
+    name: 'Aneka Minuman Segar',
+    category: 'minuman',
+    categoryLabel: 'Minuman',
+    description:
+      'Warung Papatong menyediakan berbagai pilihan minuman untuk segala selera, mulai dari minuman segar berbasis buah, squash, dan mocktail hingga kopi, teh, dan minuman spesial lainnya.',
+    price: 5000,
+    priceUnit: '- Rp. 29.000',
+    image: '/images/menu/06-minuman/01-minuman-segar.webp',
+    badge: 'Rekomendasi',
+    isAvailable: true,
+  },
+  {
+    id: 115,
+    name: 'Aneka Snack & Camilan',
+    category: 'snacks',
+    categoryLabel: 'Snack & Camilan',
+    description:
+      'Nikmati berbagai pilihan snack dan camilan favorit Warung Papatong, mulai dari Kentang Goreng, Singkong Goreng, Cireng Goreng, Sosis, Pisang Lumer, Chicken Nugget, hingga Mix Platter yang cocok dinikmati sebagai teman bersantai maupun untuk berbagi bersama keluarga dan teman.',
+    price: 20000,
+    priceUnit: '- Rp. 45.000',
+    image: '/images/menu/07-snacks/01-aneka-snacks.webp',
     badge: 'Rekomendasi',
     isAvailable: true,
   }

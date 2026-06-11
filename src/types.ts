@@ -56,7 +56,7 @@ export interface NavItem {
 // ─── Products ─────────────────────────────────────────────────────────────
 
 // Kategori produk — tambahkan di sini jika ada kategori baru
-export type ProductCategory = 'seafood' | 'ikan-air-tawar' | 'ayam-dan-daging' | 'sunda' | 'sayuran' | 'minuman';
+export type ProductCategory = 'seafood' | 'ikan-air-tawar' | 'ayam-dan-daging' | 'sunda' | 'sayuran' | 'minuman' | 'snacks';
 
 export interface Product {
   id:            number;

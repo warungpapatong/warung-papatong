@@ -24,7 +24,7 @@ import CheckoutModal from '@/features/menu/components/CheckoutModal'
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1M-z3FuQCmDNILTBXF72jJoqWWyE5_PTf/view'
+const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
 
 // ─── FullMenuBanner ───────────────────────────────────────────────────────────
 
