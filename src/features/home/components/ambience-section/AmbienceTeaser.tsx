@@ -9,7 +9,7 @@ export default function AmbienceTeaser() {
   return (
     <section
       id="ambience-teaser"
-      className="py-24 bg-brand-bg border-t border-brand-border relative overflow-hidden"
+      className="py-24 bg-brand-surface border-t border-brand-border relative overflow-hidden"
     >
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-brand-red/5 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />

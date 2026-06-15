@@ -32,6 +32,16 @@ module.exports = {
           surface:         '#FFFFFF',
           'surface-2':     '#F3F4F6',
 
+          // ─── NEW: Background variation tones ──────────────────────────
+          cream:           '#FFF9E8',   // hangat, senada dengan primary yellow
+          sage:            '#EEF4EE',   // tint hijau lembut — nyambung ke nuansa hijau menu PDF
+          mist:            '#F2F6F8',   // tint biru-abu sangat lembut, alternatif dingin
+
+          forest:          '#16352B',   // hijau tua solid — untuk section dgn teks terang
+          'forest-light':  '#1F4A3B',   // varian sedikit lebih terang (gradient/hover di section forest)
+          'forest-text':   '#E8F0EC',   // warna teks utama di atas background forest (16:1+ ✅)
+          'forest-muted':  '#A8C2B5',   // warna teks sekunder/muted di atas background forest
+
           border:          '#E5E7EB',
           'border-strong': '#D1D5DB',
 

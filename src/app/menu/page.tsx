@@ -4,7 +4,7 @@ import { APP_CONFIG } from '@/lib/config'
 import MenuSection from '@/features/menu/components/MenuSection'
 
 export const metadata: Metadata = {
-  title:       'E-Menu Digital & Pre-Order',
+  title:       'Menu Digital & Pre-Order',
   description: 'Lihat daftar lengkap menu Seafood segar & Sunda autentik Warung Papatong Cibinong. Pre-order langsung via WhatsApp — potong waktu tunggu, meja dan hidangan siap saat Anda tiba.',
   keywords:    'menu seafood cibinong, menu sunda cibinong, warung papatong menu, pre order seafood bogor, daftar menu warung papatong, kepiting cibinong, gurame cibinong, lobster bogor, resto seafood cibinong bogor',
 
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title:       'E-Menu Digital Warung Papatong — Pre-Order Seafood & Sunda Cibinong',
+    title:       'Menu Digital Warung Papatong — Pre-Order Seafood & Sunda Cibinong',
     description: 'Pre-order menu seafood & sunda segar Warung Papatong — potong antrean dapur, meja langsung siap saat Anda tiba di Cibinong Bogor!',
     url:         `${APP_CONFIG.siteUrl}/menu`,
     siteName:    BUSINESS_INFO.name,
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card:        'summary_large_image',
-    title:       'E-Menu Digital Warung Papatong — Pre-Order Seafood & Sunda Cibinong',
+    title:       'Menu Digital Warung Papatong — Pre-Order Seafood & Sunda Cibinong',
     description: 'Pre-order menu seafood & sunda segar Warung Papatong — potong antrean dapur, meja langsung siap saat Anda tiba di Cibinong Bogor!',
     images:      [`${APP_CONFIG.siteUrl}/images/menu/01-seafood/03-kerang-mix-corn-feast.webp`],
   },

@@ -8,9 +8,12 @@ export default function LocationSection() {
   return (
     <section
       id="lokasi"
-      className="py-20 md:py-24 bg-brand-surface border-t border-brand-border relative overflow-hidden"
+      className="py-20 md:py-24 bg-brand-mist border-t border-brand-border relative overflow-hidden"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute top-0 right-0 h-72 w-72 rounded-full bg-brand-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full bg-brand-primary/5 blur-3xl" />
+
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
           <div className="lg:col-span-5 space-y-8">
@@ -30,7 +33,7 @@ export default function LocationSection() {
               </p>
             </div>
 
-            <div className="space-y-4 bg-brand-surface-2 p-6 rounded-3xl border border-brand-border">
+            <div className="space-y-4 bg-brand-surface p-6 rounded-3xl border border-brand-border shadow-card">
               <div className="flex items-start gap-4">
                 <div className="bg-brand-primary/10 p-2.5 rounded-xl text-brand-primary-dark shrink-0">
                   <MapPin className="w-5 h-5" />
@@ -76,7 +79,6 @@ export default function LocationSection() {
                 className="btn btn-wa btn-md"
                 icon={<MessageCircle className="w-5 h-5" />}
               />
-
               <a
                 href={BUSINESS_INFO.mapsLink}
                 target="_blank"

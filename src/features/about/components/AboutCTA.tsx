@@ -130,7 +130,7 @@ function CtaBanner() {
   const waHref = buildWALink(BUSINESS_INFO.wa, d.waMessage)
 
   return (
-    <div className="relative overflow-hidden bg-brand-dark">
+    <div className="relative overflow-hidden bg-brand-forest">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-primary/15 via-transparent to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-brand-red/10 via-transparent to-transparent" />
       <div className="h-1 w-full bg-gradient-to-r from-brand-primary via-brand-red to-brand-primary" />
@@ -153,7 +153,7 @@ function CtaBanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl font-black leading-[0.95] tracking-tight text-white md:text-5xl lg:text-6xl"
+            className="font-display text-4xl font-black leading-[0.95] tracking-tight text-brand-forest-text md:text-5xl lg:text-6xl"
           >
             {d.ctaTitle}
             <span className="mt-2 block text-brand-primary">{d.ctaTitleAccent}</span>
@@ -164,7 +164,7 @@ function CtaBanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-brand-muted md:text-base"
+            className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-brand-forest-muted md:text-base"
           >
             {d.ctaDesc}
           </motion.p>
@@ -186,7 +186,6 @@ function CtaBanner() {
               <MessageSquare className="h-5 w-5" />
               {d.waCtaLabel}
             </a>
-
             <a
               href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
               target="_blank"
@@ -218,7 +217,7 @@ function CtaBanner() {
             </a>
           </motion.div>
 
-          <p className="mt-8 font-mono text-[11px] tracking-wider text-brand-muted/50">
+          <p className="mt-8 font-mono text-[11px] tracking-wider text-brand-forest-muted/60">
             {BUSINESS_INFO.name}
           </p>
         </div>

@@ -50,7 +50,7 @@ function FullMenuBanner() {
   }, [])
 
   return (
-    <div className="relative mt-16 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-surface p-8 md:p-12">
+    <div className="relative mt-16 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-cream p-8 md:p-12">
 
       <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-brand-primary/20 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-48 w-48 rounded-full bg-brand-primary/10 blur-2xl" />
@@ -76,7 +76,6 @@ function FullMenuBanner() {
               {' '}Atau scan QR code di samping langsung dari kamera HP kamu.
             </span>
           </p>
-
           <a
             href={FULL_MENU_PDF_URL}
             target="_blank"
@@ -159,7 +158,7 @@ export default function MenuSection() {
     <>
       <section
         id="menu"
-        className="relative overflow-hidden bg-brand-bg pb-16 pt-28 md:pb-24 md:pt-36"
+        className="relative overflow-hidden bg-brand-mist pb-16 pt-28 md:pb-24 md:pt-36"
       >
         <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
 

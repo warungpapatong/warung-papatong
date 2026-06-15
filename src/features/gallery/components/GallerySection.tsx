@@ -35,7 +35,7 @@ export default function GallerySection() {
         strategy="afterInteractive"
       />
 
-      <section className="relative overflow-hidden bg-brand-bg pb-16 pt-28 md:pb-24 md:pt-36">
+      <section className="relative overflow-hidden bg-brand-sage pb-16 pt-28 md:pb-24 md:pt-36">
         <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
 
         <div className="section-inner relative z-10 mb-14 text-center md:mb-20">
@@ -162,7 +162,7 @@ export default function GallerySection() {
         </div>
       </section>
 
-      <section className="section overflow-hidden border-t border-brand-border bg-brand-surface">
+      <section className="section overflow-hidden border-t border-brand-border bg-brand-cream">
         <div className="section-inner">
 
           <div className="mx-auto mb-14 max-w-2xl text-center">
@@ -176,7 +176,7 @@ export default function GallerySection() {
             <p className="section-subtitle">{d.instagramDesc}</p>
           </div>
 
-          <div className="overflow-hidden rounded-4xl border border-brand-border bg-brand-bg p-3 shadow-card-lg md:p-5">
+          <div className="overflow-hidden rounded-4xl border border-brand-border bg-brand-surface p-3 shadow-card-lg md:p-5">
             <div className={d.elfsightAppId} data-elfsight-app-lazy />
           </div>
 

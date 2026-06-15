@@ -695,7 +695,7 @@ export const BEST_SELLERS_CONTENT: BestSellersData = {
   badge:           'MENU PRIMADONA TERLARIS',
   title:           'Menu Terpopuler Rekomendasi Hari Ini',
   description:     'Daftar resep rahasia paling dicari penikmat kuliner di Jabodetabek. Diramu menggunakan resep autentik dapur legendaris Warung Papatong sejak 2018.',
-  ctaText:         'Sajian E-Menu Selengkapnya',
+  ctaText:         'Sajian Menu Selengkapnya',
   ctaHref:         '/menu',
   detailCtaText:   'Detail & Pesan',
   freshBadgeLabel: 'Bahan Segar Pilihan',

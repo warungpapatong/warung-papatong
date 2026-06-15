@@ -5,7 +5,7 @@ export default function TestimonialsSection() {
   return (
     <section
       id="ulasan"
-      className="relative overflow-hidden border-t border-brand-border bg-brand-surface-2 py-20 md:py-24"
+      className="relative overflow-hidden border-t border-brand-border bg-brand-sage py-20 md:py-24"
     >
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
 

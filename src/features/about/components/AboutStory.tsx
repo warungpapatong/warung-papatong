@@ -139,7 +139,7 @@ export default function AboutStory() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-brand-surface pb-16 pt-28 md:pb-24 md:pt-36"
+      className="relative overflow-hidden bg-brand-cream pb-16 pt-28 md:pb-24 md:pt-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-primary/5 blur-3xl" />

@@ -1,15 +1,21 @@
 import Link from 'next/link'
-import { ArrowRight, Flame } from 'lucide-react'
+import { ArrowRight, Flame, BookOpen, ExternalLink } from 'lucide-react'
 
 import { BEST_SELLERS_CONTENT } from '@/data'
 
 import BestSellerCards from './client/BestSellerCards'
 
+// ─── Config ──────────────────────────────────────────────────────────────────
+
+const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
+
+// ─── BestSellers ────────────────────────────────────────────────────────────
+
 export default function BestSellers() {
   return (
     <section
       id="best-sellers"
-      className="py-24 bg-brand-surface border-t border-brand-border relative overflow-hidden"
+      className="py-24 bg-brand-cream border-t border-brand-border relative overflow-hidden"
     >
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -31,13 +37,26 @@ export default function BestSellers() {
             </p>
           </div>
 
-          <Link
-            href={BEST_SELLERS_CONTENT.ctaHref}
-            className="group flex items-center gap-2 text-xs font-bold text-brand-primary-dark hover:text-brand-primary transition-colors py-3.5 px-6 rounded-full border border-brand-primary/30 hover:border-brand-primary bg-brand-surface shadow-card hover:shadow-card-md shrink-0"
-          >
-            {BEST_SELLERS_CONTENT.ctaText}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-          </Link>
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
+            <a
+              href={FULL_MENU_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-4 text-sm font-bold text-brand-dark shadow-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-xl active:scale-[0.985] sm:text-base"
+            >
+              <BookOpen className="h-5 w-5" />
+              <span>Lihat Menu PDF Lengkap</span>
+              <ExternalLink className="h-4 w-4 opacity-70" />
+            </a>
+
+            <Link
+              href={BEST_SELLERS_CONTENT.ctaHref}
+              className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-brand-primary/30 bg-brand-surface px-6 py-4 text-sm font-bold text-brand-primary-dark shadow-card transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-brand-primary hover:text-brand-primary hover:shadow-card-md active:scale-[0.985] sm:text-base"
+            >
+              <span>{BEST_SELLERS_CONTENT.ctaText}</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
 
         <BestSellerCards
