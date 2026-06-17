@@ -5,6 +5,8 @@ import { motion, useInView } from 'motion/react'
 import { Leaf } from 'lucide-react'
 import { ABOUT_STORY_DATA } from '@/data'
 
+// ─── Animation Config ─────────────────────────────────────────────────────────
+
 const EASE = [0.22, 1, 0.36, 1] as const
 
 const variants = {
@@ -19,6 +21,8 @@ const variants = {
 } as const
 
 const d = ABOUT_STORY_DATA
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function HeroContent() {
   return (
@@ -61,7 +65,7 @@ function StoryImage() {
 
 function StoryHighlightCard({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-2xl border border-brand-border bg-brand-primary-light p-5">
+    <div className="rounded-2xl border border-brand-border bg-brand-surface p-5 shadow-card">
       <h4 className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-dark">
         {title}
       </h4>
@@ -132,6 +136,8 @@ function StoryText({ inView }: { inView: boolean }) {
   )
 }
 
+// ─── AboutStory ───────────────────────────────────────────────────────────────
+
 export default function AboutStory() {
   const ref    = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
@@ -139,10 +145,10 @@ export default function AboutStory() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-brand-cream pb-16 pt-28 md:pb-24 md:pt-36"
+      className="relative overflow-hidden bg-brand-tropical pb-16 pt-28 md:pb-24 md:pt-36"
     >
       <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-primary/5 blur-3xl" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand-primary/10 blur-3xl" />
 
       <span className="pointer-events-none absolute bottom-12 right-8 hidden select-none font-display text-[120px] font-black leading-none text-brand-dark opacity-[0.03] lg:block">
         {d.watermarkText}

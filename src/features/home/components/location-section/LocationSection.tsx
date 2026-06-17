@@ -1,21 +1,25 @@
-import { MapPin, Clock, Phone, MessageCircle, Navigation2, Compass } from 'lucide-react'
+import { Clock, Compass, MapPin, MessageCircle, Navigation2, Phone } from 'lucide-react'
 
 import { BUSINESS_INFO, LOCATION_DATA, buildWALink } from '@/data'
 
 import WAButton from '../button/WAButton'
 
+// ─── LocationSection ──────────────────────────────────────────────────────────
+
 export default function LocationSection() {
   return (
     <section
       id="lokasi"
-      className="py-20 md:py-24 bg-brand-mist border-t border-brand-border relative overflow-hidden"
+      className="py-20 md:py-24 bg-brand-amber border-t border-brand-border relative overflow-hidden"
     >
-      <div className="pointer-events-none absolute top-0 right-0 h-72 w-72 rounded-full bg-brand-primary/10 blur-3xl" />
-      <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full bg-brand-primary/5 blur-3xl" />
+      {/* Decorative blurs */}
+      <div className="pointer-events-none absolute top-0 right-0 h-72 w-72 rounded-full bg-brand-primary/15 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 left-0 h-64 w-64 rounded-full bg-brand-primary/10 blur-3xl" />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
+          {/* ── Left: Info ── */}
           <div className="lg:col-span-5 space-y-8">
 
             <div className="space-y-4">
@@ -33,6 +37,7 @@ export default function LocationSection() {
               </p>
             </div>
 
+            {/* ── Info Cards ── */}
             <div className="space-y-4 bg-brand-surface p-6 rounded-3xl border border-brand-border shadow-card">
               <div className="flex items-start gap-4">
                 <div className="bg-brand-primary/10 p-2.5 rounded-xl text-brand-primary-dark shrink-0">
@@ -42,7 +47,9 @@ export default function LocationSection() {
                   <h4 className="font-bold text-xs text-brand-dark uppercase tracking-wider">
                     {LOCATION_DATA.labelAddress}
                   </h4>
-                  <p className="text-sm text-brand-text mt-1 leading-relaxed">{BUSINESS_INFO.address}</p>
+                  <p className="text-sm text-brand-text mt-1 leading-relaxed">
+                    {BUSINESS_INFO.address}
+                  </p>
                 </div>
               </div>
 
@@ -54,7 +61,9 @@ export default function LocationSection() {
                   <h4 className="font-bold text-xs text-brand-dark uppercase tracking-wider">
                     {LOCATION_DATA.labelHours}
                   </h4>
-                  <p className="text-sm text-brand-text mt-1 font-mono">{BUSINESS_INFO.hours}</p>
+                  <p className="text-sm text-brand-text mt-1 font-mono">
+                    {BUSINESS_INFO.hours}
+                  </p>
                 </div>
               </div>
 
@@ -66,11 +75,14 @@ export default function LocationSection() {
                   <h4 className="font-bold text-xs text-brand-dark uppercase tracking-wider">
                     {LOCATION_DATA.labelPhone}
                   </h4>
-                  <p className="text-sm text-brand-text mt-1 font-bold font-mono">{BUSINESS_INFO.phone}</p>
+                  <p className="text-sm text-brand-text mt-1 font-bold font-mono">
+                    {BUSINESS_INFO.phone}
+                  </p>
                 </div>
               </div>
             </div>
 
+            {/* ── Action Buttons ── */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <WAButton
                 href={buildWALink(BUSINESS_INFO.wa, LOCATION_DATA.waMessage)}
@@ -79,6 +91,7 @@ export default function LocationSection() {
                 className="btn btn-wa btn-md"
                 icon={<MessageCircle className="w-5 h-5" />}
               />
+
               <a
                 href={BUSINESS_INFO.mapsLink}
                 target="_blank"
@@ -92,6 +105,7 @@ export default function LocationSection() {
 
           </div>
 
+          {/* ── Right: Map Embed ── */}
           <div className="lg:col-span-7 h-[350px] md:h-[450px] rounded-4xl overflow-hidden shadow-card-lg border-4 border-brand-surface">
             <iframe
               src={LOCATION_DATA.mapsIframeSrc}

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Flame, BookOpen, ExternalLink } from 'lucide-react'
+import { ArrowRight, BookOpen, ExternalLink, Flame } from 'lucide-react'
 
 import { BEST_SELLERS_CONTENT } from '@/data'
 
@@ -9,7 +9,7 @@ import BestSellerCards from './client/BestSellerCards'
 
 const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
 
-// ─── BestSellers ────────────────────────────────────────────────────────────
+// ─── BestSellers ─────────────────────────────────────────────────────────────
 
 export default function BestSellers() {
   return (
@@ -17,10 +17,12 @@ export default function BestSellers() {
       id="best-sellers"
       className="py-24 bg-brand-cream border-t border-brand-border relative overflow-hidden"
     >
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative blur */}
+      <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-primary/10 rounded-full blur-3xl" />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
+        {/* ── Header Row ── */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl space-y-4">
             <span className="text-xs font-bold text-brand-primary-dark tracking-widest uppercase bg-brand-primary/10 border border-brand-primary/20 px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5">
@@ -37,6 +39,7 @@ export default function BestSellers() {
             </p>
           </div>
 
+          {/* ── CTAs ── */}
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center shrink-0">
             <a
               href={FULL_MENU_PDF_URL}
@@ -59,6 +62,7 @@ export default function BestSellers() {
           </div>
         </div>
 
+        {/* ── Cards ── */}
         <BestSellerCards
           intervalMs={BEST_SELLERS_CONTENT.intervalMs}
           ctaHref={BEST_SELLERS_CONTENT.ctaHref}

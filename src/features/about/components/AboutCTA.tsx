@@ -1,17 +1,35 @@
 'use client'
 
 import {
-  MapPin, Clock, Phone, MessageSquare,
-  Instagram, Youtube, ArrowRight, Utensils,
-  Star, Users, CalendarDays,
+  ArrowRight,
+  CalendarDays,
+  Clock,
+  Instagram,
+  MapPin,
+  MessageSquare,
+  Phone,
+  Star,
+  Users,
+  Utensils,
+  Youtube,
   type LucideIcon,
 } from 'lucide-react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
-import { BUSINESS_INFO, LOCATION_DATA, buildWALink, ABOUT_CTA_DATA } from '@/data'
+import { ABOUT_CTA_DATA, BUSINESS_INFO, LOCATION_DATA, buildWALink } from '@/data'
 import { trackWhatsAppConversion } from '@/lib/tracking'
 
+// ─── Data ────────────────────────────────────────────────────────────────────
+
 const d = ABOUT_CTA_DATA
+
+const STATS: { value: string; label: string; icon: LucideIcon }[] = [
+  { value: BUSINESS_INFO.founded ?? '', label: d.statsFoundedLabel,  icon: CalendarDays },
+  { value: d.statsCapacity,             label: d.statsCapacityLabel, icon: Users        },
+  { value: d.statsRating,              label: d.statsRatingLabel,   icon: Star         },
+]
+
+// ─── Icons ───────────────────────────────────────────────────────────────────
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -21,11 +39,7 @@ function TikTokIcon({ className }: { className?: string }) {
   )
 }
 
-const STATS: { value: string; label: string; icon: LucideIcon }[] = [
-  { value: BUSINESS_INFO.founded ?? '',  label: d.statsFoundedLabel,  icon: CalendarDays },
-  { value: d.statsCapacity,              label: d.statsCapacityLabel, icon: Users        },
-  { value: d.statsRating,               label: d.statsRatingLabel,   icon: Star         },
-]
+// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function StatCard({ value, label, icon: Icon }: typeof STATS[number]) {
   return (
@@ -130,13 +144,22 @@ function CtaBanner() {
   const waHref = buildWALink(BUSINESS_INFO.wa, d.waMessage)
 
   return (
+    /*
+      bg-brand-forest (#16352B, hijau tua) dipakai agar berbeda dari
+      footer bg-brand-dark (#202124, abu-hitam) — dua hue berbeda sehingga
+      keduanya tidak menyatu secara visual meski sama-sama gelap.
+      Garis gradient primary/red di atas sebagai visual separator tambahan.
+    */
     <div className="relative overflow-hidden bg-brand-forest">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-brand-primary/15 via-transparent to-transparent" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-brand-red/10 via-transparent to-transparent" />
+
+      {/* Top border separator */}
       <div className="h-1 w-full bg-gradient-to-r from-brand-primary via-brand-red to-brand-primary" />
 
       <div className="section-inner relative z-10 py-16 md:py-24">
         <div className="mx-auto max-w-4xl text-center">
+
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,7 +197,7 @@ function CtaBanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
+            className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap"
           >
             <a
               href={waHref}
@@ -186,6 +209,7 @@ function CtaBanner() {
               <MessageSquare className="h-5 w-5" />
               {d.waCtaLabel}
             </a>
+
             <a
               href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
               target="_blank"
@@ -220,11 +244,14 @@ function CtaBanner() {
           <p className="mt-8 font-mono text-[11px] tracking-wider text-brand-forest-muted/60">
             {BUSINESS_INFO.name}
           </p>
+
         </div>
       </div>
     </div>
   )
 }
+
+// ─── AboutCTA ────────────────────────────────────────────────────────────────
 
 export default function AboutCTA() {
   return (
@@ -234,6 +261,8 @@ export default function AboutCTA() {
 
       <div className="section relative z-10">
         <div className="section-inner">
+
+          {/* ── Header ── */}
           <div className="mx-auto mb-14 max-w-xl text-center">
             <span className="badge badge-primary mb-4">
               <Utensils className="h-3.5 w-3.5" />
@@ -247,6 +276,7 @@ export default function AboutCTA() {
             </p>
           </div>
 
+          {/* ── Stats Grid ── */}
           <div className="mb-10 grid grid-cols-3 gap-4 md:gap-6">
             {STATS.map((stat, i) => (
               <motion.div
@@ -261,13 +291,16 @@ export default function AboutCTA() {
             ))}
           </div>
 
+          {/* ── Map + Info Cards ── */}
           <div className="mb-16 grid grid-cols-1 gap-8 lg:grid-cols-12">
             <MapEmbed />
             <InfoCards />
           </div>
+
         </div>
       </div>
 
+      {/* ── Dark CTA Banner ── */}
       <CtaBanner />
     </section>
   )

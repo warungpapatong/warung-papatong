@@ -3,23 +3,28 @@
 import { useState } from 'react'
 import Script from 'next/script'
 import { motion, AnimatePresence } from 'motion/react'
-import { Camera, Maximize2, X, Instagram } from 'lucide-react'
+import { Camera, Instagram, Maximize2, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { GalleryItem } from '@/types'
-import { GALLERY_DATA, GALLERY_PAGE_DATA, BUSINESS_INFO } from '@/data'
+import { BUSINESS_INFO, GALLERY_DATA, GALLERY_PAGE_DATA } from '@/data'
+
+// ─── Types ────────────────────────────────────────────────────────────────────
 
 type ActiveTab = typeof GALLERY_PAGE_DATA.filterTabs[number]['id']
 
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 const formatCategory = (category: string) => category.replace('-', ' ')
+
+// ─── GallerySection ───────────────────────────────────────────────────────────
 
 export default function GallerySection() {
   const [activeTab,     setActiveTab]     = useState<ActiveTab>('semua')
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null)
 
-  const filteredItems = GALLERY_DATA.filter(
+  const filteredItems   = GALLERY_DATA.filter(
     item => activeTab === 'semua' || item.category === activeTab,
   )
-
   const featuredImage   = filteredItems[0]
   const remainingImages = filteredItems.slice(1)
 
@@ -35,9 +40,11 @@ export default function GallerySection() {
         strategy="afterInteractive"
       />
 
-      <section className="relative overflow-hidden bg-brand-sage pb-16 pt-28 md:pb-24 md:pt-36">
+      {/* ── Section 1: Gallery Grid ── */}
+      <section className="relative overflow-hidden bg-brand-tropical pb-16 pt-28 md:pb-24 md:pt-36">
         <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
 
+        {/* ── Page Header ── */}
         <div className="section-inner relative z-10 mb-14 text-center md:mb-20">
           <span className="badge badge-primary mb-5">
             <Camera className="h-3.5 w-3.5" />
@@ -58,6 +65,7 @@ export default function GallerySection() {
 
         <div className="section-inner relative z-10">
 
+          {/* ── Filter Tabs ── */}
           <div className="mb-12 flex flex-wrap items-center justify-center gap-3 md:mb-14">
             {d.filterTabs.map(tab => (
               <button
@@ -82,6 +90,7 @@ export default function GallerySection() {
             ))}
           </div>
 
+          {/* ── Featured Image ── */}
           {featuredImage && (
             <motion.div
               layout
@@ -96,7 +105,6 @@ export default function GallerySection() {
                 loading="lazy"
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-8">
                 <span className="mb-2 font-mono text-[10px] font-black uppercase tracking-widest text-brand-primary">
                   {formatCategory(featuredImage.category)}
@@ -116,6 +124,7 @@ export default function GallerySection() {
             </motion.div>
           )}
 
+          {/* ── Grid ── */}
           <motion.div
             layout
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-3"
@@ -137,7 +146,6 @@ export default function GallerySection() {
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
                   <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <span className="mb-1.5 font-mono text-[10px] font-black uppercase tracking-widest text-brand-primary">
                       {formatCategory(item.category)}
@@ -162,6 +170,7 @@ export default function GallerySection() {
         </div>
       </section>
 
+      {/* ── Section 2: Instagram Feed ── */}
       <section className="section overflow-hidden border-t border-brand-border bg-brand-cream">
         <div className="section-inner">
 
@@ -195,6 +204,7 @@ export default function GallerySection() {
         </div>
       </section>
 
+      {/* ── Lightbox Modal ── */}
       <AnimatePresence>
         {selectedImage && (
           <motion.div
@@ -253,7 +263,6 @@ export default function GallerySection() {
                   </button>
                 </div>
               </div>
-
             </motion.div>
           </motion.div>
         )}

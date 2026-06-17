@@ -2,6 +2,18 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Warung Papatong — Tailwind CSS v3 Design System
 // ─────────────────────────────────────────────────────────────────────────────
+//
+// BRAND IDENTITY:
+//   Primary   → Kuning  #FFCC00   (dari logo & brand)
+//   Red       → Merah   #E60000   (dari logo "Papatong" text)
+//   Tropical  → Hijau   #16352B   (dari wall of frame & capung/papatong motif)
+//
+// BACKGROUND TOKENS — semua turunan dari 3 warna brand di atas:
+//   cream     → tint kuning  (senada primary yellow)
+//   tropical  → tint hijau   (senada forest & nuansa alam restoran)
+//   amber     → kuning bold  (lebih mencolok dari cream, masih on-brand)
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -32,15 +44,34 @@ module.exports = {
           surface:         '#FFFFFF',
           'surface-2':     '#F3F4F6',
 
-          // ─── NEW: Background variation tones ──────────────────────────
-          cream:           '#FFF9E8',   // hangat, senada dengan primary yellow
-          sage:            '#EEF4EE',   // tint hijau lembut — nyambung ke nuansa hijau menu PDF
-          mist:            '#F2F6F8',   // tint biru-abu sangat lembut, alternatif dingin
+          // ─── Background variation tones — ON-BRAND ─────────────────────
+          //
+          // Semua token di bawah adalah turunan langsung dari brand identity
+          // Warung Papatong (kuning, merah, hijau tropical).
+          // Tidak ada warna biru/mint yang asing dari brand.
+          //
+          // cream    : tint kuning sangat lembut — senada #FFCC00 primary
+          //            → dipakai BestSellers, AboutStory, FullMenuBanner
+          //
+          // tropical : tint hijau tropical lembut — senada wall of frame &
+          //            motif capung/daun di logo
+          //            → dipakai Testimonials, GallerySection
+          //
+          // amber    : kuning amber sedang — lebih bold dari cream,
+          //            masih satu family dengan primary yellow
+          //            → dipakai LocationSection, GalleryInstagram section
+          //
+          // forest   : hijau tua solid — untuk section gelap (CtaBanner)
+          //            Warna ini langsung dari wall of frame Papatong
+          //
+          cream:           '#FFF5C0',   // kuning soft  — tint #FFCC00 ✅ on-brand
+          tropical:        '#D4EADA',   // hijau soft   — tint #16352B ✅ on-brand
+          amber:           '#FFE680',   // kuning amber — lebih bold, on-brand
 
-          forest:          '#16352B',   // hijau tua solid — untuk section dgn teks terang
-          'forest-light':  '#1F4A3B',   // varian sedikit lebih terang (gradient/hover di section forest)
-          'forest-text':   '#E8F0EC',   // warna teks utama di atas background forest (16:1+ ✅)
-          'forest-muted':  '#A8C2B5',   // warna teks sekunder/muted di atas background forest
+          forest:          '#16352B',   // hijau tua solid
+          'forest-light':  '#1F4A3B',
+          'forest-text':   '#E8F0EC',   // kontras di atas forest ✅
+          'forest-muted':  '#A8C2B5',   // muted di atas forest ✅
 
           border:          '#E5E7EB',
           'border-strong': '#D1D5DB',
@@ -256,7 +287,6 @@ module.exports = {
           '&:focus-visible': {
             outline: `2px solid ${theme('colors.brand.primary')}`,
             outlineOffset: '2px',
-            // box-shadow sebagai fallback tambahan (tidak menggantikan outline)
             boxShadow: theme('boxShadow.glow-primary'),
           },
         },
@@ -295,24 +325,24 @@ module.exports = {
         },
         '.badge-primary': {
           backgroundColor: theme('colors.brand.primary'),
-          color: theme('colors.brand.dark'),           // 11.5:1 ✅
+          color: theme('colors.brand.dark'),
         },
         '.badge-red': {
           backgroundColor: theme('colors.brand.red'),
-          color: '#FFFFFF',                            // 4.6:1 ✅
+          color: '#FFFFFF',
         },
         '.badge-dark': {
           backgroundColor: theme('colors.brand.dark'),
-          color: '#FFFFFF',                            // 16.1:1 ✅
+          color: '#FFFFFF',
         },
         '.badge-outline': {
           backgroundColor: 'transparent',
-          color: theme('colors.brand.text'),           // 10.7:1 ✅
+          color: theme('colors.brand.text'),
           border: `1px solid ${theme('colors.brand.border-strong')}`,
         },
         '.badge-success': {
           backgroundColor: theme('colors.brand.success-light'),
-          color: '#14532D',                      
+          color: '#14532D',
         },
 
         // Button base
@@ -339,49 +369,49 @@ module.exports = {
             cursor: 'not-allowed',
           },
         },
-        '.btn-sm':  { padding: '0.5rem 1rem',    fontSize: '0.875rem'  },
-        '.btn-md':  { padding: '0.75rem 1.5rem', fontSize: '0.9375rem' },
-        '.btn-lg':  { padding: '1rem 2rem',      fontSize: '1rem'      },
+        '.btn-sm':  { padding: '0.5rem 1rem',     fontSize: '0.875rem'  },
+        '.btn-md':  { padding: '0.75rem 1.5rem',  fontSize: '0.9375rem' },
+        '.btn-lg':  { padding: '1rem 2rem',        fontSize: '1rem'      },
         '.btn-xl':  { padding: '1.125rem 2.5rem', fontSize: '1.0625rem' },
 
         '.btn-primary': {
           backgroundColor: theme('colors.brand.primary'),
-          color: theme('colors.brand.dark'),           // 11.5:1 ✅
+          color: theme('colors.brand.dark'),
           '&:hover': {
             backgroundColor: theme('colors.brand.primary-hover'),
-            color: theme('colors.brand.dark'),         // FIX: tetap dark, BUKAN opacity — 11.3:1 ✅
+            color: theme('colors.brand.dark'),
             boxShadow: theme('boxShadow.glow-primary-lg'),
             transform: 'translateY(-1px)',
           },
           '&:active': {
             transform: 'translateY(0)',
-            color: theme('colors.brand.dark'),         // pastikan active juga tidak opacity
+            color: theme('colors.brand.dark'),
           },
         },
         '.btn-dark': {
           backgroundColor: theme('colors.brand.dark'),
-          color: '#FFFFFF',                            // 16.1:1 ✅
+          color: '#FFFFFF',
           '&:hover': {
             backgroundColor: '#2d2f32',
-            color: '#FFFFFF',                          // tetap putih solid ✅
+            color: '#FFFFFF',
             transform: 'translateY(-1px)',
           },
         },
         '.btn-outline': {
           backgroundColor: 'transparent',
-          color: theme('colors.brand.dark'),           // 16.1:1 ✅
+          color: theme('colors.brand.dark'),
           border: `2px solid ${theme('colors.brand.border-strong')}`,
           '&:hover': {
-            borderColor: theme('colors.brand.primary-dark'),  // #CC9900, bukan hilang
+            borderColor: theme('colors.brand.primary-dark'),
             backgroundColor: theme('colors.brand.primary-light'),
-            color: theme('colors.brand.dark'),         // tetap dark ✅
+            color: theme('colors.brand.dark'),
           },
         },
         '.btn-wa': {
-          backgroundColor: theme('colors.wa.DEFAULT'),  // #25D366
+          backgroundColor: theme('colors.wa.DEFAULT'),
           color: '#FFFFFF',
           '&:hover': {
-            backgroundColor: theme('colors.wa.hover'),  // #128C7E — 5.1:1 ✅
+            backgroundColor: theme('colors.wa.hover'),
             color: '#FFFFFF',
             boxShadow: theme('boxShadow.glow-wa'),
             transform: 'translateY(-1px)',
@@ -430,7 +460,7 @@ module.exports = {
           fontWeight: '700',
           letterSpacing: '0.1em',
           textTransform: 'uppercase',
-          color: theme('colors.brand.primary-dark'),   // #CC9900 = 4.6:1 ✅
+          color: theme('colors.brand.primary-dark'),
           marginBottom: '0.75rem',
         },
         '.section-title': {
@@ -443,7 +473,7 @@ module.exports = {
         },
         '.section-subtitle': {
           fontSize: '1.0625rem',
-          color: theme('colors.brand.muted'),          // #6B7280 = 4.61:1 ✅
+          color: theme('colors.brand.muted'),
           lineHeight: '1.7',
           marginTop: '0.75rem',
         },
@@ -460,7 +490,7 @@ module.exports = {
           transition: 'all 200ms',
           outline: 'none',
           '&::placeholder': {
-            color: theme('colors.brand.subtle'),       // #757575 = 4.54:1 ✅
+            color: theme('colors.brand.subtle'),
           },
           '&:focus': {
             borderColor: theme('colors.brand.primary'),

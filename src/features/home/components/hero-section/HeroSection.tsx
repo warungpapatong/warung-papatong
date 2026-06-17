@@ -1,12 +1,4 @@
-import Link from 'next/link'
-import {
-  ArrowRight,
-  Clock,
-  Instagram,
-  MapPin,
-  Star,
-  UtensilsCrossed,
-} from 'lucide-react'
+import { ArrowRight, BookOpen, Clock, ExternalLink, Instagram, MapPin, Star } from 'lucide-react'
 
 import {
   BUSINESS_INFO,
@@ -24,10 +16,18 @@ import {
 import HeroImage from './client/HeroImage'
 import WAButton from '../button/WAButton'
 
+// ─── Config ──────────────────────────────────────────────────────────────────
+
+const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
 function getFeaturedMenu() {
   const currentBlock = Math.floor(new Date().getHours() / 4)
   return PRODUCTS_DATA[currentBlock % PRODUCTS_DATA.length]
 }
+
+// ─── HeroSection ─────────────────────────────────────────────────────────────
 
 export default function HeroSection() {
   const featuredMenu = getFeaturedMenu()
@@ -43,6 +43,7 @@ export default function HeroSection() {
 
       <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:items-center lg:gap-10 lg:px-8">
 
+        {/* ── Left Column ── */}
         <HeroAnimatedContainer className="order-1 lg:col-span-6">
 
           <HeroAnimatedItem className="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-primary/15 bg-brand-primary/5 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-primary-dark sm:text-xs">
@@ -64,15 +65,22 @@ export default function HeroSection() {
             {HERO_DATA.description}
           </HeroAnimatedItem>
 
+          {/* ── CTA Buttons ── */}
           <HeroAnimatedItem className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              href="/menu"
+            {/*
+              REVISI OWNER: CTA utama tidak lagi mengarah ke /menu page,
+              melainkan langsung membuka buku menu PDF di Google Drive.
+            */}
+            <a
+              href={FULL_MENU_PDF_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-brand-primary px-6 py-4 text-sm font-bold text-brand-dark shadow-lg transition-all duration-300 ease-out hover:-translate-y-0.5 hover:text-brand-dark hover:shadow-xl active:scale-[0.985] sm:text-base"
             >
-              <UtensilsCrossed className="h-5 w-5 transition-transform duration-300 group-hover:rotate-3" />
+              <BookOpen className="h-5 w-5 transition-transform duration-300 group-hover:rotate-3" />
               <span>{HERO_DATA.ctaMenuText}</span>
-              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
+              <ExternalLink className="h-4 w-4 opacity-70 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
 
             <WAButton
               href={buildWALink(BUSINESS_INFO.wa, HERO_DATA.waMessage)}
@@ -81,6 +89,7 @@ export default function HeroSection() {
             />
           </HeroAnimatedItem>
 
+          {/* ── Quick Links ── */}
           <HeroAnimatedItem className="mt-6 flex flex-wrap items-center gap-3">
             <a
               href={BUSINESS_INFO.mapsLink}
@@ -103,6 +112,7 @@ export default function HeroSection() {
             </a>
           </HeroAnimatedItem>
 
+          {/* ── Stats ── */}
           <HeroAnimatedItem className="mt-8 grid grid-cols-3 border-t border-brand-border pt-5 sm:mt-10 sm:gap-2 sm:pt-6">
             <div className="flex flex-col justify-start pr-3">
               <div className="flex items-center gap-1">
@@ -143,6 +153,7 @@ export default function HeroSection() {
 
         </HeroAnimatedContainer>
 
+        {/* ── Right Column ── */}
         <HeroRightCol className="relative order-2 lg:col-span-6">
 
           <div className="mb-4 flex justify-end">

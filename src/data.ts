@@ -85,7 +85,7 @@ export const BUSINESS_INFO: BusinessInfo = {
   youtube:     'warungpapatong',
   email:       'warungpapatong@gmail.com',
   mapQuery:    'RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
-  mapsLink:    'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor/@-6.5120209,106.8329725,17z',
+  mapsLink:    'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor/@-6.5116855,106.8321302,924m/data=!3m1!1e3!4m6!3m5!1s0x2e69c1a8054a7b43:0xf582c100380d74a7!8m2!3d-6.5120209!4d106.8329725!16s%2Fg%2F11h12xm87x?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D',
   founded:     '2018',
 };
 

@@ -1,9 +1,11 @@
 import Link from 'next/link'
-import { ArrowRight, Compass, Camera } from 'lucide-react'
+import { ArrowRight, Camera, Compass } from 'lucide-react'
 
-import { AMBIENCE_TEASER_DATA, AMBIENCE_TEASER_CONTENT } from '@/data'
+import { AMBIENCE_TEASER_CONTENT, AMBIENCE_TEASER_DATA } from '@/data'
 
 import AmbienceCard from './client/AmbienceCard'
+
+// ─── AmbienceTeaser ──────────────────────────────────────────────────────────
 
 export default function AmbienceTeaser() {
   return (
@@ -11,12 +13,14 @@ export default function AmbienceTeaser() {
       id="ambience-teaser"
       className="py-24 bg-brand-surface border-t border-brand-border relative overflow-hidden"
     >
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
-      <div className="absolute top-1/2 right-0 w-96 h-96 bg-brand-red/5 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
+      {/* Decorative blurs */}
+      <div className="pointer-events-none absolute top-1/2 left-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-3xl -translate-y-1/2" />
+      <div className="pointer-events-none absolute top-1/2 right-0 w-96 h-96 bg-brand-red/5 rounded-full blur-3xl -translate-y-1/2" />
 
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
+          {/* ── Left: Text + CTA ── */}
           <div className="lg:col-span-4 space-y-6">
             <span className="text-xs font-bold text-brand-primary-dark tracking-widest uppercase bg-brand-primary/10 border border-brand-primary/20 px-3.5 py-1.5 rounded-full inline-flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5 text-brand-primary" />
@@ -41,6 +45,7 @@ export default function AmbienceTeaser() {
             </Link>
           </div>
 
+          {/* ── Right: Cards ── */}
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             {AMBIENCE_TEASER_DATA.map((img, idx) => (
               <AmbienceCard

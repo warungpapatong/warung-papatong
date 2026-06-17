@@ -2,22 +2,32 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { ShoppingCart, Plus, Minus, Search, Utensils, X, Sparkles, BookOpen, ExternalLink } from 'lucide-react'
+import {
+  BookOpen,
+  ExternalLink,
+  Minus,
+  Plus,
+  Search,
+  ShoppingCart,
+  Sparkles,
+  Utensils,
+  X,
+} from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
 import {
-  PRODUCTS_DATA,
   BUSINESS_INFO,
+  MENU_CATEGORIES,
+  MENU_PAGE_DATA,
+  PRODUCTS_DATA,
   buildWALink,
   formatPrice,
   formatProductPrice,
-  MENU_CATEGORIES,
-  MENU_PAGE_DATA,
 } from '@/data'
 import {
+  buildCateringWAMessage,
   buildMenuWAMessage,
   buildMenuWAMessageWithQty,
-  buildCateringWAMessage,
 } from '@/lib/whatsapp'
 import { trackWhatsAppConversion } from '@/lib/tracking'
 import CheckoutModal from '@/features/menu/components/CheckoutModal'
@@ -50,8 +60,8 @@ function FullMenuBanner() {
   }, [])
 
   return (
-    <div className="relative mt-16 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-cream p-8 md:p-12">
-
+    <div className="relative mt-16 overflow-hidden rounded-4xl border-2 border-brand-border-strong bg-brand-forest p-8 md:p-12">
+      {/* Decorative blurs */}
       <div className="pointer-events-none absolute left-0 top-0 h-72 w-72 rounded-full bg-brand-primary/20 blur-3xl" />
       <div className="pointer-events-none absolute bottom-0 right-0 h-48 w-48 rounded-full bg-brand-primary/10 blur-2xl" />
 
@@ -64,18 +74,19 @@ function FullMenuBanner() {
             Buku Menu Lengkap
           </span>
 
-          <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-brand-dark md:text-4xl">
+          <h2 className="font-display text-3xl font-black leading-tight tracking-tight text-brand-forest-text md:text-4xl">
             Mau lihat semua menu{' '}
             <span className="text-brand-primary">secara lengkap?</span>
           </h2>
 
-          <p className="text-sm leading-relaxed text-brand-text">
+          <p className="text-sm leading-relaxed text-brand-forest-muted">
             Klik tombol di bawah untuk membuka buku menu PDF kami — semua
             pilihan, harga, dan paket tersedia lengkap di sana.
             <span className="hidden md:inline">
               {' '}Atau scan QR code di samping langsung dari kamera HP kamu.
             </span>
           </p>
+
           <a
             href={FULL_MENU_PDF_URL}
             target="_blank"
@@ -98,7 +109,7 @@ function FullMenuBanner() {
               aria-label="QR Code menuju buku menu PDF lengkap"
             />
           </div>
-          <p className="text-center text-xs font-semibold text-brand-muted">
+          <p className="text-center text-xs font-semibold text-brand-forest-muted">
             Scan untuk buka menu PDF
           </p>
         </div>
@@ -158,7 +169,7 @@ export default function MenuSection() {
     <>
       <section
         id="menu"
-        className="relative overflow-hidden bg-brand-mist pb-16 pt-28 md:pb-24 md:pt-36"
+        className="relative overflow-hidden bg-brand-surface pb-16 pt-28 md:pb-24 md:pt-36"
       >
         <div className="pointer-events-none absolute inset-0 bg-brand-primary/[0.03]" />
 
@@ -189,13 +200,7 @@ export default function MenuSection() {
 
           {/* ── Filter & Search ── */}
           <div className="mb-12 flex flex-col gap-4">
-            <div
-              className="
-                grid grid-cols-2 gap-2
-                sm:grid-cols-3
-                md:flex md:flex-wrap md:items-center md:justify-center md:gap-3
-              "
-            >
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:flex md:flex-wrap md:items-center md:justify-center md:gap-3">
               {MENU_CATEGORIES.map((tab, idx) => {
                 const isActive  = activeTab === tab.id
                 const isLastOdd = idx === MENU_CATEGORIES.length - 1 && MENU_CATEGORIES.length % 2 !== 0
@@ -253,7 +258,6 @@ export default function MenuSection() {
             >
               {filteredProducts.map(product => {
                 const qty = basket[product.id] ?? 0
-
                 const waMessage = qty > 0
                   ? buildMenuWAMessageWithQty(BUSINESS_INFO.name, product, qty)
                   : buildMenuWAMessage(BUSINESS_INFO.name, product)
@@ -367,10 +371,7 @@ export default function MenuSection() {
                 </p>
               </div>
               <a
-                href={buildWALink(
-                  BUSINESS_INFO.wa,
-                  buildCateringWAMessage(BUSINESS_INFO.name),
-                )}
+                href={buildWALink(BUSINESS_INFO.wa, buildCateringWAMessage(BUSINESS_INFO.name))}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackWhatsAppConversion('Menu Page — Catering Lead Banner')}

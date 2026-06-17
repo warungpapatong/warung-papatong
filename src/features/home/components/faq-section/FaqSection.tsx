@@ -1,9 +1,11 @@
 import { MessageSquare } from 'lucide-react'
 
-import { FAQS_DATA, FAQ_SECTION_DATA, BUSINESS_INFO, buildWALink } from '@/data'
+import { BUSINESS_INFO, FAQS_DATA, FAQ_SECTION_DATA, buildWALink } from '@/data'
 
 import FaqAccordion from './client/FaqAccordion'
 import WAButton from '../button/WAButton'
+
+// ─── FaqSection ──────────────────────────────────────────────────────────────
 
 export default function FaqSection() {
   return (
@@ -13,6 +15,7 @@ export default function FaqSection() {
     >
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        {/* ── Header ── */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-xs font-bold text-brand-primary-dark tracking-widest uppercase mb-2">
             {FAQ_SECTION_DATA.sectionLabel}
@@ -26,11 +29,13 @@ export default function FaqSection() {
           </p>
         </div>
 
+        {/* ── Accordion ── */}
         <FaqAccordion faqs={FAQS_DATA} />
 
+        {/* ── WA Callout Banner ── */}
         <div className="mt-12">
           <div className="bg-brand-primary p-6 md:p-8 rounded-4xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-glow-primary">
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 bg-brand-primary-dark/20 rounded-full blur-2xl pointer-events-none" />
+            <div className="pointer-events-none absolute -bottom-8 -right-8 w-32 h-32 bg-brand-primary-dark/20 rounded-full blur-2xl" />
 
             <div className="text-center md:text-left space-y-2 relative z-10">
               <h3 className="font-display font-black text-base md:text-lg text-brand-dark">
