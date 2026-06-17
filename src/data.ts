@@ -324,7 +324,7 @@ export const PRODUCTS_DATA: Product[] = [
     category: 'sayuran',
     categoryLabel: 'Sayuran',
     description: 'Hidangan sehat ini menyajikan perpaduan sayuran mentah segar pilihan—mulai dari kacang panjang, kol, taoge, terong gelatik, ketimun, hingga daun kemangi yang harum. Semua sayuran dipotong dadakan dan disiram dengan saus kacang legendaris yang diulek mentah bersama kencur, cabai, dan gula aren asli. Menghadirkan harmoni rasa gurih, pedas, sedikit manis, dan sensasi renyah (crunchy) yang murni di setiap gigitan.',
-    price: 25000,
+    price: 26000,
     priceUnit: '/ porsi',
     image: '/images/menu/05-sayuran/02-karedok.webp',
     badge: 'Rekomendasi',
