@@ -9,8 +9,6 @@ import { ArrowRight, Star } from 'lucide-react'
 import { PRODUCTS_DATA, formatPrice } from '@/data'
 import type { Product } from '@/types'
 
-const MotionImage = motion.create(Image)
-
 function getDynamicDishes(tick: number): Product[] {
   const total = PRODUCTS_DATA.length
   if (total === 0) return []
@@ -60,9 +58,25 @@ export default function BestSellerCards({ intervalMs, ctaHref, freshBadgeLabel, 
             layout
             className="card card-hover group flex flex-col h-[470px] sm:h-[490px] md:h-[520px] lg:h-[490px] xl:h-[470px]"
           >
-            <div className="relative aspect-card w-full overflow-hidden">
+            {/*
+              PERBAIKAN (Safari fix):
+              Sebelumnya pakai `motion.create(Image)` — membungkus Next/Image
+              langsung dengan motion. Next/Image sendiri sudah punya transisi
+              opacity/blur internal saat gambar load. Saat motion JUGA
+              mengontrol `opacity`/`transform` pada elemen yang sama, dua
+              sistem animasi rebutan kontrol style attribute yang sama.
 
-              <MotionImage
+              Di Safari/WebKit, race condition ini kadang membuat elemen
+              "menang" di opacity: 0 secara permanen — gambar ada di DOM,
+              browser lain render normal, tapi Safari menampilkan kosong.
+
+              Fix: motion HANYA mengatur wrapper <div> di luar (parent),
+              Next/Image di dalam dibiarkan murni tanpa campur tangan
+              motion sama sekali. Next/Image menangani loading/fade
+              sendiri dengan caranya yang sudah teruji cross-browser.
+            */}
+            <div className="relative aspect-card w-full overflow-hidden">
+              <Image
                 src={dish.image}
                 alt={dish.name}
                 fill

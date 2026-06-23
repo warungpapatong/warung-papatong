@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 
@@ -27,6 +27,24 @@ const fontMono = JetBrains_Mono({
   display:  'swap',
   weight:   ['400', '500'],
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PERBAIKAN (Safari fix):
+// Sebelumnya tidak ada export `viewport` sama sekali — Next.js 15 memang
+// tidak strict mewajibkan ini, browser modern punya default yang masuk akal.
+// TAPI Safari iOS punya sejarah panjang bug terkait viewport scaling dan
+// `100vh` / `100dvh` calculation kalau tidak ada viewport meta tag eksplisit,
+// terutama saat address bar collapse/expand saat scroll (terjadi terus di
+// Safari mobile, tidak terjadi sama sekali di Chrome desktop yang dipakai
+// untuk testing). Body pakai `min-height: 100dvh` (globals.css) — properti
+// ini butuh viewport meta yang benar supaya dihitung akurat oleh WebKit.
+// Menambahkan ini eksplisit menghilangkan ambiguitas itu.
+// ─────────────────────────────────────────────────────────────────────────────
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_CONFIG.siteUrl),
@@ -133,6 +151,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-brand-bg text-brand-text font-sans antialiased">
         <LayoutShell>{children}</LayoutShell>
 
+        {/*
+          CATATAN soal Google Ads (terkait laporan owner, bukan bug Safari):
+          Script ini sendiri sudah benar secara teknis — strategy
+          "afterInteractive" adalah cara yang tepat untuk gtag.js di Next.js.
+          Kemungkinan besar Ads "mati" BUKAN karena kode ini, melainkan
+          redirect 301 www → non-www di next.config.ts yang menyebabkan
+          mismatch dengan Final URL di campaign Google Ads (lihat penjelasan
+          terpisah). Script ini dibiarkan strukturnya sama, tidak diubah,
+          supaya tidak menambah variabel baru saat kamu sedang verifikasi
+          masalah redirect itu.
+        */}
         {APP_CONFIG.googleAdsId && (
           <>
             <Script

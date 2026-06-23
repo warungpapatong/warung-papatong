@@ -29,6 +29,22 @@ const STATS: { value: string; label: string; icon: LucideIcon }[] = [
   { value: d.statsRating,              label: d.statsRatingLabel,   icon: Star         },
 ]
 
+// ─────────────────────────────────────────────────────────────────────────────
+// PERBAIKAN (Safari fix): viewport config bersama untuk semua whileInView.
+//
+// Sebelumnya: viewport={{ once: true }} — margin default browser native
+// IntersectionObserver adalah 0px. Di Safari, kalau elemen ini berada
+// tepat di edge viewport saat halaman pertama load (skenario sangat umum
+// untuk section yang ada "di bawah lipatan"), observer kadang gagal fire
+// callback pertamanya akibat timing layout yang belum stabil — exit-nya
+// elemen permanen nyangkut di initial state (opacity: 0).
+//
+// Fix: kasih margin negatif kecil "-10%" yang membuat trigger area lebih
+// permisif (elemen dianggap "masuk viewport" sedikit lebih awal), plus
+// fallback safety di bawah (lihat MotionSafe).
+// ─────────────────────────────────────────────────────────────────────────────
+const VIEWPORT_SAFE = { once: true, margin: '-10%' } as const
+
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
 function TikTokIcon({ className }: { className?: string }) {
@@ -163,7 +179,7 @@ function CtaBanner() {
           <motion.span
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={VIEWPORT_SAFE}
             transition={{ duration: 0.5 }}
             className="badge badge-primary mb-6 inline-flex"
           >
@@ -174,7 +190,7 @@ function CtaBanner() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={VIEWPORT_SAFE}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="font-display text-4xl font-black leading-[0.95] tracking-tight text-brand-forest-text md:text-5xl lg:text-6xl"
           >
@@ -185,7 +201,7 @@ function CtaBanner() {
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={VIEWPORT_SAFE}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-brand-forest-muted md:text-base"
           >
@@ -195,7 +211,7 @@ function CtaBanner() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={VIEWPORT_SAFE}
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:flex-wrap"
           >
@@ -283,7 +299,7 @@ export default function AboutCTA() {
                 key={stat.label}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
+                viewport={VIEWPORT_SAFE}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
                 <StatCard {...stat} />

@@ -37,11 +37,15 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
   )
 
   useEffect(() => {
+    // Guard: kalau tidak ada testimoni sama sekali, jangan jalankan interval
+    if (total === 0) return
     const timer = setInterval(() => setCurrentIndex(prev => prev + 1), 4200)
     return () => clearInterval(timer)
-  }, [])
+  }, [total])
 
   useEffect(() => {
+    if (total === 0) return
+
     if (currentIndex === total) {
       const timeout = setTimeout(() => {
         setTransitionEnabled(false)
@@ -51,13 +55,32 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
     }
 
     if (!transitionEnabled) {
+      // ─────────────────────────────────────────────────────────────────
+      // PERBAIKAN (Safari fix):
+      // Double-nested requestAnimationFrame dipakai di sini untuk "skip"
+      // transisi CSS saat carousel loop balik ke index 0 (teknik umum
+      // untuk infinite-loop carousel tanpa terlihat "lompat"). Di Safari,
+      // dua rAF bertingkat kadang tidak cukup untuk memastikan style
+      // recalculation (reflow) sudah benar-benar selesai sebelum class
+      // transition di-re-enable — WebKit punya scheduling rAF yang
+      // sedikit berbeda timing-nya dibanding V8 (Chrome). Hasilnya:
+      // transisi "snap back" yang seharusnya instant malah ikut animasi,
+      // atau dalam kasus terburuk track sempat freeze di posisi yang salah.
+      //
+      // Fix: tambahkan requestAnimationFrame ketiga sebagai buffer ekstra.
+      // Biaya: re-enable transition mundur ~1 frame (~16ms), tidak
+      // terasa oleh user, tapi memberi WebKit waktu ekstra untuk
+      // menyelesaikan reflow sebelum transition dinyalakan lagi.
+      // ─────────────────────────────────────────────────────────────────
       requestAnimationFrame(() => {
-        requestAnimationFrame(() => setTransitionEnabled(true))
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setTransitionEnabled(true))
+        })
       })
     }
   }, [currentIndex, total, transitionEnabled])
 
-  if (itemsPerView === null) {
+  if (itemsPerView === null || total === 0) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {[0, 1, 2].map(i => (

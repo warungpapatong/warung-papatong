@@ -47,6 +47,32 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
               </span>
             </button>
 
+            {/*
+              PERBAIKAN (Safari fix):
+              Animasi `height: 0` → `height: 'auto'` lewat motion adalah
+              salah satu kasus yang paling sering bermasalah di WebKit.
+              motion/Framer Motion menangani "auto" dengan mengukur tinggi
+              natural elemen lalu animate ke angka px itu — proses ini
+              butuh dua kali pengukuran layout (sebelum & sesudah). Di
+              Safari, kalau parent punya `overflow: hidden` yang SAMA
+              dengan elemen yang diukur (bukan wrapper terpisah), hasil
+              pengukuran bisa terbaca 0 karena overflow ikut menyembunyikan
+              elemen yang justru sedang coba diukur.
+
+              Fix: pastikan elemen motion.div bertugas KHUSUS sebagai
+              pengukur (overflow-hidden ada di sini), sementara konten
+              di dalamnya dibungkus div tanpa overflow constraint apa pun
+              supaya pengukuran intrinsic height-nya bersih. Ini sudah
+              sesuai di kode asli — perubahan utama adalah memastikan
+              `motion.div` ini sendirian memegang overflow-hidden, tidak
+              "diwariskan ganda" dari parent yang juga overflow-hidden
+              (parent <div> di luar sini sudah overflow-hidden untuk
+              border-radius, jadi double overflow-hidden berpotensi jadi
+              sumber masalah pengukuran — di bawah ini ditambahkan
+              `style={{ overflow: 'hidden' }}` inline yang sama, redundant
+              tapi eksplisit, supaya WebKit tidak bingung mengambil
+              overflow context dari parent vs elemen ini sendiri).
+            */}
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
@@ -55,6 +81,7 @@ export default function FaqAccordion({ faqs }: FaqAccordionProps) {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  style={{ overflow: 'hidden' }}
                 >
                   <p className="px-6 pb-6 pt-4 border-t border-brand-border border-l-4 border-l-brand-primary text-brand-text text-xs sm:text-sm leading-relaxed bg-brand-surface-2 pr-8">
                     {item.answer}

@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'motion/react'
 import { Leaf } from 'lucide-react'
 import { ABOUT_STORY_DATA } from '@/data'
@@ -139,8 +139,39 @@ function StoryText({ inView }: { inView: boolean }) {
 // ─── AboutStory ───────────────────────────────────────────────────────────────
 
 export default function AboutStory() {
-  const ref    = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-80px' })
+  const ref = useRef<HTMLDivElement>(null)
+
+  // PERBAIKAN (Safari fix): margin '-80px' (absolut px) diganti ke '-10%'
+  // (persentase) — sama alasannya seperti AmbienceCard: margin persentase
+  // lebih stabil dihitung Safari saat layout masih settling.
+  const inViewRaw = useInView(ref, { once: true, margin: '-10%' })
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // FALLBACK SAFETY NET (Safari fix — bagian paling penting):
+  //
+  // `useInView` dari motion bergantung sepenuhnya pada IntersectionObserver
+  // browser. Section ini ada di halaman /about, sering kali section PERTAMA
+  // yang dilihat user (di atas lipatan / dekat lipatan). Kalau observer-nya
+  // gagal fire pada percobaan pertama — yang secara empiris lebih sering
+  // terjadi di Safari WebKit saat banyak section lain di halaman yang sama
+  // juga mendaftarkan observer serentak — maka `inViewRaw` permanen `false`,
+  // dan SELURUH teks cerita (StoryText) permanen tersembunyi (opacity: 0).
+  // Ini kemungkinan besar adalah salah satu penyebab konten hilang di Safari.
+  //
+  // Fix: tambahkan timer 1.5 detik sebagai jaring pengaman. Kalau dalam
+  // 1.5 detik observer belum juga fire `true`, paksa tampilkan kontennya.
+  // Animasi tetap berjalan normal untuk 99% kasus (browser lain & Safari
+  // yang observer-nya bekerja normal); fallback ini hanya jadi penyelamat
+  // di kasus edge yang gagal.
+  // ─────────────────────────────────────────────────────────────────────────
+  const [forceVisible, setForceVisible] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setForceVisible(true), 1500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  const inView = inViewRaw || forceVisible
 
   return (
     <section

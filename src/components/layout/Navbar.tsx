@@ -1,5 +1,3 @@
-// src/components/layout/Navbar.tsx
-
 'use client'
 
 import Link from 'next/link'
@@ -21,11 +19,23 @@ export default function Navbar() {
 
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  // ─────────────────────────────────────────────────────────────────────────
+  // PERBAIKAN PENTING (Safari fix):
+  // Sebelumnya ada `mounted` guard (`if (!mounted) return null`) yang bikin
+  // Navbar TIDAK render apa pun sampai useEffect pertama selesai jalan.
+  //
+  // Pola ini berbahaya karena render Navbar bergantung 100% pada timing
+  // useEffect. Di Safari/WebKit, kalau main thread sedang sibuk (font
+  // loading, script gtag, dll), commit React kedua bisa telat atau —
+  // dalam kasus tertentu — gagal total, sehingga Navbar PERMANEN kosong.
+  // Ini cocok dengan gejala "logo & menu navigasi hilang" di Safari.
+  //
+  // Navbar ini sebenarnya tidak butuh delay sama sekali — semua yang
+  // dirender (logo, link nav, tombol WA) aman untuk SSR. Jadi guard
+  // tersebut dihapus total. Navbar sekarang render langsung di server,
+  // sama seperti browser lain.
+  // ─────────────────────────────────────────────────────────────────────────
 
   useEffect(() => {
     setOpen(false)
@@ -54,8 +64,6 @@ export default function Navbar() {
     )
     setOpen(false)
   }
-
-  if (!mounted) return null
 
   return (
     <>

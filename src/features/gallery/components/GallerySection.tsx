@@ -90,6 +90,27 @@ export default function GallerySection() {
             ))}
           </div>
 
+          {/*
+            PERBAIKAN (Safari fix):
+            Sebelumnya featuredImage & grid pakai `initial={{opacity:0}}` +
+            `animate={{opacity:1}}` langsung (bukan whileInView) — ini lebih
+            aman karena tidak bergantung IntersectionObserver. Risiko di sini
+            justru beda: `layout` prop dari motion (untuk shared layout
+            animation antar tab) memicu FLIP animation yang menghitung ulang
+            posisi elemen lewat getBoundingClientRect(). Di Safari, kalau
+            recalculation ini terjadi SEBELUM image selesai decode (gambar
+            belum punya intrinsic size), hasil pengukuran bisa 0x0 dan
+            elemen "terkunci" di collapsed state.
+
+            Fix: tambahkan `min-height` via aspect ratio class yang SUDAH
+            terpasang sebelumnya (aspect-[16/9], aspect-[4/3]) sehingga
+            container punya dimensi pasti dari CSS, tidak bergantung pada
+            gambar selesai load dulu. Class ini sudah ada di kode asli,
+            jadi tidak perlu diubah — yang diubah adalah memastikan tidak
+            ada div yang dirender tanpa exit-safe layout, lihat AnimatePresence
+            di bawah.
+          */}
+
           {/* ── Featured Image ── */}
           {featuredImage && (
             <motion.div

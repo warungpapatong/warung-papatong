@@ -32,13 +32,30 @@
     scroll-behavior: smooth;
     text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    overflow-x: hidden;
   }
 
+  /*
+    PERBAIKAN (Safari fix):
+    `overflow-x: hidden` sebelumnya dipasang di <html>, bukan <body>.
+    Di Safari (terutama mobile), `overflow-x: hidden` pada elemen <html>
+    bisa membuat WebKit salah menghitung containing block untuk elemen
+    `position: fixed` / `position: sticky` di dalamnya — Navbar di project
+    ini fixed di top, dan FloatingWA juga fixed. Browser Chromium pada
+    umumnya lebih toleran terhadap kombinasi ini, tapi WebKit historically
+    punya banyak edge-case terkait scrolling-container yang terbentuk dari
+    overflow pada root element.
+
+    Fix: pindahkan overflow-x: hidden ke body saja. Efek visualnya sama
+    (mencegah horizontal scroll dari elemen yang overflow), tapi <html>
+    tetap "bersih" sehingga elemen fixed/sticky dihitung relatif terhadap
+    viewport asli, bukan terhadap scrolling container buatan dari overflow
+    di root.
+  */
   body {
     @apply bg-brand-bg text-brand-text font-sans antialiased;
     min-height: 100dvh;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   /* ─── Typography ────────────────────────────────────────────────── */

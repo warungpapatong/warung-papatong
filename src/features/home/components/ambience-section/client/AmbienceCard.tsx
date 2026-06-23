@@ -15,7 +15,15 @@ export default function AmbienceCard({ url, caption, desc, brandLabel, idx }: Am
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-100px' }}
+      // PERBAIKAN (Safari fix): margin '-100px' diganti ke margin persentase
+      // '-10%' + once:true. Margin absolut dalam px kadang dihitung beda di
+      // Safari saat layout belum stabil sepenuhnya (terutama saat banyak
+      // IntersectionObserver didaftarkan bersamaan dalam satu page, seperti
+      // di halaman ini lewat .map()). Margin persentase relatif terhadap
+      // viewport height lebih konsisten lintas browser dan lebih permisif
+      // triggernya, jadi kemungkinan "gagal trigger sekali → permanen
+      // opacity:0" jauh berkurang.
+      viewport={{ once: true, margin: '-10%' }}
       transition={{ duration: 0.6, delay: idx * 0.15 }}
       className="group relative h-96 overflow-hidden rounded-4xl border border-brand-border hover:border-brand-primary/40 shadow-card hover:shadow-card-lg transition-all duration-500 flex flex-col justify-end p-6"
     >
