@@ -13,7 +13,7 @@ import {
   CHECKOUT_MODAL_DATA,
 } from '@/data'
 import { buildCartWAMessage } from '@/lib/whatsapp'
-import { trackWhatsAppConversion } from '@/lib/tracking'
+import { trackWhatsAppConversion } from '@/lib/config'
 
 interface CheckoutModalProps {
   isOpen:             boolean

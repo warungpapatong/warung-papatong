@@ -6,7 +6,7 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?logo=typescript)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-06B6D4?logo=tailwindcss)](https://tailwindcss.com)
-[![Version](https://img.shields.io/badge/version-2.2.0-FFCC00?labelColor=202124)](#)
+[![Version](https://img.shields.io/badge/version-2.1.0-FFCC00?labelColor=202124)](#)
 
 ---
 
@@ -128,77 +128,65 @@ warung-papatong/
     │   ├── manifest.ts                 # PWA manifest — Next.js native
     │   ├── sitemap.ts                  # Sitemap — Next.js native
     │   ├── robots.ts                   # Robots.txt — Next.js native
-    │   ├── opengraph-image.png         # OG image default (1200×630) — auto-detected
+    │   ├── opengraph-image.png         # OG image default (1200×630)
     │   ├── apple-icon.png
     │   ├── favicon.ico
     │   ├── icon0.svg
     │   ├── icon1.png
     │   ├── menu/page.tsx               # Route: /menu
     │   ├── venue/page.tsx              # Route: /venue
-    │   └── tentang/page.tsx            # Route: /tentang
+    │   └── about/page.tsx              # Route: /about
     │
     ├── components/                     # Komponen global lintas halaman
     │   ├── common/
     │   │   └── FloatingWA.tsx
-    │   ├── layout/
-    │   │   ├── Navbar.tsx
-    │   │   ├── Footer.tsx
-    │   │   └── LayoutShell.tsx         # Client Component — state Navbar + modal
-    │   └── ui/
-    │       ├── Badge.tsx
-    │       ├── Button.tsx
-    │       ├── Card.tsx
-    │       ├── SectionHeader.tsx
-    │       └── index.ts                # Barrel export
+    │   └── layout/
+    │       ├── Navbar.tsx
+    │       ├── Footer.tsx
+    │       └── LayoutShell.tsx         # Client Component — basket + modal state
     │
     ├── features/
     │   ├── home/
-    │   │   └── components/
-    │   │       ├── hero-section/
-    │   │       │   ├── HeroSection.tsx         # ✅ Server Component
-    │   │       │   └── client/
-    │   │       │       ├── HeroAnimations.tsx  # ⚡ Client — motion wrappers
-    │   │       │       └── HeroImage.tsx       # ⚡ Client — useScroll parallax
-    │   │       ├── bestsellers-section/
-    │   │       │   ├── BestSellers.tsx         # ✅ Server Component
-    │   │       │   └── client/
-    │   │       │       └── BestSellerCards.tsx # ⚡ Client — rotasi jam + AnimatePresence
-    │   │       ├── ambience-section/
-    │   │       │   ├── AmbienceTeaser.tsx      # ✅ Server Component
-    │   │       │   └── client/
-    │   │       │       └── AmbienceCards.tsx   # ⚡ Client — whileInView per kartu
-    │   │       ├── testimonials-section/
-    │   │       │   ├── TestimonialsSection.tsx # ✅ Server Component
-    │   │       │   └── client/
-    │   │       │       └── TestimonialsCarousel.tsx # ⚡ Client — carousel + resize
-    │   │       ├── faq-section/
-    │   │       │   ├── FaqSection.tsx          # ✅ Server Component
-    │   │       │   └── client/
-    │   │       │       └── FaqAccordion.tsx    # ⚡ Client — useState accordion
-    │   │       ├── location-section/
-    │   │       │   └── LocationSection.tsx     # ✅ Server Component (iframe = HTML murni)
-    │   │       ├── button/
-    │   │       │   └── WAButton.tsx            # ⚡ Client — onClick tracking saja
-    │   │       └── index.ts                    # Barrel export Server Components
+    │   │   ├── index.ts                # Barrel export
+    │   │   ├── wa-button.tsx           # ⚡ Client
+    │   │   ├── hero/
+    │   │   │   ├── HeroSection.tsx     # ✅ Server
+    │   │   │   ├── hero-animations.tsx # ⚡ Client
+    │   │   │   └── hero-image.tsx      # ⚡ Client
+    │   │   ├── bestsellers/
+    │   │   │   ├── BestSellers.tsx     # ✅ Server
+    │   │   │   └── BestSellerCards.tsx # ⚡ Client
+    │   │   ├── ambience/
+    │   │   │   ├── AmbienceTeaser.tsx  # ✅ Server
+    │   │   │   └── AmbienceCard.tsx    # ⚡ Client
+    │   │   ├── testimonials/
+    │   │   │   ├── TestimonialsSection.tsx  # ✅ Server
+    │   │   │   └── TestimonialsCarousel.tsx # ⚡ Client
+    │   │   ├── faq/
+    │   │   │   ├── FaqSection.tsx      # ✅ Server
+    │   │   │   └── FaqAccordion.tsx    # ⚡ Client
+    │   │   └── location/
+    │   │       └── LocationSection.tsx # ✅ Server
     │   │
-    │   ├── menu/components/
-    │   │   ├── MenuSection.tsx
-    │   │   └── CheckoutModal.tsx
-    │   ├── gallery/components/
-    │   │   └── GallerySection.tsx
-    │   └── about/components/
-    │       ├── AboutStory.tsx
-    │       ├── AboutTeam.tsx
-    │       └── AboutCTA.tsx
+    │   ├── menu/
+    │   │   └── components/
+    │   │       ├── MenuSection.tsx
+    │   │       └── CheckoutModal.tsx
+    │   ├── gallery/
+    │   │   └── components/
+    │   │       └── GallerySection.tsx
+    │   └── about/
+    │       └── components/
+    │           ├── AboutStory.tsx
+    │           └── AboutCTA.tsx
     │
     ├── lib/
-    │   ├── whatsapp.ts     # ⭐ Semua WA message builder
+    │   ├── whatsapp.ts     # ⭐ WA message builder
     │   ├── cn.ts           # clsx + tailwind-merge
-    │   ├── tracking.ts     # Google Ads konversi tracking
-    │   └── config.ts       # APP_CONFIG + LOCAL_SEO_SCHEMA
+    │   └── config.ts       # APP_CONFIG + tracking + JSON-LD
     │
     ├── data.ts             # ⭐ Single Source of Truth — semua konten & helpers
-    └── types.ts            # ⭐ TypeScript interfaces untuk data.ts
+    └── types.ts            # ⭐ TypeScript interfaces
 ```
 
 ---
@@ -250,7 +238,7 @@ Client Components hanya menambahkan animasi di atas HTML yang sudah ada — buka
 `WAButton` sengaja dibuat seminimal mungkin karena `onClick` adalah satu-satunya alasan ia menjadi Client Component. Letaknya di:
 
 ```
-src/features/home/components/button/WAButton.tsx
+src/features/home/wa-button.tsx
 ```
 
 **Props:**
@@ -286,9 +274,9 @@ src/features/home/components/button/WAButton.tsx
 **Import dari Server Component:**
 
 ```tsx
-import WAButton from '@/features/home/components/button/WAButton'
+import WAButton from '@/features/home/wa-button'
 // atau jika dalam folder yang sama:
-import WAButton from '../button/WAButton'
+import WAButton from '../wa-button'
 ```
 
 > ⚠️ **Jangan** import `WAButton` dari `index.ts` — barrel export hanya mengekspos Server Components.
@@ -456,7 +444,7 @@ npm run type-check   # TypeScript check tanpa emit file
 | `/` | Beranda | `HeroSection`, `BestSellers`, `AmbienceTeaser`, `TestimonialsSection`, `LocationSection`, `FaqSection` |
 | `/menu` | E-Menu Digital | `MenuSection`, `CheckoutModal` |
 | `/venue` | Galeri & Suasana | `GallerySection` |
-| `/tentang` | Tentang Kami | `AboutStory`, `AboutTeam`, `AboutCTA` |
+| `/about` | Tentang Kami | `AboutStory`, `AboutCTA` |
 
 ---
 
@@ -512,11 +500,11 @@ import { buildMenuWAMessage, buildCartWAMessage } from '@/lib/whatsapp'
 // ✅ Types
 import type { Product, BusinessInfo } from '@/types'
 
-// ✅ WAButton (Client Component — import langsung, bukan dari index.ts)
-import WAButton from '@/features/home/components/button/WAButton'
+// ✅ WAButton (Client Component — import langsung, bukan dari barrel)
+import WAButton from '@/features/home/wa-button'
 
 // ✅ Server Components beranda (dari barrel)
-import { HeroSection, BestSellers } from '@/features/home/components'
+import { HeroSection, BestSellers } from '@/features/home'
 
 // ✅ Class merging
 import { cn } from '@/lib/cn'
@@ -529,10 +517,10 @@ import { cn } from '@/lib/cn'
 
 ### Menambah Section Baru di Beranda
 
-1. Buat folder baru di `src/features/home/components/nama-section/`
+1. Buat folder baru di `src/features/home/nama-section/`
 2. Buat `NamaSection.tsx` sebagai Server Component (tanpa `'use client'`)
-3. Jika butuh interactivity, buat subfolder `client/` dan isolasi di sana
-4. Export dari `src/features/home/components/index.ts`
+3. Jika butuh interactivity, buat file terpisah tanpa `client/` subfolder, beri nama `NamaClient.tsx` dengan `'use client'`
+4. Export dari `src/features/home/index.ts`
 5. Import di `src/app/page.tsx`
 
 ---
@@ -560,7 +548,7 @@ Project di-deploy di **Vercel** dengan konfigurasi Next.js App Router.
 - [ ] JSON-LD schema di `layout.tsx` dan `page.tsx` sudah akurat
 
 **Route:**
-- [ ] Route `/menu`, `/venue`, `/tentang` **tidak berubah** (Google Ads aktif)
+- [ ] Route `/menu`, `/venue`, `/about` **tidak berubah** (Google Ads aktif)
 - [ ] `sitemap.ts` sudah mencantumkan semua halaman publik
 
 **Post-deploy:**

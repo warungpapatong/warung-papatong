@@ -1,6 +1,0 @@
-export { default as HeroSection         } from './hero-section/HeroSection'
-export { default as BestSellers         } from './bestsellers-section/BestSellers'
-export { default as AmbienceTeaser      } from './ambience-section/AmbienceTeaser'
-export { default as TestimonialsSection } from './testimonials-section/TestimonialsSection'
-export { default as FaqSection          } from './faq-section/FaqSection'
-export { default as LocationSection     } from './location-section/LocationSection'

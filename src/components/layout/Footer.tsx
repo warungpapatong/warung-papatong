@@ -3,14 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Mail, Phone, ArrowUpRight, Instagram } from 'lucide-react'
-import { NAV_ITEMS } from '@/config/navigation'
-import { BUSINESS_INFO, FOOTER_DATA, buildWALink } from '@/data'
-
-const WA_FOOTER_MSG = 'Halo Admin Papatong, saya ingin bertanya mengenai reservasi.'
+import { BUSINESS_INFO, FOOTER_DATA, NAV_ITEMS, buildWALink } from '@/data'
 
 function ColLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/30 mb-5">
+    <p className="text-[10px] font-bold tracking-[0.2em] uppercase text-white/50 mb-5">
       {children}
     </p>
   )
@@ -144,7 +141,7 @@ export default function Footer() {
               )}
 
               <SocialBtn
-                href={buildWALink(BUSINESS_INFO.wa, WA_FOOTER_MSG)}
+                href={buildWALink(BUSINESS_INFO.wa, FOOTER_DATA.waMessage)}
                 label="WhatsApp Warung Papatong"
               >
                 <WhatsAppIcon />
@@ -203,7 +200,7 @@ export default function Footer() {
 
         <div className="mt-14 mb-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <p className="text-xs text-white/30 text-center">
+        <p className="text-xs text-white/50 text-center">
           &copy; {new Date().getFullYear()}{' '}
           <span className="text-white/50 font-semibold">{BUSINESS_INFO.name}</span>
           {' '}· {FOOTER_DATA.copyrightSuffix}

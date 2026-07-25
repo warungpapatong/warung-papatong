@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'motion/react'
 import {
   BookOpen,
@@ -17,6 +18,7 @@ import { cn } from '@/lib/cn'
 import type { Product } from '@/types'
 import {
   BUSINESS_INFO,
+  FULL_MENU_PDF_URL,
   MENU_CATEGORIES,
   MENU_PAGE_DATA,
   PRODUCTS_DATA,
@@ -29,12 +31,8 @@ import {
   buildMenuWAMessage,
   buildMenuWAMessageWithQty,
 } from '@/lib/whatsapp'
-import { trackWhatsAppConversion } from '@/lib/tracking'
+import { trackWhatsAppConversion } from '@/lib/config'
 import CheckoutModal from '@/features/menu/components/CheckoutModal'
-
-// ─── Config ──────────────────────────────────────────────────────────────────
-
-const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
 
 // ─── FullMenuBanner ───────────────────────────────────────────────────────────
 
@@ -266,11 +264,12 @@ export default function MenuSection() {
                   <div key={product.id} className="card card-hover group flex flex-col">
 
                     <div className="relative h-56 w-full overflow-hidden">
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-brand-dark/40 to-transparent" />
 

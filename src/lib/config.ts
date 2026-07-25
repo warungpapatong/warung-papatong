@@ -1,10 +1,8 @@
 // src/lib/config.ts
 // ─────────────────────────────────────────────────────────────────────────────
 // App-level configuration: env vars, tracking helpers, SEO JSON-LD schema.
-// JANGAN taruh data konten di sini — semua konten ada di src/data.ts
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ─── ENVIRONMENT CONFIG ──────────────────────────────────────────────────────
 export const APP_CONFIG = {
   googleAdsId:         process.env.NEXT_PUBLIC_GOOGLE_ADS_ID           ?? '',
   googleAdsLabel:      process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL ?? '',
@@ -14,14 +12,10 @@ export const APP_CONFIG = {
   siteName:            'Warung Papatong',
   defaultTitle:        'Resto Warung Papatong – Seafood Segar dan Cita Rasa Sunda Autentik di Cibinong',
   defaultDescription:  'Nikmati kelezatan seafood segar yang langsung dari laut, berpadu dengan cita rasa khas masakan Sunda yang hangat dan penuh tradisi. Kami menghadirkan harmoni rasa Nusantara — dari gurihnya ikan bakar hingga nikmatnya masakan khas Sunda — semua tersaji dalam suasana ramah dan penuh keakraban.',
-  
-  // ─── DATA TAMBAHAN UNTUK FIX ERROR ABOUT PAGE ──────────────────────────────
-  whatsappBaseLink:    'https://wa.me',
   businessName:        'Resto Warung Papatong',
   handoverEmail:       'warungpapatong@gmail.com',
 } as const;
 
-// ─── GOOGLE ADS TRACKING ─────────────────────────────────────────────────────
 declare global {
   interface Window {
     dataLayer: Record<string, unknown>[];
@@ -29,12 +23,6 @@ declare global {
   }
 }
 
-/**
- * Fire Google Ads conversion event untuk setiap klik WhatsApp.
- * Wajib dipanggil di setiap tombol/link WA di seluruh halaman.
- *
- * @param positionLabel - Label deskriptif posisi CTA, misal: 'Hero CTA Primary Button'
- */
 export function trackWhatsAppConversion(positionLabel: string): void {
   if (typeof window === 'undefined') return;
   if (!APP_CONFIG.googleAdsId || !APP_CONFIG.googleAdsLabel) return;
@@ -46,26 +34,28 @@ export function trackWhatsAppConversion(positionLabel: string): void {
       event_label:    positionLabel,
     });
   } catch {
-    // Silent fail — jangan crash halaman karena tracking
+    // Silent fail
   }
 }
 
-// ─── LOCAL SEO JSON-LD SCHEMA ─────────────────────────────────────────────────
-// Render di layout.tsx sebagai <script type="application/ld+json">
 export const LOCAL_SEO_SCHEMA = {
-  '@context':   'https://schema.org',
-  '@type':      'Restaurant',
-  name:         APP_CONFIG.businessName, // Dinamis menggunakan property baru
-  description:  APP_CONFIG.defaultDescription,
-  url:          APP_CONFIG.siteUrl,
-  telephone:    `+${APP_CONFIG.whatsappNumber}`, // Dinamis
-  email:        APP_CONFIG.handoverEmail, // Dinamis
+  '@context': 'https://schema.org',
+  '@type':    ['Restaurant', 'FoodEstablishment', 'LocalBusiness', 'Organization'],
+  '@id':      `${APP_CONFIG.siteUrl}/#restaurant`,
+  name:       APP_CONFIG.businessName,
+  url:        APP_CONFIG.siteUrl,
+  telephone:  `+${APP_CONFIG.whatsappNumber}`,
+  email:      APP_CONFIG.handoverEmail,
+  logo:       `${APP_CONFIG.siteUrl}/web-app-manifest-512x512.png`,
+  image:      `${APP_CONFIG.siteUrl}/opengraph-image.png`,
+  description: APP_CONFIG.defaultDescription,
   servesCuisine: ['Sunda', 'Seafood', 'Indonesian'],
-  priceRange:   '$$',
+  priceRange:   'Rp 25.000 – Rp 300.000',
   hasMenu:      `${APP_CONFIG.siteUrl}/menu`,
+  hasMap:       'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
   acceptsReservations: 'True',
-  currenciesAccepted: 'IDR',
-  paymentAccepted: 'Cash, Transfer Bank, QRIS',
+  currenciesAccepted:  'IDR',
+  paymentAccepted:     'Cash, Transfer Bank, QRIS',
 
   address: {
     '@type':           'PostalAddress',
@@ -94,14 +84,15 @@ export const LOCAL_SEO_SCHEMA = {
   aggregateRating: {
     '@type':       'AggregateRating',
     ratingValue:   '4.8',
-    reviewCount:   '4076',
+    reviewCount:   '4080',
     bestRating:    '5',
     worstRating:   '1',
   },
 
   sameAs: [
     'https://www.instagram.com/restowarungpapatong',
-    'https://www.tiktok.com/@warungpapatong',
+    'https://www.tiktok.com/@restowarungpapatong',
+    'https://www.youtube.com/@warungpapatong',
     'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
   ],
 } as const;

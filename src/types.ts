@@ -88,13 +88,12 @@ export interface Product {
 // ─── Testimonials ─────────────────────────────────────────────────────────
 
 export interface Testimonial {
-  id:       number;
-  name:     string;
-  city:     string;
-  rating:   number;
-  review:   string;
-  avatar:   string;
-  product?: string;
+  id: number
+  name: string
+  city: string
+  rating: number
+  review: string
+  product?: string
 }
 
 // ─── Booking Steps ────────────────────────────────────────────────────────
@@ -255,8 +254,8 @@ export interface GalleryPageData {
   expandBtnText:    string;
   lightboxTitle:    string;
   lightboxBackText: string;
-  lightboxCloseLabel: string   // ← tambahkan ini
-  estLabel:           string   // ← tambahkan ini
+  lightboxCloseLabel: string
+  estLabel:           string
   instagramBadge:   string;
   instagramTitle:   string;
   instagramDesc:    string;

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { motion, useInView } from 'motion/react'
 import { Leaf } from 'lucide-react'
 import { ABOUT_STORY_DATA } from '@/data'
@@ -52,12 +53,15 @@ function StoryImage() {
         className="relative overflow-hidden rounded-[2rem] border-4 border-brand-surface shadow-card-lg"
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 92%, 92% 100%, 0 100%)' }}
       >
-        <img
-          src={d.storyImage}
-          alt={d.storyImageAlt}
-          loading="lazy"
-          className="aspect-[4/5] w-full object-cover transition-transform duration-700 hover:scale-105"
-        />
+        <div className="relative aspect-[4/5] w-full">
+          <Image
+            src={d.storyImage}
+            alt={d.storyImageAlt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 40vw"
+            className="object-cover transition-transform duration-700 hover:scale-105"
+          />
+        </div>
       </div>
     </div>
   )

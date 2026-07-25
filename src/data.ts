@@ -10,13 +10,12 @@
 // ════════════════════════════════════════════════════════════════════════════
 //
 // ① BUSINESS INFO       — info dasar restoran (nama, alamat, kontak, sosmed)
-// ② STATS DATA          — statistik pencapaian untuk seksi Stats
-// ③ PRODUCTS DATA       — daftar menu lengkap
-// ④ TESTIMONIALS DATA   — ulasan pelanggan untuk seksi Testimonials
-// ⑤ FAQS DATA           — pertanyaan umum untuk seksi FAQ
-// ⑥ GALLERY DATA        — item galeri untuk halaman Venue/Gallery
-// ⑦ STEPS DATA          — langkah-langkah booking
-// ⑧ TEAM DATA           — profil tim restoran
+// ② PRODUCTS DATA       — daftar menu lengkap
+// ③ TESTIMONIALS DATA   — ulasan pelanggan untuk seksi Testimonials
+// ④ FAQS DATA           — pertanyaan umum untuk seksi FAQ
+// ⑤ GALLERY DATA        — item galeri untuk halaman Venue/Gallery
+// ⑥ STEPS DATA          — langkah-langkah booking
+// ⑦ TEAM DATA           — profil tim restoran
 //
 // ─── KONTEN STATIS PER SECTION / KOMPONEN ───────────────────────────────────
 //
@@ -30,12 +29,17 @@
 // ⑯  NAVBAR_DATA
 // ⑰  FOOTER_DATA
 //
+// ════════════════════════════════════════════════════════════════════════════
+// LINKS
+// ════════════════════════════════════════════════════════════════════════════
+
+export const FULL_MENU_PDF_URL = 'https://drive.google.com/file/d/1nUGidEczIAhZNUIEswCxknBtElb7yRcP/view'
+
 // ─── UTILITIES ───────────────────────────────────────────────────────────────
 //
 // formatProductPrice()   — format harga produk ke Rupiah + satuan (SINGLE SOURCE)
 // buildWALink()          — bangun URL WhatsApp dengan pesan pre-filled
 // formatPrice()          — format angka mentah ke Rupiah (tanpa satuan)
-// calculateBasketTotal() — hitung total harga keranjang
 //
 // ─── CATATAN HARGA ───────────────────────────────────────────────────────────
 //
@@ -61,8 +65,8 @@ import type {
   HeroData,
   LocationData,
   NavbarData,
+  NavItem,
   Product,
-  Stat,
   TestimonialsData,
   Testimonial,
 } from '@/types';
@@ -86,39 +90,13 @@ export const BUSINESS_INFO: BusinessInfo = {
   email:       'warungpapatong@gmail.com',
   mapQuery:    'RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor',
   mapsLink:    'https://www.google.com/maps/place/RESTO+WARUNG+PAPATONG+-+Cibinong-Bogor/@-6.5116855,106.8321302,924m/data=!3m1!1e3!4m6!3m5!1s0x2e69c1a8054a7b43:0xf582c100380d74a7!8m2!3d-6.5120209!4d106.8329725!16s%2Fg%2F11h12xm87x?entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D',
-  founded:     '2018',
+  founded:     '2019',
 };
 
 // ════════════════════════════════════════════════════════════════════════════
 // ② STATS DATA
 // ════════════════════════════════════════════════════════════════════════════
 
-export const STATS_DATA: Stat[] = [
-  {
-    value:       4.8,
-    suffix:      '★',
-    label:       'Rating Google Maps',
-    description: 'Dari total 4.076+ ulasan autentik kuliner keluarga.',
-  },
-  {
-    value:       4000,
-    suffix:      '+',
-    label:       'Ulasan Google',
-    description: 'Ulasan dari pelanggan setia Jabodetabek.',
-  },
-  {
-    value:       50,
-    suffix:      '+',
-    label:       'Kapasitas Meja & Lesehan',
-    description: 'Sangat luas untuk kumpul keluarga & reuni kantor.',
-  },
-  {
-    value:       98,
-    suffix:      '%',
-    label:       'Tingkat Kepuasan',
-    description: 'Pelayanan ramah berkelas restoran bintang lima.',
-  },
-];
 
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -135,8 +113,6 @@ export const MENU_CATEGORIES = [
   { id: 'minuman',         label: 'Minuman Segar'   },
   { id: 'snacks',          label: 'Snack & Camilan' },
 ] as const
-
-export type MenuCategoryId = typeof MENU_CATEGORIES[number]['id']
 
 export const MENU_PAGE_DATA = {
   badge:                 'Menu Kami',
@@ -378,76 +354,64 @@ export const TESTIMONIALS_DATA: Testimonial[] = [
   {
     id: 1, name: 'Nafisa Aulia Fahmi', city: 'Cibinong, Bogor (Local Guide)', rating: 5,
     review: 'Restonya mudah ditemukan, berada di pinggir jalan raya alternatif GOR Pakansari. Pesan cumi goreng mentega, udang asam manis, baronang bakar jimbaran, dan genjer. Semuanya enak bumbu meresap gurih. Sangat recommended kesini bersama keluarga besar!',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop&q=80',
     product: 'Cumi Goreng Mentega & Baronang Bakar',
   },
   {
     id: 2, name: 'Novianty Wongso', city: 'Cibinong, Bogor (Local Guide)', rating: 5,
     review: 'Coba Warung Papatong karena lihat rating Google yang tinggi ternyata memang tidak mengecewakan! Gurame Telur Asin, Udang Peci Saus Padang, Soka Lada Hitam, dan Cumi Bakar Lumpur semuanya mantap berani bumbu. Pelayanan cepat dan memuaskan.',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop&q=80',
     product: 'Gurame Telur Asin & Udang Peci Saus Padang',
   },
   {
     id: 3, name: 'Vanny Firki', city: 'Bogor (Local Guide)', rating: 5,
     review: 'Pertama kali kesini, makanan yang saya pesan semuanya enak, tidak ada yang gagal. Mantap sekali! Ajak keluarga kesini sangat recommended. Cocok untuk semua ukuran grup.',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=120&h=120&fit=crop&q=80',
     product: 'Paket Bancakan Rombongan',
   },
   {
     id: 4, name: 'Nadi Ekawati', city: 'Cibinong, Bogor', rating: 5,
     review: 'Baru pertama kali dateng kesini terus nyarinya cuma Google doang terus ternyata malah dapet hidden gem!!! Ikan bakar kerapu bumbu jimbaran SANGAT RECOMENDED!!!! Enak bgt plus kangkung taucooo masyaallah, definitely will come back!',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&h=120&fit=crop&q=80',
     product: 'Ikan Kerapu Bakar Jimbaran & Kangkung Tauco',
   },
   {
     id: 5, name: 'Teddy Fazri', city: 'Cibinong (Local Guide)', rating: 5,
     review: 'Makanan Enak, harga terjangkau, ramah anak juga tempatnya, ada playground dan ada saung di bawah... Ayam bakar dan udang nya mantap! Gurame asem manis, kepiting saus jimbaran, kerapu bakar jimbaran semuanya top markotop.',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&h=120&fit=crop&q=80',
     product: 'Kepiting & Udang Saus Padang',
   },
   {
     id: 6, name: 'Rebecca Indriyani', city: 'Bogor', rating: 5,
     review: 'Makanannya enak enak, pesen gurame asam manis, sapo tahu, fuyunghai semua bumbunya terasa berani bumbu, tempatnya juga nyaman bersih.. pokoknya mantappp!',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=120&h=120&fit=crop&q=80',
     product: 'Gurame Asam Manis & Sapo Tahu',
   },
   {
     id: 7, name: 'S Herman', city: 'Cibinong, Bogor', rating: 5,
     review: 'Makanan nya semua enak... rasa juga enak.., pelayanan cepat dan memuaskan, recommended buat semua keluarga yang mau makan disini... mantappp!',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop&q=80',
     product: 'Lalapan & Ayam Goreng Serundeng',
   },
   {
     id: 8, name: 'Shena Ardyanti', city: 'Bogor (Local Guide)', rating: 5,
     review: 'Makanan nya enak-enak, tempatnya strategis banget pinggir jalan raya, dan harganya OK. Tenang sehingga mudah untuk bicara santai. Waktu tunggu sekitar 10-30 menit.',
-    avatar: 'https://images.unsplash.com/photo-1554151228-14d9def656e4?w=120&h=120&fit=crop&q=80',
     product: 'Sapo Tahu Special Papatong',
   },
   {
     id: 9, name: 'Ajeng Maharani', city: 'Cibinong, Bogor (Local Guide)', rating: 5,
     review: 'Makanannya enak banget rasanya, pelayanan nya ramah-ramah baik. Resto nya ada tempat permainan anak-anak jadi anak-anak bisa bermain sambil menunggu pesanan datang. Sangat cocok buat bawa balita.',
-    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop&q=80',
     product: 'Nasi Timbel Komplet & Area Playground',
   },
   {
     id: 10, name: 'Erni Herningsih', city: 'Sentul (Local Guide)', rating: 5,
     review: 'Tempatnya lumayan luas. Bisa buat makan keluarga besar atau gathering kantor. Makanan nya ok dan enak.',
-    avatar: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=120&h=120&fit=crop&q=80',
     product: 'Ayam Goreng Serundeng Lengkuas',
   },
   {
     id: 11, name: 'Purniawan Abudaffa', city: 'Bogor', rating: 5,
     review: 'Makanan nya enak.. sayurnya juga masih seger-seger bgt... mantap... pelayanannya dari staf ramah serta sigap.',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=120&h=120&fit=crop&q=80',
     product: 'Tumis Genjer & Kerang Cabe Ijo',
   },
   {
     id: 12, name: 'Hendry Hanapi', city: 'Jakarta (Local Guide)', rating: 5,
     review: 'Tempat lumayan nyaman (makan sore - malam). Untuk rombongan dewasa 8 orang, anak-anak 7 orang makanannya sangat cukup dan kenyang. Semua bahan segar dan overall masakan good taste dan terong baladonya istimewa!',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&h=120&fit=crop&q=80',
     product: 'Liwetan Berlima & Terong Balado',
   },
-];
+]
 
 // ════════════════════════════════════════════════════════════════════════════
 // ⑤ FAQS DATA
@@ -817,14 +781,17 @@ export const ABOUT_CTA_DATA = {
   statsCapacityLabel:
     'Kapasitas Tamu',
 
-  statsRating:
+  statsFounded:
     '2019',
-
-  statsRatingLabel:
-    'Sejak Berdiri',
 
   statsFoundedLabel:
     'Tahun Berdiri',
+
+  statsRating:
+    '4.8',
+
+  statsRatingLabel:
+    'Rating Google',
 
   ctaBadge:
     'Reservasi Mudah',
@@ -941,6 +908,17 @@ export const FOOTER_DATA: FooterData = {
 };
 
 // ════════════════════════════════════════════════════════════════════════════
+// NAV ITEMS
+// ════════════════════════════════════════════════════════════════════════════
+
+export const NAV_ITEMS: NavItem[] = [
+  { label: 'Beranda',         href: '/' },
+  { label: 'Menu Kami',       href: '/menu' },
+  { label: 'Galeri & Suasana', href: '/venue' },
+  { label: 'Tentang Kami',    href: '/about' },
+] as const;
+
+// ════════════════════════════════════════════════════════════════════════════
 // UTILITIES
 // ════════════════════════════════════════════════════════════════════════════
 
@@ -973,7 +951,3 @@ export const buildWALink = (phone: string, message: string): string =>
 export const formatPrice = (price: number): string =>
   `Rp ${price.toLocaleString('id-ID')}`;
 
-/** Hitung total harga dari array item keranjang pre-order. */
-export const calculateBasketTotal = (
-  items: Array<{ price: number; quantity: number }>
-): number => items.reduce((sum, item) => sum + item.price * item.quantity, 0);

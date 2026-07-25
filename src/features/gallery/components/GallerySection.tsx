@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import Script from 'next/script'
 import { motion, AnimatePresence } from 'motion/react'
 import { Camera, Instagram, Maximize2, X } from 'lucide-react'
@@ -120,11 +121,12 @@ export default function GallerySection() {
               transition={{ duration: 0.35 }}
               className="group relative mb-8 aspect-[16/9] overflow-hidden rounded-4xl border border-brand-border bg-brand-surface shadow-card transition-all duration-300 hover:border-brand-primary hover:shadow-card-lg md:aspect-[16/7]"
             >
-              <img
+              <Image
                 src={featuredImage.image}
                 alt={featuredImage.alt}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                fill
+                sizes="(max-width: 768px) 100vw, 80vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:p-8">
                 <span className="mb-2 font-mono text-[10px] font-black uppercase tracking-widest text-brand-primary">
@@ -161,11 +163,12 @@ export default function GallerySection() {
                   transition={{ duration: 0.35 }}
                   className="group relative aspect-[4/3] overflow-hidden rounded-4xl border border-brand-border bg-brand-surface shadow-card transition-all duration-300 hover:border-brand-primary hover:shadow-card-lg"
                 >
-                  <img
+                  <Image
                     src={item.image}
                     alt={item.alt}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                     <span className="mb-1.5 font-mono text-[10px] font-black uppercase tracking-widest text-brand-primary">
@@ -251,11 +254,13 @@ export default function GallerySection() {
                 <X className="h-5 w-5" />
               </button>
 
-              <div className="flex aspect-[4/3] w-full items-center bg-brand-dark md:aspect-auto md:max-h-[70vh] md:w-3/5">
-                <img
+              <div className="relative flex aspect-[4/3] w-full items-center bg-brand-dark md:aspect-auto md:max-h-[70vh] md:w-3/5">
+                <Image
                   src={selectedImage.image}
                   alt={selectedImage.alt}
-                  className="h-full w-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
                 />
               </div>
 

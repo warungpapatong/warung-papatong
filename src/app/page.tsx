@@ -1,16 +1,16 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 
 import { APP_CONFIG } from '@/lib/config'
 import { BUSINESS_INFO, TESTIMONIALS_DATA, FAQS_DATA } from '@/data'
 
-import {
-  HeroSection,
-  BestSellers,
-  AmbienceTeaser,
-  TestimonialsSection,
-  FaqSection,
-  LocationSection,
-} from '@/features/home/components'
+import HeroSection from '@/features/home/hero/HeroSection'
+
+const BestSellers = dynamic(() => import('@/features/home/bestsellers/BestSellers'))
+const AmbienceTeaser = dynamic(() => import('@/features/home/ambience/AmbienceTeaser'))
+const TestimonialsSection = dynamic(() => import('@/features/home/testimonials/TestimonialsSection'))
+const FaqSection = dynamic(() => import('@/features/home/faq/FaqSection'))
+const LocationSection = dynamic(() => import('@/features/home/location/LocationSection'))
 
 export const metadata: Metadata = {
   title: `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong, Booking Lesehan Rombongan`,
@@ -26,27 +26,33 @@ export const metadata: Metadata = {
     siteName:    APP_CONFIG.siteName,
     locale:      'id_ID',
     type:        'website',
+    images: [{ url: `${APP_CONFIG.siteUrl}/opengraph-image.png`, width: 1200, height: 630, alt: BUSINESS_INFO.name }],
   },
   twitter: {
     card:        'summary_large_image',
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong`,
     description: 'Rating 4.8★ dari 4.000+ ulasan Google. Booking lesehan rombongan gratis.',
+    images:      [`${APP_CONFIG.siteUrl}/opengraph-image.png`],
+  },
+  robots: {
+    index:     true,
+    follow:    true,
+    googleBot: {
+      index:               true,
+      follow:              true,
+      'max-image-preview': 'large',
+      'max-snippet':       -1,
+    },
   },
 }
 
 function buildReviewSchema() {
   return {
-    '@context': 'https://schema.org',
-    '@type':    'Restaurant',
-    name:       BUSINESS_INFO.name,
-    url:        APP_CONFIG.siteUrl,
-    aggregateRating: {
-      '@type':      'AggregateRating',
-      ratingValue:  '4.8',
-      reviewCount:  '4080',
-      bestRating:   '5',
-      worstRating:  '1',
-    },
+    '@context':    'https://schema.org',
+    '@type':       'Restaurant',
+    '@id':         `${APP_CONFIG.siteUrl}/#restaurant`,
+    name:          BUSINESS_INFO.name,
+    url:           APP_CONFIG.siteUrl,
     review: TESTIMONIALS_DATA.map(r => ({
       '@type':  'Review',
       author:   { '@type': 'Person', name: r.name },
@@ -66,6 +72,7 @@ function buildFaqSchema() {
   return {
     '@context': 'https://schema.org',
     '@type':    'FAQPage',
+    '@id':      `${APP_CONFIG.siteUrl}/#faq`,
     mainEntity: FAQS_DATA.map(item => ({
       '@type': 'Question',
       name:    item.question,

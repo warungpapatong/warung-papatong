@@ -5,6 +5,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.2.0] - 2026-07-18
+### 🧹 Codebase Cleanup & SEO Optimization
+
+#### Added
+- **JSON-LD schema consolidated**: Merged `LOCAL_SEO_SCHEMA` + inline `organizationSchema` into one comprehensive `@type: ['Restaurant', 'FoodEstablishment', 'LocalBusiness', 'Organization']` with proper `@id` references. Removed duplicate `aggregateRating`.
+- **`theme-color` meta tag**: `#FFCC00` for browser chrome theming.
+- **Homepage OG image**: Explicit `opengraph-image.png` reference with width/height/alt.
+- **Local SEO geo meta tags**: `geo.position`, `geo.placename`, `geo.region` added to root layout.
+- **`@id` on all schemas**: `LOCAL_SEO_SCHEMA` (`#restaurant`), `buildReviewSchema` (references `#restaurant`), `buildFaqSchema` (`#faq`) — Google can now cross-reference.
+- **`FULL_MENU_PDF_URL` centralized in `src/data.ts`**: Moved from 3 hardcoded locations into single source of truth.
+- **`ABOUT_CTA_DATA.statsRating` → `statsFounded`**: Renamed misleading property (held year, not rating). Added proper `statsRating` (4.8).
+- **`NAV_ITEMS` merged into `src/data.ts`**: Replaced `src/config/navigation.ts` (8 lines) — all navigation data now in one file.
+
+#### Fixed
+- **venue/page.tsx broken OG image**: Referenced `entrance.webp` (404) → `new-entrance.webp`.
+- **Review count inconsistency**: Unified to 4080 across `LOCAL_SEO_SCHEMA`, `buildReviewSchema()`, and `TESTIMONIALS_CONTENT`.
+- **Tahun berdiri conflict**: `BUSINESS_INFO.founded` changed from '2018' to '2019' to match `ABOUT_STORY_DATA`.
+- **Hardcoded WA messages**: Navbar and Footer now use `NAVBAR_DATA.waMessage` / `FOOTER_DATA.waMessage`.
+- **BestSellerCards price format**: Changed `formatPrice(dish.price)` (no unit) → `formatProductPrice(dish)` (with unit).
+- **Logo format**: Navbar/Footer now use `papatong-logo.png` per client preference; `.jpg`/unused variants removed.
+- **`tsconfig.json` include**: Fixed reference to `postcss.config.ts` (didn't exist) → `postcss.config.cjs`.
+- **`sw.js` precache targets**: Removed `/index.html` (doesn't exist in Next.js standalone).
+
+#### Removed
+- **`src/components/ui/` directory**: 5 files (Badge, Button, Card, SectionHeader, barrel) — zero imports from anywhere in the codebase.
+- **`src/config/navigation.ts`**: Merged into `src/data.ts`.
+- **`src/lib/tracking.ts`**: Re-export barrel removed; 6 components now import directly from `@/lib/config`.
+- **`src/features/home/components/` nesting**: Flattened — sections moved to `hero/`, `bestsellers/`, `ambience/`, `testimonials/`, `faq/`, `location/`. Client components no longer nested in `client/` subdirectories.
+- **`STATS_DATA`, `calculateBasketTotal`, `MenuCategoryId`**: Unused exports deleted from `src/data.ts`.
+- **`global.d.ts`**: Stripped CSS Modules, SCSS, SVG declarations (not used).
+- **Unused assets**: Logo `.jpg`, unused `.webp` variants, empty `docs/` directory, empty `PRD.md`.
+
+---
+
 ## [2.1.0] - 2026-05-23
 ### 🎨 Logic, Data & Design Token Layer Consolidation
 

@@ -10,7 +10,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { BUSINESS_INFO, buildWALink } from '@/data'
-import { trackWhatsAppConversion } from '@/lib/tracking'
+import { trackWhatsAppConversion } from '@/lib/config'
 
 const WA_MESSAGE =
   'Halo Admin Warung Papatong Cibinong, saya ingin reservasi tempat duduk & pre-order menu makanan untuk acara makan bersama rombongan keluarga kami.'

@@ -20,9 +20,7 @@ const nextConfig: NextConfig = {
       : false,
   },
 
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'motion'],
-  },
+  experimental: {},
 
   transpilePackages: [],
 

@@ -7,12 +7,8 @@ import { usePathname } from 'next/navigation'
 
 import { Menu, MessageSquare, X } from 'lucide-react'
 
-import { NAV_ITEMS } from '@/config/navigation'
-import { BUSINESS_INFO, buildWALink } from '@/data'
-import { trackWhatsAppConversion } from '@/lib/tracking'
-
-const WA_BOOKING_MESSAGE =
-  'Halo Admin Papatong, saya ingin pesan / tanya menu yang tersedia.'
+import { BUSINESS_INFO, NAVBAR_DATA, NAV_ITEMS, buildWALink } from '@/data'
+import { trackWhatsAppConversion } from '@/lib/config'
 
 export default function Navbar() {
   const pathname = usePathname()
@@ -58,7 +54,7 @@ export default function Navbar() {
   function handleWA(source: string) {
     trackWhatsAppConversion(source)
     window.open(
-      buildWALink(BUSINESS_INFO.wa, WA_BOOKING_MESSAGE),
+      buildWALink(BUSINESS_INFO.wa, NAVBAR_DATA.waMessage),
       '_blank',
       'noopener,noreferrer'
     )
@@ -111,6 +107,7 @@ export default function Navbar() {
               width={300}
               height={100}
               priority
+              sizes="200px"
               className="
                 h-16
                 w-auto
@@ -178,7 +175,7 @@ export default function Navbar() {
                 items-center
                 gap-1
                 rounded-xl
-                bg-green-500
+                bg-green-600
                 px-2.5
                 py-2
                 text-[11px]

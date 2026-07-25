@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { BUSINESS_INFO } from '@/data'
 import { APP_CONFIG } from '@/lib/config'
-import MenuSection from '@/features/menu/components/MenuSection'
+
+const MenuSection = dynamic(() => import('@/features/menu/components/MenuSection'))
 
 export const metadata: Metadata = {
   title:       'Menu Digital & Pre-Order',

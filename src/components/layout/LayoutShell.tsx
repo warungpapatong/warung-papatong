@@ -27,7 +27,10 @@ import dynamic from 'next/dynamic'
 import type { Product } from '@/types'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import FloatingWA from '@/components/common/FloatingWA'
+
+const FloatingWA = dynamic(() => import('@/components/common/FloatingWA'), {
+  ssr: false,
+})
 
 // Dynamic import — CheckoutModal tidak di-bundle saat initial load.
 // Komponen ini baru di-fetch saat isBookingOpen pertama kali jadi true.

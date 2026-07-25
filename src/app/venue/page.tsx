@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { BUSINESS_INFO } from '@/data'
 import { APP_CONFIG } from '@/lib/config'
-import GallerySection from '@/features/gallery/components/GallerySection'
+
+const GallerySection = dynamic(() => import('@/features/gallery/components/GallerySection'))
 
 export const metadata: Metadata = {
   title:       'Galeri Venue & Suasana Resto',
@@ -21,10 +23,10 @@ export const metadata: Metadata = {
     type:        'website',
     images: [
       {
-        url:    `${APP_CONFIG.siteUrl}/images/venue/01-gallery/entrance.webp`,
+        url:    `${APP_CONFIG.siteUrl}/images/venue/01-gallery/new-entrance.webp`,
         width:  1200,
         height: 630,
-        alt:    'Entrance Warung Papatong dengan tempat parkir yang luas dan suasana asri',
+        alt:    'Tampak depan Warung Papatong dengan area parkir luas dan suasana asri',
       },
     ],
   },
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
     card:        'summary_large_image',
     title:       'Galeri Venue Warung Papatong — Saung Lesehan & Suasana Asri Cibinong',
     description: 'Saung lesehan terapung di atas kolam ikan, spot foto balon udara ikonik, live music akustik malam hari — semua ada di Warung Papatong Cibinong Bogor.',
-    images:      [`${APP_CONFIG.siteUrl}/images/venue/01-gallery/entrance.webp`],
+    images:      [`${APP_CONFIG.siteUrl}/images/venue/01-gallery/new-entrance.webp`],
   },
 
   robots: {

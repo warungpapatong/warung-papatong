@@ -17,16 +17,16 @@ import {
 import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { ABOUT_CTA_DATA, BUSINESS_INFO, LOCATION_DATA, buildWALink } from '@/data'
-import { trackWhatsAppConversion } from '@/lib/tracking'
+import { trackWhatsAppConversion } from '@/lib/config'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const d = ABOUT_CTA_DATA
 
 const STATS: { value: string; label: string; icon: LucideIcon }[] = [
-  { value: BUSINESS_INFO.founded ?? '', label: d.statsFoundedLabel,  icon: CalendarDays },
-  { value: d.statsCapacity,             label: d.statsCapacityLabel, icon: Users        },
-  { value: d.statsRating,              label: d.statsRatingLabel,   icon: Star         },
+  { value: d.statsFounded,  label: d.statsFoundedLabel, icon: CalendarDays },
+  { value: d.statsCapacity, label: d.statsCapacityLabel, icon: Users        },
+  { value: d.statsRating,   label: d.statsRatingLabel,   icon: Star         },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────

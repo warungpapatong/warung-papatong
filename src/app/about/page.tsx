@@ -1,18 +1,19 @@
 // src/app/about/page.tsx
 
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import { BUSINESS_INFO } from '@/data'
 import { APP_CONFIG } from '@/lib/config'
 
-import AboutStory from '@/features/about/components/AboutStory'
-import AboutCTA from '@/features/about/components/AboutCTA'
+const AboutStory = dynamic(() => import('@/features/about/components/AboutStory'))
+const AboutCTA = dynamic(() => import('@/features/about/components/AboutCTA'))
 
 export const metadata: Metadata = {
   title:
     'Tentang Warung Papatong — Resto Seafood & Sunda Favorit Cibinong',
 
   description:
-    'Mengenal lebih dekat Warung Papatong, restoran Sunda dan Seafood keluarga di Cibinong sejak 2018. Nikmati suasana saung lesehan, live music, area gathering, dan hidangan seafood segar berkualitas.',
+    `Mengenal lebih dekat Warung Papatong, restoran Sunda dan Seafood keluarga di Cibinong sejak ${BUSINESS_INFO.founded}. Nikmati suasana saung lesehan, live music, area gathering, dan hidangan seafood segar berkualitas.`,
 
   keywords:
     'tentang warung papatong, sejarah warung papatong, resto seafood cibinong, restoran keluarga bogor, saung lesehan cibinong, seafood bogor, tempat makan keluarga cibinong, restoran sunda bogor, seafood sentul',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
         url: `${APP_CONFIG.siteUrl}/images/venue/03-gallery/balon-udara2.webp`,
         width: 1200,
         height: 630,
-        alt: 'Tentang Warung Papatong',
+        alt: 'Spot foto balon udara ikonik Warung Papatong Cibinong Bogor',
       },
     ],
   },
