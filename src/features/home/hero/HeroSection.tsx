@@ -50,12 +50,9 @@ export default function HeroSection() {
             {HERO_DATA.headlineText}
           </HeroAnimatedItem>
 
-          <HeroAnimatedItem
-            as="p"
-            className="mt-5 max-w-xl text-base leading-relaxed text-brand-text sm:text-lg"
-          >
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-brand-text sm:text-lg">
             {HERO_DATA.description}
-          </HeroAnimatedItem>
+          </p>
 
           <HeroAnimatedItem className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a

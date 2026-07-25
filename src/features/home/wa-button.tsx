@@ -26,6 +26,7 @@ export default function WAButton({
       rel="noopener noreferrer"
       onClick={() => trackWhatsAppConversion(trackingLabel)}
       className={className}
+      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.25)' }}
     >
       {icon ?? <MessageSquare className="h-5 w-5 transition-transform duration-300 group-hover:scale-105" />}
       <span>{label}</span>

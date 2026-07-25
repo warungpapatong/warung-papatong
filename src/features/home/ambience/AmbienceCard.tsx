@@ -31,7 +31,7 @@ export default function AmbienceCard({ url, caption, desc, brandLabel, idx }: Am
       <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent transition-opacity duration-300" />
 
       <div className="relative z-10 space-y-1.5">
-        <span className="text-[9px] font-mono font-bold tracking-widest text-brand-success uppercase flex items-center gap-1">
+        <span className="text-[9px] font-mono font-bold tracking-widest text-green-700 uppercase flex items-center gap-1">
           {brandLabel}
         </span>
         <h3 className="font-display font-black text-base text-white leading-tight">

@@ -45,7 +45,7 @@ export default function BestSellers() {
 
             <Link
               href={BEST_SELLERS_CONTENT.ctaHref}
-              className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-brand-primary/30 bg-brand-surface px-6 py-4 text-sm font-bold text-brand-primary-dark shadow-card transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-brand-primary hover:text-brand-primary hover:shadow-card-md active:scale-[0.985] sm:text-base"
+              className="group inline-flex items-center justify-center gap-2 rounded-2xl border border-brand-primary/30 bg-brand-surface px-6 py-4 text-sm font-bold text-brand-dark shadow-card transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-brand-primary hover:text-brand-primary hover:shadow-card-md active:scale-[0.985] sm:text-base"
             >
               <span>{BEST_SELLERS_CONTENT.ctaText}</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />

@@ -131,7 +131,7 @@ function InfoCards() {
         <p className="font-mono text-sm text-brand-text">{BUSINESS_INFO.hours}</p>
         <div className="mt-3 flex items-center gap-1.5 border-t border-brand-border pt-3">
           <span className="h-2 w-2 animate-pulse rounded-full bg-brand-success" />
-          <span className="text-[11px] font-bold text-brand-success">{d.openNowLabel}</span>
+          <span className="text-[11px] font-bold text-green-700">{d.openNowLabel}</span>
         </div>
       </InfoCard>
 

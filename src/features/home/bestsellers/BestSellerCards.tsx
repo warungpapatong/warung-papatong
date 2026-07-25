@@ -82,7 +82,7 @@ export default function BestSellerCards({ intervalMs, ctaHref, freshBadgeLabel, 
 
             <div className="p-6 md:p-8 flex flex-col flex-grow justify-between gap-3">
               <div className="space-y-2">
-                <span className="text-[10px] font-mono tracking-widest text-brand-success uppercase font-bold">
+                <span className="text-[10px] font-mono tracking-widest text-green-700 uppercase font-bold">
                   {dish.categoryLabel}
                 </span>
                 <h3 className="font-display font-black text-lg md:text-xl text-brand-dark group-hover:text-brand-primary-dark transition-colors leading-snug">
