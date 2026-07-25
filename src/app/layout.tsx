@@ -12,20 +12,21 @@ const fontSans = Inter({
   subsets:  ['latin'],
   variable: '--font-sans',
   display:  'swap',
+  weight:   ['400'],
 })
 
 const fontDisplay = Plus_Jakarta_Sans({
   subsets:  ['latin'],
   variable: '--font-display',
   display:  'swap',
-  weight:   ['400', '500', '600', '700', '800'],
+  weight:   ['400', '700', '800'],
 })
 
 const fontMono = JetBrains_Mono({
   subsets:  ['latin'],
   variable: '--font-mono',
   display:  'swap',
-  weight:   ['400', '500'],
+  weight:   ['500'],
 })
 
 export const viewport: Viewport = {
