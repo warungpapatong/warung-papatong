@@ -5,6 +5,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.3.0] - 2026-07-25
+### ⚡ PageSpeed Optimization & Performance Tuning
+
+#### Added
+- **Dynamic imports for below-the-fold sections**: BestSellers, Ambience, Testimonials, FAQ, FloatingWA, all page content (menu/about/venue) — code-split motion library out of critical path.
+- **CSS-only hero animations**: Replaced `motion` animations with pure CSS `animate-fade-up` in hero section — removes `motion` dependency from first-paint bundle.
+- **`preconnect` hints** for Google Fonts origins (later removed — Next.js self-hosts fonts via `next/font`).
+- **Text-shadow on WA buttons**: Improves perceived contrast ratio for brand-green (#25D366) buttons while maintaining WhatsApp brand recognition.
+- **`sizes="200px"` on logo Image**: Optimizes responsive image delivery for the Navbar logo.
+
+#### Fixed
+- **LCP 4.7s → ~3.0s (mobile)**: Removed `animate-fade-up` from hero paragraph (LCP element) — eliminates element render delay caused by opacity animation on critical text element.
+- **React hydration error #418**: `BestSellerCards` — moved `new Date().getHours()` from `useState` initializer to `useEffect`, fixing timezone mismatch between server (UTC) and client (WIB +7).
+- **Safari IntersectionObserver reliability**: Added 1.5s `forceVisible` fallback in `AboutStory` for cases where `useInView` fails to fire in WebKit.
+- **Layout shift (CLS)**: Replaced all bare `<img>` tags with Next.js `<Image>` (with `fill` + `sizes`) across AmbienceCard, MenuSection, GallerySection, AboutStory — eliminates CLS from images lacking explicit dimensions.
+- **Render-blocking CSS**: Reduced from 450ms to 300ms via CSS size optimizations.
+
+#### Accessibility (91 → 96)
+- **Contrast**: Fixed low-contrast text — mobile WA button (`bg-green-500` → `bg-green-700`), pill badges (`text-brand-primary-dark` → `text-brand-dark`), category labels (`text-brand-success` → `text-green-700`), section labels in testimonials/faq/location.
+- **Touch targets**: Carousel navigation dots enlarged from `w-2.5` (10px) to `min-w-[28px]` for WCAG minimum target size compliance.
+- **Heading order**: Sequential `h1→h2→h3→h4` hierarchy restored — featured menu (`h3→h2`), location info labels (`h4→h3`), testimonial reviewer names (`h4→h3`).
+
+#### Removed
+- **Unused preconnect hints**: Removed `preconnect` for `fonts.googleapis.com`, `fonts.gstatic.com`, `googletagmanager.com` — flagged as unused by Lighthouse since Next.js self-hosts fonts and gtag loads afterInteractive.
+
+---
+
 ## [2.2.0] - 2026-07-18
 ### 🧹 Codebase Cleanup & SEO Optimization
 
