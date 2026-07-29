@@ -172,11 +172,6 @@ export default function HeroSection() {
                   <h2 className="text-xl font-black tracking-tight text-brand-dark sm:text-2xl">
                     {featuredMenu.name}
                   </h2>
-                  {featuredMenu.description && (
-                    <p className="mt-3 text-sm leading-relaxed text-brand-text sm:text-[15px]">
-                      {featuredMenu.description}
-                    </p>
-                  )}
                 </div>
 
                 <div className="flex items-center justify-between border-t border-brand-border pt-4 sm:block sm:border-0 sm:pt-0">
