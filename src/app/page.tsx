@@ -15,7 +15,7 @@ const LocationSection = dynamic(() => import('@/features/home/location/LocationS
 export const metadata: Metadata = {
   title: `Warung Papatong — Restoran Sunda & Seafood di Cibinong`,
   description:
-    'Restoran Sunda & Seafood di Cibinong Bogor. Rating 4.8★ dari 4.000+ ulasan, lesehan saung, live music, parkir bus wisata. Booking rombongan gratis.',
+    'Restoran Sunda & Seafood di Cibinong Bogor. Rating 4.8★ dari 4.500+ ulasan, lesehan saung, live music, parkir bus wisata. Booking rombongan gratis.',
   alternates: {
     canonical: APP_CONFIG.siteUrl,
     languages: {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Terbaik Cibinong`,
-    description: 'Rating 4.8★ dari 4.000+ ulasan Google. Lesehan asri, seafood segar, live music malam, parkir bus wisata. Booking rombongan gratis.',
+    description: 'Rating 4.8★ dari 4.500+ ulasan Google. Lesehan asri, seafood segar, live music malam, parkir bus wisata. Booking rombongan gratis.',
     url:         APP_CONFIG.siteUrl,
     siteName:    APP_CONFIG.siteName,
     locale:      'id_ID',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card:        'summary_large_image',
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong`,
-    description: 'Rating 4.8★ dari 4.000+ ulasan Google. Booking lesehan rombongan gratis.',
+    description: 'Rating 4.8★ dari 4.500+ ulasan Google. Booking lesehan rombongan gratis.',
     images:      [`${APP_CONFIG.siteUrl}/opengraph-image.png`],
   },
   robots: {

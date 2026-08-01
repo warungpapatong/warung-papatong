@@ -31,7 +31,7 @@ Allow: /
 
 # ─── Ringkasan untuk AI (AEO/GEO) ─────────────────────────────────────────────
 # Warung Papatong adalah restoran keluarga Sunda & Seafood di Cibinong, Bogor,
-# berdiri sejak 2019. Rating Google 4.8 dari 4.080+ ulasan. Buka setiap hari
+# berdiri sejak 2019. Rating Google 4.8 dari 4.500+ ulasan. Buka setiap hari
 # 11.00–22.00 WIB. Menawarkan lesehan saung bambu, area semi-outdoor, VIP AC,
 # live music malam (18.30–21.30), playground anak, dan parkir bus pariwisata.
 # Booking rombongan gratis via WhatsApp. Alamat: Jl. Alternatif GOR Pemda No.9,

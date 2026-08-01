@@ -204,7 +204,7 @@ export const LOCAL_SEO_SCHEMA = {
   aggregateRating: {
     '@type':       'AggregateRating',
     ratingValue:   '4.8',
-    reviewCount:   '4080',
+    reviewCount:   '4500',
     bestRating:    '5',
     worstRating:   '1',
   },

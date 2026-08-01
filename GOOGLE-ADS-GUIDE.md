@@ -156,7 +156,7 @@ Campaign 3 (jika budget besar) — Remarketing
 ### D4. Iklan (ad copy) & ekstensi
 
 - Tulis headline 2–3 varian; sertakan **harga** dan **bukti sosial**:
-  - "Seafood & Sunda Cibinong ★4.8 (4.080+ review)"
+  - "Seafood & Sunda Cibinong ★4.8 (4.500+ review)"
   - "Lesehan Saung Bambu + Live Music 18.30–21.30"
   - "Parkir Bus Pariwisata — Booking Rombongan Gratis"
 - **Wajib pasang ekstensi:**

@@ -155,7 +155,7 @@ export interface HeroData {
   // Stats bar (3 kolom di bawah CTA)
   stats: {
     rating:        string;   // "4.8"
-    ratingLabel:   string;   // "4K+ Ulasan"
+    ratingLabel:   string;   // "4.5K+ Ulasan"
     hours:         string;   // "11–22"
     hoursLabel:    string;   // "Setiap Hari"
     location:      string;   // "Cibinong"

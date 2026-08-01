@@ -607,7 +607,7 @@ export const HERO_DATA: HeroData = {
   kitchenStatusDesc:  'Semua Menu Seafood Lengkap Terjaga',
   stats: {
     rating:        '4.8',
-    ratingLabel:   '4K+ Ulasan',
+    ratingLabel:   '4.5K+ Ulasan',
     hours:         '11.00 – 22.00',
     hoursLabel:    'Setiap Hari',
     location:      'Cibinong',
@@ -672,7 +672,7 @@ export const BEST_SELLERS_CONTENT: BestSellersData = {
 
 export const TESTIMONIALS_CONTENT: TestimonialsData = {
   sectionLabel:  'SUARA KONSUMEN AUTENTIK',
-  title:         'Ulasan Kejujuran dari 4.080+ Keluarga di Google Maps',
+  title:         'Ulasan Kejujuran dari 4.500+ Keluarga di Google Maps',
   description:   'Kepuasan rasa makan keluarga adalah kehormatan bagi kami. Simak penuturan asli dari pelanggan setia setelah berkunjung dan bersantap hangat di saung lesehan Warung Papatong Cibinong.',
   autoPlayMs:    5_500,
   ariaLabelPrev: 'Ulasan Sebelumnya',
