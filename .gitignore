@@ -8,3 +8,6 @@ coverage/
 !.env.example
 .next/
 tsconfig.tsbuildinfo
+
+# Working files (not for repo)
+Laporan kata kunci negatif.csv
