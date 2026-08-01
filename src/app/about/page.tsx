@@ -20,13 +20,14 @@ export const metadata: Metadata = {
     'Tentang Warung Papatong — Resto Seafood & Sunda Favorit Cibinong',
 
   description:
-    `Mengenal lebih dekat Warung Papatong, restoran Sunda dan Seafood keluarga di Cibinong sejak ${BUSINESS_INFO.founded}. Nikmati suasana saung lesehan, live music, area gathering, dan hidangan seafood segar berkualitas.`,
-
-  keywords:
-    'tentang warung papatong, sejarah warung papatong, resto seafood cibinong, restoran keluarga bogor, saung lesehan cibinong, seafood bogor, tempat makan keluarga cibinong, restoran sunda bogor, seafood sentul',
+    'Kisah Warung Papatong, restoran Sunda & Seafood keluarga di Cibinong sejak 2019. Saung lesehan, live music, area gathering, dan seafood segar berkualitas.',
 
   alternates: {
     canonical: `${APP_CONFIG.siteUrl}/about`,
+    languages: {
+      'id':        `${APP_CONFIG.siteUrl}/about`,
+      'x-default': `${APP_CONFIG.siteUrl}/about`,
+    },
   },
 
   openGraph: {

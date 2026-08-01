@@ -14,11 +14,14 @@ function buildBreadcrumb() {
 
 export const metadata: Metadata = {
   title:       'Galeri Venue & Suasana Resto',
-  description: 'Jelajahi suasana saung lesehan terapung, spot foto balon udara ikonik, kolam ikan koi, panggung live music, dan kehangatan kebersamaan keluarga di Warung Papatong Cibinong Bogor.',
-  keywords:    'galeri warung papatong, venue restoran cibinong, saung lesehan bogor, spot foto cibinong, restoran keluarga cibinong, tempat gathering bogor, live music resto cibinong, warung papatong foto',
+  description: 'Jelajahi suasana saung lesehan, spot foto balon udara, kolam ikan koi, live music, dan kebersamaan keluarga di Warung Papatong Cibinong Bogor.',
 
   alternates: {
     canonical: `${APP_CONFIG.siteUrl}/venue`,
+    languages: {
+      'id':        `${APP_CONFIG.siteUrl}/venue`,
+      'x-default': `${APP_CONFIG.siteUrl}/venue`,
+    },
   },
 
   openGraph: {

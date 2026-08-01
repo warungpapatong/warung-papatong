@@ -49,10 +49,13 @@ function buildBreadcrumb() {
 export const metadata: Metadata = {
   title:       'Menu Digital & Pre-Order',
   description: 'Lihat daftar lengkap menu Seafood segar & Sunda autentik Warung Papatong Cibinong. Pre-order langsung via WhatsApp — potong waktu tunggu, meja dan hidangan siap saat Anda tiba.',
-  keywords:    'menu seafood cibinong, menu sunda cibinong, warung papatong menu, pre order seafood bogor, daftar menu warung papatong, kepiting cibinong, gurame cibinong, lobster bogor, resto seafood cibinong bogor',
 
   alternates: {
     canonical: `${APP_CONFIG.siteUrl}/menu`,
+    languages: {
+      'id':        `${APP_CONFIG.siteUrl}/menu`,
+      'x-default': `${APP_CONFIG.siteUrl}/menu`,
+    },
   },
 
   openGraph: {

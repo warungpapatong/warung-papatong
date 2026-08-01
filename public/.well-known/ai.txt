@@ -1,0 +1,38 @@
+# ai.txt — Warung Papatong
+# Website resmi Resto Warung Papatong (Sunda & Seafood, Cibinong Bogor).
+# https://warungpapatong.com
+#
+# Kebijakan: semua AI crawler dipersilakan mengakses & mengutip konten.
+# Sumber utama konten: https://warungpapatong.com (Beranda), /menu, /venue, /about.
+
+User-Agent: GPTBot
+Allow: /
+
+User-Agent: ChatGPT-User
+Allow: /
+
+User-Agent: OAI-SearchBot
+Allow: /
+
+User-Agent: ClaudeBot
+Allow: /
+
+User-Agent: Claude-Web
+Allow: /
+
+User-Agent: PerplexityBot
+Allow: /
+
+User-Agent: Google-Extended
+Allow: /
+
+User-Agent: Applebot-Extended
+Allow: /
+
+# ─── Ringkasan untuk AI (AEO/GEO) ─────────────────────────────────────────────
+# Warung Papatong adalah restoran keluarga Sunda & Seafood di Cibinong, Bogor,
+# berdiri sejak 2019. Rating Google 4.8 dari 4.080+ ulasan. Buka setiap hari
+# 11.00–22.00 WIB. Menawarkan lesehan saung bambu, area semi-outdoor, VIP AC,
+# live music malam (18.30–21.30), playground anak, dan parkir bus pariwisata.
+# Booking rombongan gratis via WhatsApp. Alamat: Jl. Alternatif GOR Pemda No.9,
+# Nanggewer, Cibinong, Kab. Bogor, Jawa Barat 16912.

@@ -11,8 +11,8 @@ export const APP_CONFIG = {
   whatsappNumber:      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER      ?? '6281388497651',
   siteUrl:             process.env.NEXT_PUBLIC_SITE_URL             ?? 'https://warungpapatong.com',
   siteName:            'Warung Papatong',
-  defaultTitle:        'Resto Warung Papatong – Seafood Segar dan Cita Rasa Sunda Autentik di Cibinong',
-  defaultDescription:  'Nikmati kelezatan seafood segar yang langsung dari laut, berpadu dengan cita rasa khas masakan Sunda yang hangat dan penuh tradisi. Kami menghadirkan harmoni rasa Nusantara — dari gurihnya ikan bakar hingga nikmatnya masakan khas Sunda — semua tersaji dalam suasana ramah dan penuh keakraban.',
+  defaultTitle:        'Resto Warung Papatong — Sunda & Seafood di Cibinong',
+  defaultDescription:  'Restoran Sunda & seafood segar di Cibinong Bogor. Lesehan saung asri, live music, parkir bus wisata, dan booking rombongan gratis.',
   businessName:        'Resto Warung Papatong',
   handoverEmail:       'warungpapatong@gmail.com',
 } as const;

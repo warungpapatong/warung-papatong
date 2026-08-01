@@ -43,20 +43,6 @@ export const metadata: Metadata = {
     template: `%s | ${APP_CONFIG.siteName}`,
   },
   description: APP_CONFIG.defaultDescription,
-  keywords: [
-    'Warung Papatong',
-    'Restoran Sunda Cibinong',
-    'Seafood Cibinong',
-    'Restoran Keluarga Bogor',
-    'Makan Enak Cibinong',
-    'Lesehan Cibinong',
-    'Restoran Seafood Bogor',
-    'Kuliner Sunda Cibinong',
-    'Booking Rombongan Cibinong',
-    'Tempat Makan Keluarga Bogor',
-    'Saung Lesehan Bogor',
-    'Live Music Cibinong',
-  ],
   authors: [{ name: BUSINESS_INFO.name, url: APP_CONFIG.siteUrl }],
   creator: BUSINESS_INFO.name,
   publisher: BUSINESS_INFO.name,
@@ -65,6 +51,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: APP_CONFIG.siteUrl,
+    languages: {
+      'id':        APP_CONFIG.siteUrl,
+      'x-default': APP_CONFIG.siteUrl,
+    },
   },
   openGraph: {
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong`,
@@ -105,6 +95,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fontSans.variable} ${fontDisplay.variable} ${fontMono.variable}`}
     >
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_SEO_SCHEMA) }}

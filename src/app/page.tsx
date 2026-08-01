@@ -13,11 +13,15 @@ const FaqSection = dynamic(() => import('@/features/home/faq/FaqSection'))
 const LocationSection = dynamic(() => import('@/features/home/location/LocationSection'))
 
 export const metadata: Metadata = {
-  title: `${APP_CONFIG.siteName} — Sunda & Seafood Cibinong, Booking Lesehan Rombongan`,
+  title: `Warung Papatong — Restoran Sunda & Seafood di Cibinong`,
   description:
-    'Restoran Sunda & Seafood terbaik di Cibinong Bogor. Rating Google 4.8★ dari 4.000+ ulasan. Tersedia lesehan semi-outdoor, saung bambu, VIP AC, live music, dan parkir bus wisata. Booking meja rombongan gratis.',
+    'Restoran Sunda & Seafood di Cibinong Bogor. Rating 4.8★ dari 4.000+ ulasan, lesehan saung, live music, parkir bus wisata. Booking rombongan gratis.',
   alternates: {
     canonical: APP_CONFIG.siteUrl,
+    languages: {
+      'id':        APP_CONFIG.siteUrl,
+      'x-default': APP_CONFIG.siteUrl,
+    },
   },
   openGraph: {
     title:       `${APP_CONFIG.siteName} — Sunda & Seafood Terbaik Cibinong`,

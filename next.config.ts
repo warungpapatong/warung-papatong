@@ -45,6 +45,23 @@ const nextConfig: NextConfig = {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
           },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com https://*.elfsight.com",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https://images.unsplash.com https://*.unsplash.com https://*.elfsight.com https://*.facebook.com https://*.instagram.com https://www.google.com https://www.gstatic.com https://lh3.googleusercontent.com",
+              "font-src 'self' data:",
+              "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com https://googleads.g.doubleclick.net https://td.doubleclick.net https://stats.g.doubleclick.net https://*.elfsight.com https://*.facebook.com https://*.instagram.com https://api.instagram.com",
+              "frame-src 'self' https://www.google.com https://maps.google.com https://*.elfsight.com https://*.facebook.com https://*.instagram.com",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'self'",
+              'upgrade-insecure-requests',
+            ].join('; '),
+          },
         ],
       },
 
