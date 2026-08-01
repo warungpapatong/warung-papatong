@@ -265,7 +265,7 @@ Only when you need:
 | `FaqAccordion.tsx` | Client | `useState` (open/close) |
 | `LocationSection.tsx` | Server | `<iframe>` is pure HTML |
 | `Navbar.tsx` | Client | Scroll state + mobile drawer |
-| `Footer.tsx` | Server | Static content only |
+| `Footer.tsx` | Client | Static content + WA tracking onClick |
 | `FloatingWA.tsx` | Client | Scroll visibility + animation |
 | `LayoutShell.tsx` | Client | Basket + modal state |
 | `MenuSection.tsx` | Client | Search, filter, basket state |

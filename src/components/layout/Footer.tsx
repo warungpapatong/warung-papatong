@@ -1,9 +1,12 @@
 // src/components/layout/Footer.tsx
 
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Mail, Phone, ArrowUpRight, Instagram } from 'lucide-react'
 import { BUSINESS_INFO, FOOTER_DATA, NAV_ITEMS, buildWALink } from '@/data'
+import { trackWhatsAppConversion } from '@/lib/config'
 
 function ColLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -16,10 +19,12 @@ function ColLabel({ children }: { children: React.ReactNode }) {
 function SocialBtn({
   href,
   label,
+  onClick,
   children,
 }: {
   href:     string
   label:    string
+  onClick?: () => void
   children: React.ReactNode
 }) {
   return (
@@ -28,6 +33,7 @@ function SocialBtn({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
+      onClick={onClick}
       className="w-10 h-10 bg-white/5 hover:bg-brand-primary border border-white/10 hover:border-brand-primary rounded-xl flex items-center justify-center text-white/60 hover:text-brand-dark transition-all duration-300"
     >
       {children}
@@ -143,6 +149,7 @@ export default function Footer() {
               <SocialBtn
                 href={buildWALink(BUSINESS_INFO.wa, FOOTER_DATA.waMessage)}
                 label="WhatsApp Warung Papatong"
+                onClick={() => trackWhatsAppConversion('Footer WhatsApp Button')}
               >
                 <WhatsAppIcon />
               </SocialBtn>
