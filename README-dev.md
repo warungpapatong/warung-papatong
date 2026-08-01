@@ -551,7 +551,7 @@ Configured in `next.config.ts`:
 
 | Variable | Required | Example | Purpose |
 |----------|----------|---------|---------|
-| `NEXT_PUBLIC_GOOGLE_ADS_ID` | No | `AW-1649827361` | Google Ads conversion tracking |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | No | `AW-10835470606` | Google Ads conversion tracking |
 | `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` | No | `WA_Click_Conversion_Label` | Conversion label for WA clicks |
 | `NEXT_PUBLIC_GSC_VERIFICATION_TAG` | No | `google-site-verification=...` | Google Search Console verification |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | Yes | `6281388497651` | Business WhatsApp (international, no +) |

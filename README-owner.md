@@ -412,7 +412,7 @@ Untuk masalah teknis:
 | Hosting | Vercel |
 | Domain Registar | (cek catatan pembelian domain) |
 | Google Search Console | Terverifikasi |
-| Google Ads ID | `AW-1649827361` |
+| Google Ads ID | `AW-10835470606` |
 | Nomor WhatsApp | `6281388497651` |
 | Google Maps Listing | Terverifikasi |
 | Instagram | `@restowarungpapatong` |

@@ -29,7 +29,7 @@ Konversi kita di sini = **klik WhatsApp** (chat admin = lead = calon pelanggan).
 
 | Perubahan | File | Efek |
 |-----------|------|------|
-| **GA4 dipasang** | `src/app/layout.tsx`, `src/lib/config.ts` | gtag.js kini men-load `AW-1649827361` **dan** `G-67D0FX5RR7` secara bersamaan |
+| **GA4 dipasang** | `src/app/layout.tsx`, `src/lib/config.ts` | gtag.js kini men-load `AW-10835470606` **dan** `G-67D0FX5RR7` secara bersamaan |
 | **Event `whatsapp_click`** | `src/lib/config.ts` | Setiap klik tombol WA (navbar, hero, menu, checkout, floating, dll.) mengirim event `whatsapp_click` ke GA4 + event `conversion` ke Google Ads |
 | **Nilai pesanan** | `src/features/menu/components/CheckoutModal.tsx` | Checkout mengirim `value` (total belanja) + `transaction_id` → Google Ads bisa lapor nilai konversi (bukan cuma hitungan) |
 | **Anti-error saat label kosong** | `src/lib/config.ts` | Jika label konversi Ads masih placeholder, event Ads dilewati diam-diam (tidak error) tapi GA4 tetap tercatat |
@@ -42,7 +42,7 @@ Konversi kita di sini = **klik WhatsApp** (chat admin = lead = calon pelanggan).
 ```
 Tombol WhatsApp diklik
         │
-        ├─► Google Ads  : gtag('event','conversion',{ send_to:'AW-1649827361/<LABEL_ASLI>' })
+        ├─► Google Ads  : gtag('event','conversion',{ send_to:'AW-10835470606/<LABEL_ASLI>' })
         └─► GA4         : gtag('event','whatsapp_click',{ event_label:'<posisi tombol>' })
 ```
 
@@ -59,7 +59,7 @@ Tombol WhatsApp diklik
 | Key | Value | Status |
 |-----|-------|--------|
 | `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | `G-67D0FX5RR7` | ✅ Baru, wajib ditambahkan |
-| `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-1649827361` | Sudah ada (pastikan ada) |
+| `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-10835470606` | Sudah ada (pastikan ada) |
 | `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` | **label asli (lihat Langkah 4)** | 🚨 MASIH PLACEHOLDER — ganti! |
 | `NEXT_PUBLIC_GSC_VERIFICATION_TAG` | `google-site-verification=NMUnW3W72_FhGAopoB_A3CVKRKvj1ouSQmjdjKc-d_Y` | Sudah ada |
 | `NEXT_PUBLIC_SITE_URL` | `https://warungpapatong.com` | Disarankan (pasti-kan non-www) |
@@ -96,7 +96,7 @@ Cara ambil label asli:
 1. Masuk [Google Ads](https://ads.google.com) → ikon **Tools** (kunci inggris) → **Conversions**.
 2. Klik konversi **"WhatsApp Click"** (atau nama apa pun yang dibuat sebelumnya).
 3. Pilih menu **Tag setup → Google tag / Settings**.
-4. Salin label konversi (string alfanumerik pendek di akhir snippet, formatnya seperti `gtag('event','conversion',{'send_to':'AW-1649827361/ABCDEFGHIJKLMNOP'})` — yang kamu salin bagian **`ABCDEFGHIJKLMNOP`**).
+4. Salin label konversi (string alfanumerik pendek di akhir snippet, formatnya seperti `gtag('event','conversion',{'send_to':'AW-10835470606/ABCDEFGHIJKLMNOP'})` — yang kamu salin bagian **`ABCDEFGHIJKLMNOP`**).
 5. Update `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` di Vercel dengan label itu → redeploy.
 
 > Kalau konversi "WhatsApp Click" belum ada di akun Ads, buat baru: **Conversions → New conversion action → Website → pakai Google tag → "Click on a link / button"** → beri nama "WhatsApp Click". Google akan kasih labelnya sendiri.
