@@ -6,6 +6,9 @@
 export const APP_CONFIG = {
   googleAdsId:         process.env.NEXT_PUBLIC_GOOGLE_ADS_ID           ?? '',
   googleAdsLabel:      process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL ?? '',
+  googleAdsInstagramLabel: process.env.NEXT_PUBLIC_GOOGLE_ADS_INSTAGRAM_LABEL ?? '',
+  googleAdsTiktokLabel:    process.env.NEXT_PUBLIC_GOOGLE_ADS_TIKTOK_LABEL ?? '',
+  googleAdsYoutubeLabel:   process.env.NEXT_PUBLIC_GOOGLE_ADS_YOUTUBE_LABEL ?? '',
   googleAnalyticsId:   process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID   ?? '',
   gscVerification:     process.env.NEXT_PUBLIC_GSC_VERIFICATION_TAG ?? '',
   whatsappNumber:      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER      ?? '6281388497651',
@@ -30,6 +33,14 @@ export interface WhatsAppConversionOptions {
   /** ID transaksi unik (opsional) untuk mencegah double-counting. */
   transactionId?: string;
 }
+
+export type SocialPlatform = 'Instagram' | 'TikTok' | 'YouTube';
+
+const socialAdsLabels: Record<SocialPlatform, string> = {
+  Instagram: APP_CONFIG.googleAdsInstagramLabel,
+  TikTok:    APP_CONFIG.googleAdsTiktokLabel,
+  YouTube:   APP_CONFIG.googleAdsYoutubeLabel,
+};
 
 /**
  * Firebase SEMUA klik WhatsApp yang relevan sebagai konversi bisnis:
@@ -69,6 +80,48 @@ export function trackWhatsAppConversion(
         event_category: 'WhatsApp',
         event_label:    positionLabel,
         ...(options.value !== undefined ? { value: options.value, currency: 'IDR' } : {}),
+      });
+    }
+  } catch {
+    // Silent fail
+  }
+}
+
+/**
+ * Track klik ke akun sosial media (Instagram / TikTok / YouTube).
+ *
+ * 1. GA4 custom event `social_click` — selalu dikirim.
+ * 2. Google Ads conversion — hanya jika label konversi akun sosial sudah
+ *    diisi di env (`NEXT_PUBLIC_GOOGLE_ADS_{PLATFORM}_LABEL`).
+ *
+ * Sumber label: Google Ads → Tools → Conversions → klik konversi
+ * "Instagram"/"Tiktok"/"YouTube" → Tag setup → salin label setelah "/".
+ */
+export function trackSocialClick(
+  platform: SocialPlatform,
+  positionLabel?: string,
+): void {
+  if (typeof window === 'undefined') return;
+  const { googleAdsId, googleAnalyticsId } = APP_CONFIG;
+  const fullLabel = positionLabel ? `${platform} — ${positionLabel}` : platform;
+
+  try {
+    // 1. GA4 — event social_click (bisa dijadikan konversi GA4 / diimport ke Ads)
+    if (googleAnalyticsId) {
+      window.gtag?.('event', 'social_click', {
+        event_category: 'Social',
+        event_label:    fullLabel,
+        platform:       platform.toLowerCase(),
+      });
+    }
+
+    // 2. Google Ads — hanya jika label asli sudah diisi (bukan placeholder)
+    const adsLabel = socialAdsLabels[platform];
+    if (googleAdsId && adsLabel && !adsLabel.startsWith('SOCIAL_Label')) {
+      window.gtag?.('event', 'conversion', {
+        send_to:        `${googleAdsId}/${adsLabel}`,
+        event_category: 'Social',
+        event_label:    fullLabel,
       });
     }
   } catch {

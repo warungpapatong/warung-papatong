@@ -17,7 +17,7 @@ import {
 import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { ABOUT_CTA_DATA, BUSINESS_INFO, LOCATION_DATA, buildWALink } from '@/data'
-import { trackWhatsAppConversion } from '@/lib/config'
+import { trackWhatsAppConversion, trackSocialClick } from '@/lib/config'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -230,6 +230,7 @@ function CtaBanner() {
               href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick('Instagram', 'About CTA Banner')}
               className={cn(BASE_SOCIAL_BTN, 'border-transparent bg-gradient-to-br from-[#f09433] via-[#dc2743] to-[#bc1888] text-white hover:opacity-90')}
             >
               <Instagram className="h-5 w-5" />
@@ -240,6 +241,7 @@ function CtaBanner() {
               href={`https://youtube.com/@${BUSINESS_INFO.youtube}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick('YouTube', 'About CTA Banner')}
               className={cn(BASE_SOCIAL_BTN, 'border-transparent bg-[#FF0000] text-white hover:bg-[#cc0000]')}
             >
               <Youtube className="h-5 w-5" />
@@ -250,6 +252,7 @@ function CtaBanner() {
               href={`https://tiktok.com/@${BUSINESS_INFO.tiktok}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick('TikTok', 'About CTA Banner')}
               className={cn(BASE_SOCIAL_BTN, 'bg-[#010101] text-white hover:bg-[#1a1a1a]')}
             >
               <TikTokIcon className="h-5 w-5" />

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MapPin, Mail, Phone, ArrowUpRight, Instagram } from 'lucide-react'
 import { BUSINESS_INFO, FOOTER_DATA, NAV_ITEMS, buildWALink } from '@/data'
-import { trackWhatsAppConversion } from '@/lib/config'
+import { trackWhatsAppConversion, trackSocialClick } from '@/lib/config'
 
 function ColLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -133,6 +133,7 @@ export default function Footer() {
               <SocialBtn
                 href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
                 label="Instagram Warung Papatong"
+                onClick={() => trackSocialClick('Instagram', 'Footer Social Button')}
               >
                 <Instagram className="w-4 h-4" />
               </SocialBtn>
@@ -141,6 +142,7 @@ export default function Footer() {
                 <SocialBtn
                   href={`https://tiktok.com/@${BUSINESS_INFO.tiktok}`}
                   label="TikTok Warung Papatong"
+                  onClick={() => trackSocialClick('TikTok', 'Footer Social Button')}
                 >
                   <TikTokIcon />
                 </SocialBtn>

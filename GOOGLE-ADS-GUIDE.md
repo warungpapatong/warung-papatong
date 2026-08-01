@@ -61,6 +61,9 @@ Tombol WhatsApp diklik
 | `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` | `G-67D0FX5RR7` | ✅ Baru, wajib ditambahkan |
 | `NEXT_PUBLIC_GOOGLE_ADS_ID` | `AW-10835470606` | Sudah ada (pastikan ada) |
 | `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL` | **label asli (lihat Langkah 4)** | 🚨 MASIH PLACEHOLDER — ganti! |
+| `NEXT_PUBLIC_GOOGLE_ADS_INSTAGRAM_LABEL` | **label asli (lihat Langkah 4b)** | Kosongkan jika belum ada |
+| `NEXT_PUBLIC_GOOGLE_ADS_TIKTOK_LABEL` | **label asli (lihat Langkah 4b)** | Kosongkan jika belum ada |
+| `NEXT_PUBLIC_GOOGLE_ADS_YOUTUBE_LABEL` | **label asli (lihat Langkah 4b)** | Kosongkan jika belum ada |
 | `NEXT_PUBLIC_GSC_VERIFICATION_TAG` | `google-site-verification=NMUnW3W72_FhGAopoB_A3CVKRKvj1ouSQmjdjKc-d_Y` | Sudah ada |
 | `NEXT_PUBLIC_SITE_URL` | `https://warungpapatong.com` | Disarankan (pasti-kan non-www) |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER` | `6281388497651` | Sudah ada |
@@ -104,6 +107,16 @@ Cara ambil label asli:
 > **Alternatif tanpa label Ads**: cara ini bisa dipakai sekarang juga —
 > di Google Ads: **Conversions → New → Import → Google Analytics 4 → pilih `whatsapp_click`**.
 > Dengan begitu konversi datang dari GA4 (tidak perlu label `AW-xxxxx/xxxx`). Cara paling tahan-banting.
+
+### Langkah 4b — Label konversi klik Instagram / TikTok / YouTube
+
+Website sudah mengirim event `social_click` (dengan `platform` = instagram/tiktok/youtube) ke GA4 **untuk semua tombol sosial** (Hero, Footer, About, Galeri). Tiga cara menjadikannya konversi:
+
+1. **Cara termudah (tidak perlu label):** di Google Ads → **Conversions → New → Import → Google Analytics 4** → pilih `social_click` (atau pisahkan `instagram_click` jika dibuatkan event khusus di GA4).
+2. **Pakai label per platform:** di Google Ads → **Tools → Conversions** → klik konversi **"Instagram"** / **"Tiktok"** (yang sudah ada, sekunder) → **Tag setup** → salin label → isi ke `NEXT_PUBLIC_GOOGLE_ADS_INSTAGRAM_LABEL` / `NEXT_PUBLIC_GOOGLE_ADS_TIKTOK_LABEL` (dan `..._YOUTUBE_LABEL` bila perlu).
+3. Jika label masih kosong, website tetap aman — event tetap masuk GA4 (`social_click`), tinggal diimport nanti.
+
+> Setelah label diisi, klik tombol Instagram/TikTok akan memicu konversi Ads yang sama seperti WA click. Untuk verifikasi: GA4 → Realtime → klik tombol IG di website → lihat event `social_click` muncul.
 
 ### Langkah 5 — Verifikasi tracking jalan (testing)
 

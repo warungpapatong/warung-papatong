@@ -8,6 +8,7 @@ import { Camera, Instagram, Maximize2, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import type { GalleryItem } from '@/types'
 import { BUSINESS_INFO, GALLERY_DATA, GALLERY_PAGE_DATA } from '@/data'
+import { trackSocialClick } from '@/lib/config'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -218,6 +219,7 @@ export default function GallerySection() {
               href={instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackSocialClick('Instagram', 'Gallery Instagram Feed CTA')}
               className="btn btn-dark btn-lg"
             >
               <Instagram className="h-4 w-4" />

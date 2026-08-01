@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Clock, ExternalLink, Instagram, MapPin, Star } from 'lucide-react'
+import { ArrowRight, BookOpen, Clock, ExternalLink, MapPin, Star } from 'lucide-react'
 
 import {
   BUSINESS_INFO,
@@ -15,6 +15,7 @@ import {
   HeroRightCol,
 } from './hero-animations'
 import HeroImage from './hero-image'
+import InstagramQuickLink from './InstagramQuickLink'
 import WAButton from '../wa-button'
 
 function getFeaturedMenu() {
@@ -84,15 +85,10 @@ export default function HeroSection() {
               {HERO_DATA.quickLinks.mapsLabel}
             </a>
 
-            <a
+            <InstagramQuickLink
               href={`https://instagram.com/${BUSINESS_INFO.instagram}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-white px-4 py-2.5 text-sm font-medium text-brand-text transition-all duration-300 hover:border-brand-primary/30 hover:text-brand-dark"
-            >
-              <Instagram className="h-4 w-4" />
-              @{BUSINESS_INFO.instagram}
-            </a>
+              label={`@${BUSINESS_INFO.instagram}`}
+            />
           </HeroAnimatedItem>
 
           <HeroAnimatedItem className="mt-8 grid grid-cols-3 border-t border-brand-border pt-5 sm:mt-10 sm:gap-2 sm:pt-6">
