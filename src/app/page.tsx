@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 
-import { APP_CONFIG } from '@/lib/config'
+import { APP_CONFIG, buildBreadcrumbSchema } from '@/lib/config'
 import { BUSINESS_INFO, TESTIMONIALS_DATA, FAQS_DATA } from '@/data'
 
 import HeroSection from '@/features/home/hero/HeroSection'
@@ -81,7 +81,19 @@ function buildFaqSchema() {
         text:    item.answer,
       },
     })),
+    // speakable → memungkinkan Google Assistant / AI Overviews membacakan
+    // jawaban FAQ langsung dari konten halaman.
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['#faq', '#faq .accordion-item'],
+    },
   }
+}
+
+function buildBreadcrumb() {
+  return buildBreadcrumbSchema([
+    { name: 'Beranda', url: `${APP_CONFIG.siteUrl}/` },
+  ])
 }
 
 export default function HomePage() {
@@ -94,6 +106,10 @@ export default function HomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildFaqSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumb()) }}
       />
 
       <HeroSection />

@@ -3,10 +3,17 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { BUSINESS_INFO } from '@/data'
-import { APP_CONFIG } from '@/lib/config'
+import { APP_CONFIG, buildBreadcrumbSchema } from '@/lib/config'
 
 const AboutStory = dynamic(() => import('@/features/about/components/AboutStory'))
 const AboutCTA = dynamic(() => import('@/features/about/components/AboutCTA'))
+
+function buildBreadcrumb() {
+  return buildBreadcrumbSchema([
+    { name: 'Beranda', url: `${APP_CONFIG.siteUrl}/` },
+    { name: 'Tentang Kami', url: `${APP_CONFIG.siteUrl}/about` },
+  ])
+}
 
 export const metadata: Metadata = {
   title:
@@ -74,6 +81,10 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumb()) }}
+      />
       <AboutStory />
       <AboutCTA />
     </>

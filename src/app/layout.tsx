@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import { Inter, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google'
 
-import { APP_CONFIG, LOCAL_SEO_SCHEMA } from '@/lib/config'
+import { APP_CONFIG, LOCAL_SEO_SCHEMA, WEB_SITE_SCHEMA } from '@/lib/config'
 import { BUSINESS_INFO } from '@/data'
 import LayoutShell from '@/components/layout/LayoutShell'
 // @ts-ignore
@@ -109,24 +109,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(LOCAL_SEO_SCHEMA) }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(WEB_SITE_SCHEMA) }}
+        />
         <meta name="apple-mobile-web-app-title" content={BUSINESS_INFO.name} />
       </head>
 
       <body className="min-h-screen bg-brand-bg text-brand-text font-sans antialiased">
         <LayoutShell>{children}</LayoutShell>
 
-        {APP_CONFIG.googleAdsId && (
+        {(APP_CONFIG.googleAdsId || APP_CONFIG.googleAnalyticsId) && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG.googleAdsId}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${APP_CONFIG.googleAdsId || APP_CONFIG.googleAnalyticsId}`}
               strategy="afterInteractive"
             />
-            <Script id="google-ads-init" strategy="afterInteractive">
+            <Script id="gtag-init" strategy="afterInteractive">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${APP_CONFIG.googleAdsId}');
+                ${APP_CONFIG.googleAdsId ? `gtag('config', '${APP_CONFIG.googleAdsId}');` : ''}
+                ${APP_CONFIG.googleAnalyticsId ? `gtag('config', '${APP_CONFIG.googleAnalyticsId}');` : ''}
               `}
             </Script>
           </>

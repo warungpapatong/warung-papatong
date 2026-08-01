@@ -54,7 +54,10 @@ export default function CheckoutModal({
       basketItems.map(item => ({ product: item.product, qty: item.quantity })),
       subtotal,
     )
-    trackWhatsAppConversion('Checkout — Order via WA')
+    trackWhatsAppConversion('Checkout — Order via WA', {
+      value: subtotal,
+      transactionId: `wp-${Date.now()}`,
+    })
     window.open(buildWALink(BUSINESS_INFO.wa, message), '_blank')
     onClearBasket()
     onClose()

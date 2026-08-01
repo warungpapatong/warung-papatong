@@ -1,9 +1,16 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import { BUSINESS_INFO } from '@/data'
-import { APP_CONFIG } from '@/lib/config'
+import { APP_CONFIG, buildBreadcrumbSchema } from '@/lib/config'
 
 const GallerySection = dynamic(() => import('@/features/gallery/components/GallerySection'))
+
+function buildBreadcrumb() {
+  return buildBreadcrumbSchema([
+    { name: 'Beranda', url: `${APP_CONFIG.siteUrl}/` },
+    { name: 'Galeri & Suasana', url: `${APP_CONFIG.siteUrl}/venue` },
+  ])
+}
 
 export const metadata: Metadata = {
   title:       'Galeri Venue & Suasana Resto',
@@ -51,5 +58,13 @@ export const metadata: Metadata = {
 }
 
 export default function VenuePage() {
-  return <GallerySection />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumb()) }}
+      />
+      <GallerySection />
+    </>
+  )
 }

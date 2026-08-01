@@ -1,9 +1,50 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
-import { BUSINESS_INFO } from '@/data'
-import { APP_CONFIG } from '@/lib/config'
+import { BUSINESS_INFO, MENU_CATEGORIES, PRODUCTS_DATA } from '@/data'
+import { APP_CONFIG, buildBreadcrumbSchema } from '@/lib/config'
 
 const MenuSection = dynamic(() => import('@/features/menu/components/MenuSection'))
+
+function buildMenuSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type':    'Menu',
+    '@id':      `${APP_CONFIG.siteUrl}/menu#menu`,
+    name:       'Menu Warung Papatong',
+    url:        `${APP_CONFIG.siteUrl}/menu`,
+    inLanguage: 'id-ID',
+    hasMenuSection: MENU_CATEGORIES
+      .filter(cat => cat.id !== 'all')
+      .map(cat => ({
+        '@type': 'MenuSection',
+        name:    cat.label,
+        hasMenuItem: PRODUCTS_DATA
+          .filter(p => p.category === cat.id)
+          .map(p => ({
+            '@type':      'MenuItem',
+            name:         p.name,
+            description:  p.description,
+            image:        `${APP_CONFIG.siteUrl}${p.image}`,
+            offers:       {
+              '@type':         'Offer',
+              price:           p.price,
+              priceCurrency:   'IDR',
+              availability:    p.isAvailable
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+              url:             `${APP_CONFIG.siteUrl}/menu`,
+            },
+          })),
+      })),
+  }
+}
+
+function buildBreadcrumb() {
+  return buildBreadcrumbSchema([
+    { name: 'Beranda', url: `${APP_CONFIG.siteUrl}/` },
+    { name: 'Menu Kami', url: `${APP_CONFIG.siteUrl}/menu` },
+  ])
+}
 
 export const metadata: Metadata = {
   title:       'Menu Digital & Pre-Order',
@@ -51,5 +92,17 @@ export const metadata: Metadata = {
 }
 
 export default function MenuPage() {
-  return <MenuSection />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildMenuSchema()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumb()) }}
+      />
+      <MenuSection />
+    </>
+  )
 }

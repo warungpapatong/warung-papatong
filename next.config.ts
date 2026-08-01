@@ -82,6 +82,20 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Legacy WordPress-era slugs → halaman baru.
+      // /tentang (dan /tentang/) adalah nama halaman "About" versi lama
+      // yang sempat dipakai & bisa saja masih di-link dari Google Ads,
+      // media sosial, atau backlink lama.
+      {
+        source: '/tentang/:path*',
+        destination: '/about/:path*',
+        permanent: true,
+      },
+      {
+        source: '/tentang',
+        destination: '/about',
+        permanent: true,
+      },
       {
         source: '/:path*',
         has: [

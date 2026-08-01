@@ -6,6 +6,7 @@
 export const APP_CONFIG = {
   googleAdsId:         process.env.NEXT_PUBLIC_GOOGLE_ADS_ID           ?? '',
   googleAdsLabel:      process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL ?? '',
+  googleAnalyticsId:   process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID   ?? '',
   gscVerification:     process.env.NEXT_PUBLIC_GSC_VERIFICATION_TAG ?? '',
   whatsappNumber:      process.env.NEXT_PUBLIC_WHATSAPP_NUMBER      ?? '6281388497651',
   siteUrl:             process.env.NEXT_PUBLIC_SITE_URL             ?? 'https://warungpapatong.com',
@@ -23,19 +24,84 @@ declare global {
   }
 }
 
-export function trackWhatsAppConversion(positionLabel: string): void {
+export interface WhatsAppConversionOptions {
+  /** Nilai pesanan dalam Rupiah (opsional, hanya untuk checkout). */
+  value?: number;
+  /** ID transaksi unik (opsional) untuk mencegah double-counting. */
+  transactionId?: string;
+}
+
+/**
+ * Firebase SEMUA klik WhatsApp yang relevan sebagai konversi bisnis:
+ *
+ *  1. Google Ads conversion  — pakai tag AW-xxxxx/<label> (WAJIB label asli,
+ *     bukan placeholder). Ini yang bikin klik muncul di kolom "Conversions".
+ *  2. GA4 event `whatsapp_click` — tercatat di GA4. Bisa dijadikan konversi
+ *     GA4, lalu di-import ke Google Ads sebagai "Import from Google Analytics".
+ *
+ * Jika label Ads masih placeholder, function ini diam saja untuk Ads (tidak
+ * error) tapi tetap mengirim event ke GA4 — jadi tracking tidak hilang total.
+ */
+export function trackWhatsAppConversion(
+  positionLabel: string,
+  options: WhatsAppConversionOptions = {},
+): void {
   if (typeof window === 'undefined') return;
-  if (!APP_CONFIG.googleAdsId || !APP_CONFIG.googleAdsLabel) return;
+  const { googleAdsId, googleAdsLabel, googleAnalyticsId } = APP_CONFIG;
 
   try {
-    window.gtag?.('event', 'conversion', {
-      send_to:       `${APP_CONFIG.googleAdsId}/${APP_CONFIG.googleAdsLabel}`,
-      event_category: 'WhatsApp',
-      event_label:    positionLabel,
-    });
+    // 1. Google Ads conversion — hanya jika kedua nilai sudah terisi & bukan placeholder
+    if (googleAdsId && googleAdsLabel && !googleAdsLabel.startsWith('WA_Click_Conversion_Label')) {
+      window.gtag?.('event', 'conversion', {
+        send_to:        `${googleAdsId}/${googleAdsLabel}`,
+        event_category: 'WhatsApp',
+        event_label:    positionLabel,
+        ...(options.value !== undefined ? { value: options.value, currency: 'IDR' } : {}),
+        ...(options.transactionId ? { transaction_id: options.transactionId } : {}),
+      });
+    }
+
+    // 2. GA4 custom event — tercatat di GA4 & bisa di-import ke Ads.
+    //    Catatan: untuk GA4, event custom yang diinginkan sebagai konversi
+    //    harus ditandai "Mark as conversion" di Admin GA4 → Events.
+    if (googleAnalyticsId) {
+      window.gtag?.('event', 'whatsapp_click', {
+        event_category: 'WhatsApp',
+        event_label:    positionLabel,
+        ...(options.value !== undefined ? { value: options.value, currency: 'IDR' } : {}),
+      });
+    }
   } catch {
     // Silent fail
   }
+}
+
+/** WebSite schema — memperkuat sinyal entity situs untuk AI engines. */
+export const WEB_SITE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type':    'WebSite',
+  '@id':      `${APP_CONFIG.siteUrl}/#website`,
+  url:        APP_CONFIG.siteUrl,
+  name:       APP_CONFIG.siteName,
+  description: APP_CONFIG.defaultDescription,
+  inLanguage: 'id-ID',
+  publisher:  { '@id': `${APP_CONFIG.siteUrl}/#restaurant` },
+} as const;
+
+/** BreadcrumbList schema — untuk tiap halaman agar konteks navigasi jelas. */
+export function buildBreadcrumbSchema(
+  items: { name: string; url: string }[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type':    'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type':    'ListItem',
+      position:   i + 1,
+      name:       item.name,
+      item:       item.url,
+    })),
+  };
 }
 
 export const LOCAL_SEO_SCHEMA = {
@@ -49,6 +115,7 @@ export const LOCAL_SEO_SCHEMA = {
   logo:       `${APP_CONFIG.siteUrl}/web-app-manifest-512x512.png`,
   image:      `${APP_CONFIG.siteUrl}/opengraph-image.png`,
   description: APP_CONFIG.defaultDescription,
+  foundingDate: '2019',
   servesCuisine: ['Sunda', 'Seafood', 'Indonesian'],
   priceRange:   'Rp 25.000 – Rp 300.000',
   hasMenu:      `${APP_CONFIG.siteUrl}/menu`,
